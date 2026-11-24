@@ -71,6 +71,13 @@ enum PDFTranslation {
         "Seinän vähimmäispaksuus mm": ["Seinän vähimmäispaksuus mm","Minimum wall thickness mm","Minsta väggtjocklek mm","Minste veggtykkelse mm","Mindste vægtykkelse mm","Seina minimaalne paksus mm","Minimālais sienas slāņa biezums mm","Mažiausias sienos sluoksnio storis mm","Минимальная толщина слоя стен мм"],
         "Lattian vähimmäispaksuus mm": ["Lattian vähimmäispaksuus mm","Minimum floor thickness mm","Minsta golvtjocklek mm","Minste gulvtykkelse mm","Mindste gulvtykkelse mm","Põranda minimaalne paksus mm","Minimālais grīdas slāņa biezums mm","Mažiausias grindų sluoksnio storis mm","Минимальная толщина слоя пола мм"],
         "Puhelin": ["Puhelin","Phone","Telefon","Telefon","Telefon","Telefon","Tālrunis","Telefonas","Телефон"],
-        "Sähköposti": ["Sähköposti","Email","E-post","E-post","E-mail","E-post","E-pasts","El. paštas","Электронная почта"]
+        "Sähköposti": ["Sähköposti","Email","E-post","E-post","E-mail","E-post","E-pasts","El. paštas","Электронная почта"],
+        "Kyllä": ["Kyllä","Yes","Ja","Ja","Ja","Jah","Jā","Taip","Да"],
+        "Ei": ["Ei","No","Nej","Nei","Nej","Ei","Nē","Ne","Нет"],
+        "Y-tunnus": ["Y-tunnus","Business ID","Organisationsnummer","Organisasjonsnummer","CVR-nummer","Registrikood","Reģistrācijas numurs","Įmonės kodas","Регистрационный номер"],
+        "Asiakas": ["Asiakas","Customer","Kund","Kunde","Kunde","Klient","Klients","Klientas","Клиент"],
+        "Postinumero": ["Postinumero","Postal code","Postnummer","Postnummer","Postnummer","Postiindeks","Pasta indekss","Pašto kodas","Почтовый индекс"],
+        "Postitoimipaikka": ["Postitoimipaikka","City","Ort","Poststed","By","Linn","Pilsēta","Miestas","Город"],
+        "Työohjeet annettu ja luettu": ["Työohjeet annettu ja luettu","Work instructions provided and read","Arbetsinstruktioner givna och lästa","Arbeidsinstruksjoner gitt og lest","Arbejdsinstruktioner givet og læst","Tööjuhised antud ja loetud","Darba instrukcijas izsniegtas un izlasītas","Darbo instrukcijos pateiktos ir perskaitytos","Инструкции предоставлены и прочитаны"]
     ]
 }

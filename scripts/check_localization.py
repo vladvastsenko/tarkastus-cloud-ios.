@@ -43,6 +43,8 @@ report = (root / "PDF/ReportPDF.swift").read_text()
 for k in re.findall(r'\b(?:tr|field)\("([^"]+)"', report):
     if k not in pdf_keys:
         errors.append(f"PDF: missing key {k}")
+if not pdf_keys:
+    errors.append("PDF: no translations parsed")
 if errors:
     raise SystemExit("\n".join(errors))
 print(f"Localization OK: {len(base)} UI keys x {len(langs)} languages; {len(pdf_keys)} PDF keys")
