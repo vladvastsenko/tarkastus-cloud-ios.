@@ -11,6 +11,10 @@ struct DriveConnectionView: View {
     @AppStorage("driveFolderID") private var folderID = ""
     @Environment(\.openURL) private var openURL
     @State private var showInvitationHelp = false
+    @AppStorage("privateBackupFolderID") private var privateFolder = ""
+    @State private var backups: [DriveItem] = []
+    @State private var selectedBackup = ""
+    @State private var confirmRestore = false
     @State private var email = ""
     @State private var folders: [DriveItem] = []
     @State private var busy = false
@@ -66,6 +70,28 @@ struct DriveConnectionView: View {
                     }
                 }
             }
+            Section("Private cloud backups") {
+                Text("Choose your own private folder. Never share it with colleagues.")
+                TextField("Private folder ID", text: $privateFolder).textInputAutocapitalization(.never).autocorrectionDisabled()
+                ForEach(folders, id: \.id) { folder in
+                    Button(folder.name) { privateFolder = folder.id; backups = []; selectedBackup = "" }
+                }
+                Button("Create separate backup") { run { client in
+                    try await validateBackupFolder(client)
+                    let url = try PrivateBackup.create(store: store)
+                    defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
+                    let name = "Tarkastus-private-" + UUID().uuidString + ".json"
+                    _ = try await client.upload(name: name, parent: privateFolder, data: Data(contentsOf: url), mimeType: "application/json")
+                    try await loadBackups(client)
+                    notice = "Private backup saved."
+                } }.disabled(privateFolder.isEmpty)
+                Button("Load saved backups") { run { client in try await loadBackups(client) } }.disabled(privateFolder.isEmpty)
+                Picker("Saved backups", selection: $selectedBackup) {
+                    Text("Select backup").tag("")
+                    ForEach(backups, id: \.id) { item in Text(item.name).tag(item.id) }
+                }
+                Button("Restore selected backup", role: .destructive) { confirmRestore = true }.disabled(selectedBackup.isEmpty)
+            }
             if busy { ProgressView() }
             if !notice.isEmpty { Text(notice) }
         }
@@ -87,9 +113,34 @@ struct DriveConnectionView: View {
                 }.navigationTitle("How to share a folder").navigationBarTitleDisplayMode(.inline)
             }
         }
+        .confirmationDialog("Restore selected backup?", isPresented: $confirmRestore, titleVisibility: .visible) {
+            Button("Restore", role: .destructive) { run { client in
+                try await validateBackupFolder(client)
+                guard try await client.children(of: privateFolder).contains(where: { $0.id == selectedBackup && $0.name.hasPrefix("Tarkastus-private-") }) else { throw DriveError.invalidResponse }
+                let safety = try PrivateBackup.create(store: store)
+                defer { try? FileManager.default.removeItem(at: safety.deletingLastPathComponent()) }
+                _ = try await client.upload(name: "Tarkastus-private-recovery-" + UUID().uuidString + ".json", parent: privateFolder, data: Data(contentsOf: safety), mimeType: "application/json")
+                let data = try await client.download(id: selectedBackup)
+                let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".json")
+                defer { try? FileManager.default.removeItem(at: url) }
+                try data.write(to: url, options: [.atomic, .completeFileProtection])
+                _ = try PrivateBackup.read(url).restore(store: store)
+                notice = "Backup restored."
+            } }
+            Button("Cancel", role: .cancel) {}
+        } message: { Text("A recovery copy will be saved before replacing local report data.") }
         .disabled(busy)
         .navigationTitle("Google Drive")
         .onAppear { email = GIDSignIn.sharedInstance.currentUser?.profile?.email ?? "" }
+    }
+    private func validateBackupFolder(_ client: DriveClient) async throws {
+        guard privateFolder != folderID, privateFolder != boundCompany else { throw DriveError.invalidName }
+        try await client.validatePrivateFolder(privateFolder, excluding: boundCompany.isEmpty ? folderID : boundCompany)
+    }
+    private func loadBackups(_ client: DriveClient) async throws {
+        try await validateBackupFolder(client)
+        backups = try await client.children(of: privateFolder).filter { $0.name.hasPrefix("Tarkastus-private-") && $0.name.hasSuffix(".json") }
+        selectedBackup = ""
     }
     private func connect() {
         guard let uid = account.user?.uid, uid == ownerUID else { notice = "Sign in to your linked account first."; return }
