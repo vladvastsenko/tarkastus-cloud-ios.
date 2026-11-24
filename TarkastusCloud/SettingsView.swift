@@ -149,6 +149,28 @@ struct GeneralSettingsView: View {
                     Button("Poista allekirjoitus", role: .destructive) { settings.signatureImagePath = "" }
                 }
             }
+            Section("Inspector profiles") {
+                ForEach(settings.inspectorProfiles ?? [], id: \.id) { profile in
+                    Button(profile.name) {
+                        settings.inspectorName = profile.name
+                        settings.inspectorCertificateNumber = profile.certificateNumber
+                        settings.inspectorPhone = profile.phone
+                        settings.inspectorEmail = profile.email
+                        settings.signatureImagePath = profile.signatureImagePath
+                        settings.signatureStrokes = profile.signatureStrokes
+                    }
+                }.onDelete { offsets in
+                    var profiles = settings.inspectorProfiles ?? []
+                    profiles.remove(atOffsets: offsets)
+                    settings.inspectorProfiles = profiles
+                }
+                Button("Save current inspector as profile") {
+                    var profiles = settings.inspectorProfiles ?? []
+                    let profile = InspectorProfile(name: settings.inspectorName, certificateNumber: settings.inspectorCertificateNumber, phone: settings.inspectorPhone, email: settings.inspectorEmail, signatureStrokes: settings.signatureStrokes, signatureImagePath: settings.signatureImagePath)
+                    profiles.append(profile)
+                    settings.inspectorProfiles = profiles
+                }.disabled(settings.inspectorName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }
             NavigationLink("Asiakkaat ja kohteet") { CustomerDirectoryView() }
 
             Button("Tallenna") { if store.saveSettings(settings) { dismiss() } }
