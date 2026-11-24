@@ -1,7 +1,29 @@
 import Foundation
 
 enum DirectorySync {
-    static func exchange<T: Codable>(_ values: [T], id: (T) -> String, client: DriveClient, parent: String, account: String, company: String, category: String, conflicts: String) async throws -> [T] {
+    @MainActor
+    static func synchronize(store: LocalReportStore, client: DriveClient, company: String, account: String) async throws -> String {
+        let sync = try await client.ensureFolder(name: "Tarkastus_Sync", parent: company)
+        let children = try await client.children(of: sync)
+        for legacy in children where legacy.name == "data" {
+            guard legacy.mimeType == "application/vnd.google-apps.folder", (try await client.children(of: legacy.id)).isEmpty else { throw DriveError.invalidResponse }
+        }
+        let shared = try await client.ensureFolder(name: "shared_v2", parent: sync)
+        let conflicts = try await client.ensureFolder(name: "Conflicts", parent: sync)
+        let original = store.archive
+        let customers = try await exchange(original.customers, id: { $0.id }, client: client, parent: shared, account: account, company: company, category: "customers", conflicts: conflicts)
+        let sites = try await exchange(original.sites, id: { $0.id }, client: client, parent: shared, account: account, company: company, category: "customer_sites", conflicts: conflicts)
+        var next = store.archive
+        guard next.customers == original.customers, next.sites == original.sites else { throw DriveError.invalidResponse }
+        next.customers = customers.values
+        next.sites = sites.values
+        guard store.commit(next) else { throw DriveError.invalidResponse }
+        UserDefaults.standard.set(customers.baseline, forKey: customers.key)
+        UserDefaults.standard.set(sites.baseline, forKey: sites.key)
+        return "Customers: \(next.customers.count), sites: \(next.sites.count)"
+    }
+
+    static func exchange<T: Codable>(_ values: [T], id: (T) -> String, client: DriveClient, parent: String, account: String, company: String, category: String, conflicts: String) async throws -> (values: [T], key: String, baseline: [String: String]) {
         let folder = try await client.ensureFolder(name: category, parent: parent)
         let items = try await client.children(of: folder)
         let key = "directoryBaseline." + SyncPolicy.hash(Data((account + "|" + company + "|" + category).utf8))
@@ -43,7 +65,7 @@ enum DirectorySync {
                     let latest = try JSONDecoder().decode(T.self, from: await client.download(id: item.id))
                     guard SyncPolicy.hash(try encoder.encode(latest)) == rh else { throw DriveError.invalidResponse }
                 } else {
-                    guard try await !client.children(of: folder).contains(where: { $0.name == name }) else { throw DriveError.ambiguousName }
+                    guard !(try await client.children(of: folder)).contains(where: { $0.name == name }) else { throw DriveError.ambiguousName }
                 }
                 _ = try await client.upload(name: name, parent: folder, data: ld, mimeType: "application/json", existingID: item?.id)
                 result.append(value); next[name] = lh
@@ -56,6 +78,6 @@ enum DirectorySync {
             }
         }
         // Baseline persistence is deferred until the caller has committed the local archive.
-        return result
+        return (result, key, next)
     }
 }
