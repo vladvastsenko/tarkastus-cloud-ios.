@@ -9,21 +9,22 @@ enum ReportPDF {
         case image(String)
     }
     static func export(_ r: InspectionReport) throws -> URL {
-        var blocks: [Block] = [.image(r.logoPath), .text(r.headerText, false), .text("VALVONTAPÖYTÄKIRJA", true)]
-        func field(_ label: String, _ value: String) { if !value.isEmpty { blocks.append(.text(label + ": " + value, false)) } }
+        func tr(_ key: String) -> String { PDFTranslation.label(key, language: r.pdfLanguage.isEmpty ? (UserDefaults.standard.string(forKey: "defaultPDFLanguage") ?? "en") : r.pdfLanguage) }
+        var blocks: [Block] = [.image(r.logoPath), .text(r.headerText, false), .text(tr("VALVONTAPÖYTÄKIRJA"), true)]
+        func field(_ label: String, _ value: String) { if !value.isEmpty { blocks.append(.text(tr(label) + ": " + value, false)) } }
         field("Kohde", r.siteName); field("Osoite", r.siteAddress); field("Tilaaja", r.clientOrRepresentative)
         field("Asentaja", r.installerName); field("Sertifikaatti", r.installerCertificateNumber)
         field("Työn aloitus", r.workStartDate); field("Työn päättyminen", r.workEndDate)
-        blocks.append(.text("ALUSTAT JA TYÖOLOSUHTEET", true))
+        blocks.append(.text(tr("ALUSTAT JA TYÖOLOSUHTEET"), true))
         field("Seinäalusta", r.wallSubstrate); field("Lattia-alusta", r.floorSubstrate)
         field("Lämpötila °C", r.roomTemperatureC); field("Ilman kosteus %", r.relativeHumidityPercent); field("Alustan kosteus %", r.substrateMoisturePercent)
-        blocks.append(.text("TUOTTEET", true))
+        blocks.append(.text(tr("TUOTTEET"), true))
         for m in r.materials where !m.productName.isEmpty { field(m.category + " " + m.surface, [m.manufacturer, m.productName, m.notes].filter { !$0.isEmpty }.joined(separator: " ")) }
         field("Lattialämmitys", r.floorHeating); field("Kynnys / kaivo mm", r.thresholdOrDrainLiftMm); field("Kaadot", r.floorSlopes)
         field("Seinä m²", r.wallAreaM2); field("Lattia m²", r.floorAreaM2)
         field("Seinän menekki l", r.wallWaterproofingConsumptionLitres); field("Lattian menekki l", r.floorWaterproofingConsumptionLitres)
         field("Seinän kuivakalvo mm", r.wallDryFilmThicknessMm); field("Lattian kuivakalvo mm", r.floorDryFilmThicknessMm)
-        blocks.append(.text("TARKASTUS", true))
+        blocks.append(.text(tr("TARKASTUS"), true))
         field("Tulos", r.inspectionResult); field("Päivä", r.inspectionDate); field("Lisätiedot", r.additionalNotes)
         field("Tarkastaja", r.inspectorName); field("Sertifikaatti", r.inspectorCertificateNumber)
         blocks.append(.image(r.signatureImagePath))
@@ -31,12 +32,13 @@ enum ReportPDF {
         return try render(blocks, footer: r.footerText, name: "valvontapoytakirja_" + (r.siteAddress.isEmpty ? r.siteName : r.siteAddress))
     }
     static func export(_ r: GeneralInspectionReport) throws -> URL {
-        var blocks: [Block] = [.image(r.logoPath), .text(r.headerText, false), .text("TARKASTUSPÖYTÄKIRJA", true)]
-        func field(_ label: String, _ value: String) { if !value.isEmpty { blocks.append(.text(label + ": " + value, false)) } }
+        func tr(_ key: String) -> String { PDFTranslation.label(key, language: r.pdfLanguage.isEmpty ? (UserDefaults.standard.string(forKey: "defaultPDFLanguage") ?? "en") : r.pdfLanguage) }
+        var blocks: [Block] = [.image(r.logoPath), .text(r.headerText, false), .text(tr("TARKASTUSPÖYTÄKIRJA"), true)]
+        func field(_ label: String, _ value: String) { if !value.isEmpty { blocks.append(.text(tr(label) + ": " + value, false)) } }
         field("Kohde", r.siteName); field("Osoite", r.siteAddress); field("Tilaaja", r.clientOrRepresentative)
         field("Tarkastuksen tarkoitus", r.purposeAndScope); field("Yleiset havainnot", r.generalObservations)
         for f in r.customFields { field(f.label, f.value) }
-        blocks.append(.text("TARKASTUSKOHTEET", true))
+        blocks.append(.text(tr("TARKASTUSKOHTEET"), true))
         for o in r.observations {
             blocks.append(.text(o.location, true))
             field("Kuvaus / tilanne", o.description); field("Toimenpiteet / lisätiedot", o.recommendedAction)
