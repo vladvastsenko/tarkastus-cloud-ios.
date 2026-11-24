@@ -17,3 +17,7 @@ Register the iOS app with bundle ID `fi.vladi.tarkastuscloud` in Firebase, enabl
 ## GitHub Actions configuration
 
 In repository Settings → Secrets and variables → Actions, create repository secret `FIREBASE_IOS_PLIST` with the complete raw XML contents of the downloaded iOS plist. Do not use HTML-escaped XML or Markdown backslashes. The simulator workflow uses it when available; otherwise it builds the offline variant. The workflow does not upload the configured app or print the plist. A signed device build still requires Apple signing credentials.
+
+## Device build
+
+Run `bash scripts/fetch_android_icon.sh` on macOS before project generation. CI fetches the exact Android artwork at a pinned commit and verifies its Git object hash before conversion. If the original repository is not accessible, provide the original JPG to `scripts/import_android_icon.sh` instead. In Actions, manually run the workflow with `device_build` enabled for an unsigned iphoneos compile check. This is not an installable IPA. For installation on a personal iPhone, open the generated project on a Mac, select your Apple team under Signing & Capabilities and run on the paired iPhone. Do not upload signing keys or configured app bundles to a public workflow.

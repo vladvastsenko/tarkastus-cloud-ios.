@@ -1,6 +1,11 @@
 name: iOS simulator build
 on:
   workflow_dispatch:
+    inputs:
+      device_build:
+        description: Build unsigned iPhone app (not installable until signed)
+        type: boolean
+        default: false
   push:
     branches: [main]
 permissions:
@@ -12,6 +17,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate localization
         run: python3 scripts/check_localization.py
+      - name: Import pinned Android icon
+        run: bash scripts/fetch_android_icon.sh
       - run: brew install xcodegen
       - name: Generate project with optional Firebase configuration
         env:
@@ -45,3 +52,6 @@ jobs:
           else:
               print("Offline build: Firebase secret absent")
           PY
+      - name: Compile for physical iPhone (unsigned)
+        if: github.event_name == 'workflow_dispatch' && inputs.device_build
+        run: xcodebuild -project TarkastusCloud.xcodeproj -scheme TarkastusCloud -configuration Debug -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO -derivedDataPath device-build build
