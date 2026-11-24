@@ -59,6 +59,21 @@ struct SettingsView: View {
             if account.configured {
                 Section("Account") {
                     Text(account.user?.email ?? "")
+                    if account.user?.isEmailVerified == false {
+                        Text("Email verification is recommended but optional.").font(.caption)
+                        Button("Resend verification email") {
+                            Task { @MainActor in
+                                do { try await account.resend() }
+                                catch { store.errorMessage = error.localizedDescription }
+                            }
+                        }
+                        Button("Check verification") {
+                            Task { @MainActor in
+                                do { try await account.refresh() }
+                                catch { store.errorMessage = error.localizedDescription }
+                            }
+                        }
+                    }
                     Button("Sign out") {
                         do { try account.signOut() }
                         catch { store.errorMessage = error.localizedDescription }
