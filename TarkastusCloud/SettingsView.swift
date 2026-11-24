@@ -1,5 +1,6 @@
 import SwiftUI
 import PhotosUI
+import FirebaseAuth
 import UniformTypeIdentifiers
 
 struct SettingsView: View {
@@ -110,7 +111,9 @@ struct SettingsView: View {
         } message: { Text("A recovery copy of your current archive will be saved first.") }
         .navigationTitle("Asetukset")
         .alert("Permanently delete account?", isPresented: $confirmDelete) {
-            SecureField("Password", text: $password)
+            if account.user?.providerData.contains(where: { $0.providerID == "google.com" }) != true {
+                SecureField("Password", text: $password)
+            }
             Button("Cancel", role: .cancel) { password = "" }
             Button("Delete account", role: .destructive) {
                 let credential = password
