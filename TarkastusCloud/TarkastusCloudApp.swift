@@ -1,4 +1,5 @@
 import SwiftUI
+import GoogleSignIn
 
 @main
 struct TarkastusCloudApp: App {
@@ -46,6 +47,7 @@ struct TarkastusCloudApp: App {
             }
             }
             }
+            .onOpenURL { url in _ = GIDSignIn.sharedInstance.handle(url) }
         }
     }
 }
