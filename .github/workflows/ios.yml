@@ -2,8 +2,12 @@ name: iOS simulator build
 on:
   workflow_dispatch:
     inputs:
+      offline_only:
+        description: Omit Firebase configuration for downloadable test IPA
+        type: boolean
+        default: true
       device_build:
-        description: Build unsigned iPhone app (not installable until signed)
+        description: Build unsigned IPA for Windows sideload testing
         type: boolean
         default: false
   push:
@@ -22,7 +26,7 @@ jobs:
       - run: brew install xcodegen
       - name: Generate project with optional Firebase configuration
         env:
-          FIREBASE_IOS_PLIST: ${{ secrets.FIREBASE_IOS_PLIST }}
+          FIREBASE_IOS_PLIST: ${{ (github.event_name != 'workflow_dispatch' || !inputs.offline_only) && secrets.FIREBASE_IOS_PLIST || '' }}
         run: |
           if [ -n "$FIREBASE_IOS_PLIST" ]; then
             umask 077
@@ -37,7 +41,7 @@ jobs:
       - run: xcodebuild -project TarkastusCloud.xcodeproj -scheme TarkastusCloud -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO -derivedDataPath build build
       - name: Verify bundled Firebase configuration
         env:
-          FIREBASE_IOS_PLIST: ${{ secrets.FIREBASE_IOS_PLIST }}
+          FIREBASE_IOS_PLIST: ${{ (github.event_name != 'workflow_dispatch' || !inputs.offline_only) && secrets.FIREBASE_IOS_PLIST || '' }}
         run: |
           python3 - <<'PY'
           import os, pathlib, plistlib
@@ -55,3 +59,41 @@ jobs:
       - name: Compile for physical iPhone (unsigned)
         if: github.event_name == 'workflow_dispatch' && inputs.device_build
         run: xcodebuild -project TarkastusCloud.xcodeproj -scheme TarkastusCloud -configuration Debug -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO -derivedDataPath device-build build
+      - name: Package unsigned IPA
+        if: github.event_name == 'workflow_dispatch' && inputs.device_build
+        run: |
+          set -euo pipefail
+          app=device-build/Build/Products/Debug-iphoneos/TarkastusCloud.app
+          test -d "$app"
+          python3 - "$app" <<'PY'
+          import pathlib, plistlib, sys
+          app = pathlib.Path(sys.argv[1])
+          info = plistlib.loads((app / "Info.plist").read_bytes())
+          assert info["CFBundleIdentifier"] == "fi.vladi.tarkastuscloud"
+          assert "iPhoneOS" in info["CFBundleSupportedPlatforms"]
+          assert (app / info["CFBundleExecutable"]).is_file()
+          config = app / "GoogleService-Info.plist"
+          if config.exists():
+              firebase = plistlib.loads(config.read_bytes())
+              assert firebase["BUNDLE_ID"] == info["CFBundleIdentifier"]
+              assert firebase["REVERSED_CLIENT_ID"] in [s for t in info.get("CFBundleURLTypes", []) for s in t.get("CFBundleURLSchemes", [])]
+          PY
+          mkdir -p package/Payload dist
+          ditto "$app" package/Payload/TarkastusCloud.app
+          (cd package && zip -qry ../dist/TarkastusCloud-unsigned.ipa Payload)
+          unzip -tq dist/TarkastusCloud-unsigned.ipa
+      - name: Upload offline unsigned IPA
+        if: github.event_name == 'workflow_dispatch' && inputs.device_build
+        env:
+          FIREBASE_IOS_PLIST: ${{ (github.event_name != 'workflow_dispatch' || !inputs.offline_only) && secrets.FIREBASE_IOS_PLIST || '' }}
+        run: |
+          if [ -n "$FIREBASE_IOS_PLIST" ]; then
+            echo "Configured IPA contains Firebase configuration; not publishing it as an Actions artifact."
+            rm -f dist/TarkastusCloud-unsigned.ipa
+          fi
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'workflow_dispatch' && inputs.device_build && hashFiles('dist/TarkastusCloud-unsigned.ipa') != ''
+        with:
+          name: TarkastusCloud-unsigned
+          path: dist/TarkastusCloud-unsigned.ipa
+          retention-days: 3

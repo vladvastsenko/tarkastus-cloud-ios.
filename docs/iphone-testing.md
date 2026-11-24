@@ -21,3 +21,7 @@ In repository Settings → Secrets and variables → Actions, create repository 
 ## Device build
 
 Run `bash scripts/fetch_android_icon.sh` on macOS before project generation. CI fetches the exact Android artwork at a pinned commit and verifies its Git object hash before conversion. If the original repository is not accessible, provide the original JPG to `scripts/import_android_icon.sh` instead. In Actions, manually run the workflow with `device_build` enabled for an unsigned iphoneos compile check. This is not an installable IPA. For installation on a personal iPhone, open the generated project on a Mac, select your Apple team under Signing & Capabilities and run on the paired iPhone. Do not upload signing keys or configured app bundles to a public workflow.
+
+## Windows sideload test
+
+Manually run the iOS workflow with device_build and offline_only enabled. Download the TarkastusCloud-unsigned artifact and extract the IPA. Sign and install using Sideloadly on Windows with your own Apple Account. The IPA is unsigned and cannot install directly. Keep the original bundle identifier fi.vladi.tarkastuscloud if the signing tool permits it. A changed bundle ID may break Firebase or Google OAuth; do not treat offline success as cloud validation. Configured IPA artifacts are deliberately not uploaded because the repository may be public. For cloud testing use a private build distribution path. Free signing expires periodically and may require reinstalling. Back up test data before changing signing identity.
