@@ -39,6 +39,39 @@ struct ReportDraftView: View {
     @State var report: InspectionReport
     var body: some View {
         Form {
+            Section("Asiakas ja kohde") {
+                Picker("Asiakas", selection: $report.customerId) {
+                    Text("—").tag("")
+                    ForEach(store.archive.customers, id: \.id) { customer in
+                        Text(customer.name).tag(customer.id)
+                    }
+                }
+                .onChange(of: report.customerId) { id in
+                    report.siteId = ""
+                    if let customer = store.archive.customers.first(where: { $0.id == id }) {
+                        report.customerName = customer.name
+                        report.customerBusinessId = customer.businessId
+                        report.customerAddress = customer.address
+                        report.customerPostalCode = customer.postalCode
+                        report.customerCity = customer.city
+                        report.clientOrRepresentative = customer.contactPerson.isEmpty ? customer.name : customer.contactPerson
+                        report.clientPhone = customer.phone
+                        report.clientEmail = customer.email
+                    }
+                }
+                Picker("Kohde", selection: $report.siteId) {
+                    Text("—").tag("")
+                    ForEach(store.archive.sites.filter { $0.customerId == report.customerId }, id: \.id) { site in
+                        Text(site.name + (site.address.isEmpty ? "" : " – " + site.address)).tag(site.id)
+                    }
+                }
+                .onChange(of: report.siteId) { id in
+                    if let site = store.archive.sites.first(where: { $0.id == id }) {
+                        report.siteName = site.name
+                        report.siteAddress = site.address
+                    }
+                }
+            }
             TextField("Kohde", text: $report.siteAddress)
             TextField("Tilaaja", text: $report.clientOrRepresentative)
             TextField("Asentaja", text: $report.installerName)
@@ -133,6 +166,39 @@ struct GeneralDraftView: View {
     @State var report: GeneralInspectionReport
     var body: some View {
         Form {
+            Section("Asiakas ja kohde") {
+                Picker("Asiakas", selection: $report.customerId) {
+                    Text("—").tag("")
+                    ForEach(store.archive.customers, id: \.id) { customer in
+                        Text(customer.name).tag(customer.id)
+                    }
+                }
+                .onChange(of: report.customerId) { id in
+                    report.siteId = ""
+                    if let customer = store.archive.customers.first(where: { $0.id == id }) {
+                        report.customerName = customer.name
+                        report.customerBusinessId = customer.businessId
+                        report.customerAddress = customer.address
+                        report.customerPostalCode = customer.postalCode
+                        report.customerCity = customer.city
+                        report.clientOrRepresentative = customer.contactPerson.isEmpty ? customer.name : customer.contactPerson
+                        report.clientPhone = customer.phone
+                        report.clientEmail = customer.email
+                    }
+                }
+                Picker("Kohde", selection: $report.siteId) {
+                    Text("—").tag("")
+                    ForEach(store.archive.sites.filter { $0.customerId == report.customerId }, id: \.id) { site in
+                        Text(site.name + (site.address.isEmpty ? "" : " – " + site.address)).tag(site.id)
+                    }
+                }
+                .onChange(of: report.siteId) { id in
+                    if let site = store.archive.sites.first(where: { $0.id == id }) {
+                        report.siteName = site.name
+                        report.siteAddress = site.address
+                    }
+                }
+            }
             TextField("Kohde", text: $report.siteAddress)
             TextField("Tilaaja", text: $report.clientOrRepresentative)
             TextField("Kohteen nimi", text: $report.siteName)
