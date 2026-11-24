@@ -4,6 +4,8 @@ import UIKit
 
 struct DriveConnectionView: View {
     @EnvironmentObject private var store: LocalReportStore
+    @EnvironmentObject private var account: AccountSession
+    @AppStorage("localArchiveOwnerUID") private var ownerUID = ""
     @AppStorage("boundCompanyFolder") private var boundCompany = ""
     @AppStorage("boundGoogleIdentity") private var boundIdentity = ""
     @AppStorage("driveFolderID") private var folderID = ""
@@ -66,6 +68,7 @@ struct DriveConnectionView: View {
         .onAppear { email = GIDSignIn.sharedInstance.currentUser?.profile?.email ?? "" }
     }
     private func connect() {
+        guard let uid = account.user?.uid, uid == ownerUID else { notice = "Sign in to your linked account first."; return }
         guard let clientID = Bundle.main.object(forInfoDictionaryKey: "GIDClientID") as? String, !clientID.isEmpty,
               let controller = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).flatMap({ $0.windows }).first(where: { $0.isKeyWindow })?.rootViewController else {
             notice = "Google OAuth configuration is missing."
@@ -87,6 +90,7 @@ struct DriveConnectionView: View {
         Task { @MainActor in
             defer { busy = false }
             do {
+                guard let uid = account.user?.uid, uid == ownerUID else { notice = "Sign in to your linked account first."; return }
                 guard let user = GIDSignIn.sharedInstance.currentUser else {
                     notice = "Connect Google Drive first."; return
                 }
