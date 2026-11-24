@@ -21,7 +21,7 @@ final class AccountSession: ObservableObject {
     func signIn(_ email: String, _ password: String) async throws {
         _ = try await Auth.auth().signIn(withEmail: email, password: password)
     }
-    func signInWithGoogle() async throws {
+    private func googleCredential() async throws -> AuthCredential {
         guard let clientID = FirebaseApp.app()?.options.clientID,
               let root = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).flatMap({ $0.windows }).first(where: { $0.isKeyWindow })?.rootViewController else {
             throw NSError(domain: "AccountSession", code: 1, userInfo: [NSLocalizedDescriptionKey: "Google sign-in configuration is missing."])
@@ -34,7 +34,10 @@ final class AccountSession: ObservableObject {
             throw NSError(domain: "AccountSession", code: 2, userInfo: [NSLocalizedDescriptionKey: "Google identity token is missing."])
         }
         let credential = GoogleAuthProvider.credential(withIDToken: token, accessToken: result.user.accessToken.tokenString)
-        _ = try await Auth.auth().signIn(with: credential)
+        return credential
+    }
+    func signInWithGoogle() async throws {
+        _ = try await Auth.auth().signIn(with: googleCredential())
     }
     func register(_ email: String, _ password: String) async throws {
         let result = try await Auth.auth().createUser(withEmail: email, password: password)
@@ -49,10 +52,17 @@ final class AccountSession: ObservableObject {
     func resend() async throws { try await Auth.auth().currentUser?.sendEmailVerification() }
     func signOut() throws { try Auth.auth().signOut(); GIDSignIn.sharedInstance.signOut() }
     func deleteAccount(password: String) async throws {
-        guard let current = Auth.auth().currentUser, let email = current.email else { return }
-        _ = try await current.reauthenticate(with: EmailAuthProvider.credential(withEmail: email, password: password))
+        guard let current = Auth.auth().currentUser else { throw NSError(domain: "AccountSession", code: 3) }
+        if current.providerData.contains(where: { $0.providerID == "google.com" }) {
+            let credential = try await googleCredential()
+            _ = try await current.reauthenticate(with: credential)
+        } else {
+            guard let email = current.email else { throw NSError(domain: "AccountSession", code: 4) }
+            _ = try await current.reauthenticate(with: EmailAuthProvider.credential(withEmail: email, password: password))
+        }
         try await current.delete()
         GIDSignIn.sharedInstance.signOut()
+        UserDefaults.standard.removeObject(forKey: "localArchiveOwnerUID")
     }
 }
 
