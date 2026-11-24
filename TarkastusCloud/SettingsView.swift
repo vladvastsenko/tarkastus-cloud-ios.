@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import PhotosUI
 import FirebaseAuth
 import UniformTypeIdentifiers
@@ -124,6 +125,7 @@ struct GeneralSettingsView: View {
     @State var settings: AppSettings
     @State private var logo: PhotosPickerItem?
     @State private var signature: PhotosPickerItem?
+    @State private var drawingSignature = false
     var body: some View {
         Form {
             Section("Yritys") {
@@ -140,6 +142,7 @@ struct GeneralSettingsView: View {
                 TextField("Sertifikaatti", text: $settings.inspectorCertificateNumber)
                 TextField("Puhelin", text: $settings.inspectorPhone)
                 TextField("Sähköposti", text: $settings.inspectorEmail)
+                Button("Draw signature") { drawingSignature = true }
                 PhotosPicker(selection: $signature, matching: .images) { Text("Valitse allekirjoitus") }
                 if let image = PhotoFiles.image(settings.signatureImagePath) {
                     Image(uiImage: image).resizable().scaledToFit().frame(height: 80)
@@ -151,6 +154,12 @@ struct GeneralSettingsView: View {
             Button("Tallenna") { if store.saveSettings(settings) { dismiss() } }
         }
         .navigationTitle("General settings")
+        .sheet(isPresented: $drawingSignature) {
+            SignatureDrawingView { data in
+                do { settings.signatureImagePath = try PhotoFiles.save(data) }
+                catch { store.errorMessage = error.localizedDescription }
+            }
+        }
         .onChange(of: logo) { item in
             Task { @MainActor in
                 do { if let data = try await item?.loadTransferable(type: Data.self) { settings.logoPath = try PhotoFiles.save(data) } }
