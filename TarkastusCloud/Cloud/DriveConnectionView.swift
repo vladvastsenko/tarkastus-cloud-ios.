@@ -3,6 +3,7 @@ import GoogleSignIn
 import UIKit
 
 struct DriveConnectionView: View {
+    @EnvironmentObject private var store: LocalReportStore
     @AppStorage("driveFolderID") private var folderID = ""
     @State private var email = ""
     @State private var folders: [DriveItem] = []
@@ -26,6 +27,10 @@ struct DriveConnectionView: View {
                 } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 Button("Synchronize PDFs") { run { client in
                     notice = try await PDFSync.sync(client: client, company: folderID.trimmingCharacters(in: .whitespacesAndNewlines), account: GIDSignIn.sharedInstance.currentUser?.userID ?? email)
+                } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                Button("Synchronize customers and sites") { run { client in
+                    guard let identity = GIDSignIn.sharedInstance.currentUser?.userID else { throw DriveError.invalidResponse }
+                    notice = try await DirectorySync.synchronize(store: store, client: client, company: folderID.trimmingCharacters(in: .whitespacesAndNewlines), account: identity)
                 } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 Button("List root folders") { run { client in
                     folders = try await client.children(of: "root").filter { $0.mimeType == "application/vnd.google-apps.folder" }
