@@ -6,6 +6,7 @@ struct TarkastusCloudApp: App {
     @StateObject private var store = LocalReportStore()
     var body: some Scene {
         WindowGroup {
+            LanguageGate {
             AccountGate {
             BiometricGate {
             NavigationStack {
@@ -57,6 +58,7 @@ struct TarkastusCloudApp: App {
                 .alert("Error", isPresented: Binding(get: { store.errorMessage != nil }, set: { if !$0 { store.errorMessage = nil } })) {
                     Button("OK") { store.errorMessage = nil }
                 } message: { Text(store.errorMessage ?? "") }
+            }
             }
             }
             }
