@@ -23,6 +23,8 @@ final class AccountSession: ObservableObject {
     }
     private func googleCredential() async throws -> AuthCredential {
         guard let clientID = FirebaseApp.app()?.options.clientID,
+              let reversed = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [[String: Any]],
+              reversed.contains(where: { ($0["CFBundleURLSchemes"] as? [String])?.contains(clientID.split(separator: ".").reversed().joined(separator: ".")) == true }),
               let root = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).flatMap({ $0.windows }).first(where: { $0.isKeyWindow })?.rootViewController else {
             throw NSError(domain: "AccountSession", code: 1, userInfo: [NSLocalizedDescriptionKey: "Google sign-in configuration is missing."])
         }

@@ -50,8 +50,9 @@ enum ReportPDF {
         field("Tilaajan puhelin", r.clientPhone); field("Tilaajan sähköposti", r.clientEmail)
         field("Tarkastuksen tarkoitus", r.purposeAndScope); field("Yleiset havainnot", r.generalObservations)
         for f in r.customFields where filled(f.value) { blocks.append(.text(f.label + ": " + f.value, false)) }
-        blocks.append(.section(tr("TARKASTUSKOHTEET")))
-        for o in r.observations {
+        let observations = r.observations.filter { filled($0.location) || filled($0.description) || filled($0.recommendedAction) || !$0.photos.isEmpty }
+        if !observations.isEmpty { blocks.append(.section(tr("TARKASTUSKOHTEET"))) }
+        for o in observations {
             blocks.append(.text(o.location, true))
             field("Kuvaus / tilanne", o.description); field("Toimenpiteet / lisätiedot", o.recommendedAction)
             blocks.append(.photos(o.photos.map { $0.annotatedPath.isEmpty ? $0.filePath : $0.annotatedPath }, 4))
@@ -133,7 +134,7 @@ enum ReportPDF {
                 context.beginPage()
                 draws.forEach { $0() }
                 let attrs: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 9)]
-                if index == pages.count-1 { (footer as NSString).draw(in: CGRect(x: 36, y: 778, width: width, height: 30), withAttributes: attrs) }
+                if index == pages.count-1 && filled(footer) { (footer as NSString).draw(in: CGRect(x: 36, y: 778, width: width, height: 30), withAttributes: attrs) }
                 ("\(index+1)/\(pages.count)" as NSString).draw(at: CGPoint(x: page.width-65, y: 814), withAttributes: attrs)
             }
         }
