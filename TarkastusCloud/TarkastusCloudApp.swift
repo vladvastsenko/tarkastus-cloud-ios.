@@ -23,6 +23,7 @@ struct TarkastusCloudApp: App {
                     }
                 }
                 .navigationTitle("Tarkastus Cloud")
+                .toolbar { NavigationLink(destination: SettingsView(settings: store.archive.settings)) { Image(systemName: "gearshape") } }
                 .environmentObject(store)
                 .alert("Error", isPresented: Binding(get: { store.errorMessage != nil }, set: { if !$0 { store.errorMessage = nil } })) {
                     Button("OK") { store.errorMessage = nil }
@@ -34,6 +35,7 @@ struct TarkastusCloudApp: App {
 
 struct ReportDraftView: View {
     @EnvironmentObject private var store: LocalReportStore
+    @State private var exported: URL?
     @State var report: InspectionReport
     var body: some View {
         Form {
@@ -96,12 +98,38 @@ struct ReportDraftView: View {
             }))
         }
         .navigationTitle("Valvontapöytäkirja")
-        .toolbar { Button("Tallenna") { _ = store.save(report) } }
+        .toolbar { Button("Tallenna") { applySettings(); _ = store.save(report) } }
+        .safeAreaInset(edge: .bottom) {
+            HStack {
+                Button("Luo PDF") {
+                    applySettings()
+                    guard store.save(report) else { return }
+                    do { exported = try ReportPDF.export(report) }
+                    catch { store.errorMessage = error.localizedDescription }
+                }
+                if let exported { ShareLink(item: exported) { Label("Jaa PDF", systemImage: "square.and.arrow.up") } }
+            }.padding().frame(maxWidth: .infinity).background(.regularMaterial)
+        }
+    }
+    private func applySettings() {
+        guard !report.settingsSnapshotCreated else { return }
+        let settings = store.archive.settings
+        report.logoPath = settings.logoPath
+        report.headerText = settings.headerText
+        report.footerText = settings.footerText
+        report.inspectorName = settings.inspectorName
+        report.inspectorCertificateNumber = settings.inspectorCertificateNumber
+        report.inspectorPhone = settings.inspectorPhone
+        report.inspectorEmail = settings.inspectorEmail
+        report.signatureImagePath = settings.signatureImagePath
+        report.signatureStrokes = settings.signatureStrokes
+        report.settingsSnapshotCreated = true
     }
 }
 
 struct GeneralDraftView: View {
     @EnvironmentObject private var store: LocalReportStore
+    @State private var exported: URL?
     @State var report: GeneralInspectionReport
     var body: some View {
         Form {
@@ -125,9 +153,34 @@ struct GeneralDraftView: View {
             TextField("Tarkastuspäivä", text: $report.inspectionDate)
         }
         .navigationTitle("Tarkastuspöytäkirja")
-        .toolbar { Button("Tallenna") { _ = store.save(report) } }
+        .toolbar { Button("Tallenna") { applySettings(); _ = store.save(report) } }
+        .safeAreaInset(edge: .bottom) {
+            HStack {
+                Button("Luo PDF") {
+                    applySettings()
+                    guard store.save(report) else { return }
+                    do { exported = try ReportPDF.export(report) }
+                    catch { store.errorMessage = error.localizedDescription }
+                }
+                if let exported { ShareLink(item: exported) { Label("Jaa PDF", systemImage: "square.and.arrow.up") } }
+            }.padding().frame(maxWidth: .infinity).background(.regularMaterial)
+        }
         .onAppear {
             if report.observations.isEmpty { report.observations.append(InspectionObservation()) }
         }
+    }
+    private func applySettings() {
+        guard !report.settingsSnapshotCreated else { return }
+        let settings = store.archive.settings
+        report.logoPath = settings.logoPath
+        report.headerText = settings.headerText
+        report.footerText = settings.footerText
+        report.inspectorName = settings.inspectorName
+        report.inspectorCertificateNumber = settings.inspectorCertificateNumber
+        report.inspectorPhone = settings.inspectorPhone
+        report.inspectorEmail = settings.inspectorEmail
+        report.signatureImagePath = settings.signatureImagePath
+        report.signatureStrokes = settings.signatureStrokes
+        report.settingsSnapshotCreated = true
     }
 }
