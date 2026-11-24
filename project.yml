@@ -2,11 +2,18 @@ name: TarkastusCloud
 options:
   deploymentTarget:
     iOS: "16.0"
+packages:
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    from: 11.0.0
 targets:
   TarkastusCloud:
     type: application
     platform: iOS
     sources: [TarkastusCloud]
+    dependencies:
+      - package: Firebase
+        product: FirebaseAuth
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: fi.vladi.tarkastuscloud
