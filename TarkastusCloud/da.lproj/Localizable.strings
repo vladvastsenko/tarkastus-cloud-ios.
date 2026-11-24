@@ -47,3 +47,12 @@
 "How to share a folder" = "Sådan deler du en mappe";
 "Open Google Drive" = "Åbn Google Drive";
 "Do not share the private backup folder." = "Del ikke den private sikkerhedskopimappe.";
+
+"Create and save reports on this device. Sign in for cloud synchronization." = "Opret og gem rapporter på denne enhed. Log ind for at synkronisere med skyen.";
+"Choose your own private folder. Never share it with colleagues." = "Vælg din egen private mappe. Del den aldrig med kolleger.";
+"1. Open Google Drive using the shared folder owner's account." = "1. Åbn Google Drev med kontoen til ejeren af den delte mappe.";
+"2. Find the shared Tarkastus Cloud folder." = "2. Find den delte Tarkastus Cloud-mappe.";
+"3. Tap the three dots and choose Share or Manage access." = "3. Tryk på de tre prikker, og vælg Del eller Administrer adgang.";
+"4. Enter the employee's email and select Editor." = "4. Indtast medarbejderens e-mailadresse, og vælg Redaktør.";
+"5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud." = "5. Send invitationen. Medarbejderen accepterer den og vælger den delte mappe i Tarkastus Cloud.";
+"A recovery copy will be saved before replacing local report data." = "Der gemmes en gendannelseskopi, før lokale rapportdata erstattes.";

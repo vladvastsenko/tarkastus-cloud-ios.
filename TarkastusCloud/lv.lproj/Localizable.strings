@@ -47,3 +47,12 @@
 "How to share a folder" = "Kā koplietot mapi";
 "Open Google Drive" = "Atvērt Google Drive";
 "Do not share the private backup folder." = "Nekoplietojiet privāto dublējumu mapi.";
+
+"Create and save reports on this device. Sign in for cloud synchronization." = "Izveidojiet un saglabājiet pārskatus šajā ierīcē. Pierakstieties, lai sinhronizētu ar mākoni.";
+"Choose your own private folder. Never share it with colleagues." = "Izvēlieties savu privāto mapi. Nekad nekopīgojiet to ar kolēģiem.";
+"1. Open Google Drive using the shared folder owner's account." = "1. Atveriet Google disku, izmantojot koplietotās mapes īpašnieka kontu.";
+"2. Find the shared Tarkastus Cloud folder." = "2. Atrodiet koplietoto Tarkastus Cloud mapi.";
+"3. Tap the three dots and choose Share or Manage access." = "3. Pieskarieties trim punktiem un izvēlieties kopīgošanu vai piekļuves pārvaldību.";
+"4. Enter the employee's email and select Editor." = "4. Ievadiet darbinieka e-pasta adresi un izvēlieties redaktora lomu.";
+"5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud." = "5. Nosūtiet uzaicinājumu. Darbinieks to pieņem un lietotnē Tarkastus Cloud izvēlas koplietoto mapi.";
+"A recovery copy will be saved before replacing local report data." = "Pirms lokālo pārskatu datu aizstāšanas tiks saglabāta atjaunošanas kopija.";

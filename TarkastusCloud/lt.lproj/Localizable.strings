@@ -47,3 +47,12 @@
 "How to share a folder" = "Kaip bendrinti aplanką";
 "Open Google Drive" = "Atidaryti Google Drive";
 "Do not share the private backup folder." = "Nebendrinkite asmeninio atsarginių kopijų aplanko.";
+
+"Create and save reports on this device. Sign in for cloud synchronization." = "Kurkite ir išsaugokite ataskaitas šiame įrenginyje. Prisijunkite, kad galėtumėte sinchronizuoti duomenis debesyje.";
+"Choose your own private folder. Never share it with colleagues." = "Pasirinkite savo privatų aplanką. Niekada nesidalykite juo su kolegomis.";
+"1. Open Google Drive using the shared folder owner's account." = "1. Atidarykite „Google“ diską naudodami bendrinamo aplanko savininko paskyrą.";
+"2. Find the shared Tarkastus Cloud folder." = "2. Raskite bendrinamą „Tarkastus Cloud“ aplanką.";
+"3. Tap the three dots and choose Share or Manage access." = "3. Palieskite tris taškus ir pasirinkite bendrinimą arba prieigos valdymą.";
+"4. Enter the employee's email and select Editor." = "4. Įveskite darbuotojo el. pašto adresą ir pasirinkite redaktoriaus vaidmenį.";
+"5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud." = "5. Išsiųskite kvietimą. Darbuotojas jį priima ir programoje „Tarkastus Cloud“ pasirenka bendrinamą aplanką.";
+"A recovery copy will be saved before replacing local report data." = "Prieš pakeičiant vietinius ataskaitų duomenis bus išsaugota atkūrimo kopija.";

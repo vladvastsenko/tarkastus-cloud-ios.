@@ -47,3 +47,12 @@
 "How to share a folder" = "Как поделиться папкой";
 "Open Google Drive" = "Открыть Google Drive";
 "Do not share the private backup folder." = "Не предоставляйте доступ к личной папке резервных копий.";
+
+"Create and save reports on this device. Sign in for cloud synchronization." = "Создавайте и сохраняйте отчёты на этом устройстве. Войдите для облачной синхронизации.";
+"Choose your own private folder. Never share it with colleagues." = "Выберите личную папку. Никогда не делитесь ею с коллегами.";
+"1. Open Google Drive using the shared folder owner's account." = "1. Откройте Google Drive под аккаунтом владельца общей папки.";
+"2. Find the shared Tarkastus Cloud folder." = "2. Найдите общую папку Tarkastus Cloud.";
+"3. Tap the three dots and choose Share or Manage access." = "3. Нажмите на три точки и выберите «Поделиться» или «Управление доступом».";
+"4. Enter the employee's email and select Editor." = "4. Введите электронную почту сотрудника и выберите роль «Редактор».";
+"5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud." = "5. Отправьте приглашение. Сотрудник принимает его и выбирает общую папку в Tarkastus Cloud.";
+"A recovery copy will be saved before replacing local report data." = "Перед заменой локальных данных отчётов будет сохранена копия для восстановления.";
