@@ -72,4 +72,23 @@ struct DriveClient {
         let data = try await request(base + "/files", query: [.init(name: "fields", value: "id,name,mimeType"), .init(name: "supportsAllDrives", value: "true")], method: "POST", body: body, type: "application/json")
         return try JSONDecoder().decode(DriveItem.self, from: data).id
     }
+    func upload(name: String, parent: String, data: Data, mimeType: String, existingID: String? = nil) async throws -> String {
+        guard !name.isEmpty, !name.contains("/"), name != ".", name != ".." else { throw DriveError.invalidName }
+        let boundary = "tarkastus-" + UUID().uuidString
+        var metadata: [String: Any] = ["name": name, "mimeType": mimeType]
+        if existingID == nil { metadata["parents"] = [parent] }
+        var body = Data()
+        body.append(Data("--\(boundary)\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n".utf8))
+        body.append(try JSONSerialization.data(withJSONObject: metadata))
+        body.append(Data("\r\n--\(boundary)\r\nContent-Type: \(mimeType)\r\n\r\n".utf8))
+        body.append(data)
+        body.append(Data("\r\n--\(boundary)--\r\n".utf8))
+        let endpoint = "https://www.googleapis.com/upload/drive/v3/files" + (existingID.map { "/" + $0 } ?? "")
+        let response = try await request(endpoint, query: [
+            .init(name: "uploadType", value: "multipart"),
+            .init(name: "supportsAllDrives", value: "true"),
+            .init(name: "fields", value: "id,name,mimeType")
+        ], method: existingID == nil ? "POST" : "PATCH", body: body, type: "multipart/related; boundary=" + boundary)
+        return try JSONDecoder().decode(DriveItem.self, from: response).id
+    }
 }
