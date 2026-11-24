@@ -1,6 +1,7 @@
 import SwiftUI
 import FirebaseCore
 import FirebaseAuth
+import GoogleSignIn
 
 @MainActor
 final class AccountSession: ObservableObject {
@@ -30,11 +31,12 @@ final class AccountSession: ObservableObject {
         objectWillChange.send()
     }
     func resend() async throws { try await Auth.auth().currentUser?.sendEmailVerification() }
-    func signOut() throws { try Auth.auth().signOut() }
+    func signOut() throws { try Auth.auth().signOut(); GIDSignIn.sharedInstance.signOut() }
     func deleteAccount(password: String) async throws {
         guard let current = Auth.auth().currentUser, let email = current.email else { return }
         _ = try await current.reauthenticate(with: EmailAuthProvider.credential(withEmail: email, password: password))
         try await current.delete()
+        GIDSignIn.sharedInstance.signOut()
     }
 }
 
@@ -54,9 +56,7 @@ struct AccountGate<Content: View>: View {
                 VStack(spacing: 16) {
                     Text("Tarkastus Cloud").font(.title)
                     Text("Firebase configuration is missing.")
-                    #if DEBUG
                     content().environmentObject(session)
-                    #endif
                 }
             } else if let user = session.user {
                 if ownerUID == user.uid {
@@ -65,19 +65,19 @@ struct AccountGate<Content: View>: View {
                     VStack(spacing: 16) {
                         Text("Link this device to your account")
                         Text(user.email ?? "")
-                        Text("Local reports will only be accessible to this account.").font(.caption)
+                        Text("Local reports remain available offline. Cloud access is linked to this account.").font(.caption)
                         Button("Confirm") { ownerUID = user.uid }
                         Button("Sign out") { run { try session.signOut() } }
                     }.padding()
                 } else {
                     VStack(spacing: 16) {
                         Text("This device is linked to another account.")
-                        Text("Sign in with the original account to access local reports.").font(.caption)
+                        Text("Sign in with the original account for cloud access, or sign out to work offline.").font(.caption)
                         Button("Sign out") { run { try session.signOut() } }
                         if !notice.isEmpty { Text(notice) }
                     }.padding()
                 }
-            } else if guest && ownerUID.isEmpty {
+            } else if guest {
                 content().environmentObject(session)
             } else {
                 Form {
@@ -93,7 +93,7 @@ struct AccountGate<Content: View>: View {
                             else { SecureField("Password", text: $password) }
                             Button { visible.toggle() } label: { Image(systemName: visible ? "eye.slash" : "eye") }.buttonStyle(.borderless)
                         }
-                        if ownerUID.isEmpty { Button("Continue as guest") { guest = true } }
+                        Button("Continue as guest") { guest = true; password = "" }
                         Button("Sign in") { run { try await session.signIn(email.trimmingCharacters(in: .whitespacesAndNewlines), password) } }
                         Button("Register") { run { try await session.register(email.trimmingCharacters(in: .whitespacesAndNewlines), password) } }
                         Button("Reset password") { run { try await session.reset(email.trimmingCharacters(in: .whitespacesAndNewlines)); notice = "Password reset email sent." } }
@@ -102,6 +102,9 @@ struct AccountGate<Content: View>: View {
                     if !notice.isEmpty { Text(notice) }
                 }.disabled(busy)
             }
+        }
+        .onChange(of: session.user?.uid) { uid in
+            if uid == nil { guest = true; password = "" }
         }
         .onReceive(NotificationCenter.default.publisher(for: Notification.Name("RequestAccountLogin"))) { _ in guest = false }
     }
