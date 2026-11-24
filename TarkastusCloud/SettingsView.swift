@@ -34,6 +34,7 @@ struct SettingsView: View {
                     Button("Poista allekirjoitus", role: .destructive) { settings.signatureImagePath = "" }
                 }
             }
+            NavigationLink("Google Drive") { DriveConnectionView() }
             NavigationLink("Asiakkaat ja kohteet") { CustomerDirectoryView() }
             Section("Security") {
                 Toggle("Device authentication", isOn: $biometricLock)
