@@ -47,3 +47,12 @@
 "How to share a folder" = "How to share a folder";
 "Open Google Drive" = "Open Google Drive";
 "Do not share the private backup folder." = "Do not share the private backup folder.";
+
+"Create and save reports on this device. Sign in for cloud synchronization." = "Create and save reports on this device. Sign in for cloud synchronization.";
+"Choose your own private folder. Never share it with colleagues." = "Choose your own private folder. Never share it with colleagues.";
+"1. Open Google Drive using the shared folder owner's account." = "1. Open Google Drive using the shared folder owner's account.";
+"2. Find the shared Tarkastus Cloud folder." = "2. Find the shared Tarkastus Cloud folder.";
+"3. Tap the three dots and choose Share or Manage access." = "3. Tap the three dots and choose Share or Manage access.";
+"4. Enter the employee's email and select Editor." = "4. Enter the employee's email and select Editor.";
+"5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud." = "5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud.";
+"A recovery copy will be saved before replacing local report data." = "A recovery copy will be saved before replacing local report data.";
