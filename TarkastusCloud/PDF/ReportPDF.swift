@@ -3,35 +3,37 @@ import Foundation
 
 enum ReportPDF {
     private static let page = CGRect(x: 0, y: 0, width: 595.28, height: 841.89)
+    private static func filled(_ value: String) -> Bool { !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
     private enum Block {
         case text(String, Bool)
+        case section(String)
         case photos([String], Int)
         case image(String)
     }
     static func export(_ r: InspectionReport) throws -> URL {
         func tr(_ key: String) -> String { PDFTranslation.label(key, language: r.pdfLanguage.isEmpty ? (UserDefaults.standard.string(forKey: "defaultPDFLanguage") ?? "en") : r.pdfLanguage) }
         var blocks: [Block] = [.image(r.logoPath), .text(r.headerText, false), .text(tr("VALVONTAPÖYTÄKIRJA"), true)]
-        func field(_ label: String, _ value: String) { if !value.isEmpty { blocks.append(.text(tr(label) + ": " + value, false)) } }
+        func field(_ label: String, _ value: String) { if filled(value) { blocks.append(.text(tr(label) + ": " + value, false)) } }
         field("Asiakas", r.customerName); field("Y-tunnus", r.customerBusinessId)
         field("Kohde", r.siteName); field("Osoite", r.siteAddress); field("Tilaaja", r.clientOrRepresentative)
         field("Tilaajan puhelin", r.clientPhone); field("Tilaajan sähköposti", r.clientEmail)
         field("Asentaja", r.installerName); field("Sertifikaatti", r.installerCertificateNumber)
         field("Asentajan puhelin", r.installerPhone); field("Asentajan sähköposti", r.installerEmail)
         field("Työn aloitus", r.workStartDate); field("Työn päättyminen", r.workEndDate)
-        blocks.append(.text(tr("ALUSTAT JA TYÖOLOSUHTEET"), true))
-        field("Työohjeet annettu ja luettu", tr(r.workInstructionsProvidedAndRead ? "Kyllä" : "Ei"))
+        blocks.append(.section(tr("ALUSTAT JA TYÖOLOSUHTEET")))
+        if r.workInstructionsProvidedAndRead { field("Työohjeet annettu ja luettu", tr("Kyllä")) }
         field("Seinäalusta", r.wallSubstrate); field("Lattia-alusta", r.floorSubstrate)
         field("Lämpötila °C", r.roomTemperatureC); field("Ilman kosteus %", r.relativeHumidityPercent); field("Alustan kosteus %", r.substrateMoisturePercent)
-        blocks.append(.text(tr("TUOTTEET"), true))
-        for m in r.materials where !m.productName.isEmpty { blocks.append(.text([tr(m.category), tr(m.surface)].filter { !$0.isEmpty }.joined(separator: " ") + ": " + [m.manufacturer, m.productName, m.notes].filter { !$0.isEmpty }.joined(separator: " "), false)) }
-        field("Lattialämmitys", r.floorHeating); field("Kynnys / kaivo mm", r.thresholdOrDrainLiftMm); field("Kaadot", ([r.floorSlopes] + r.floorSlopeRatios).filter { !$0.isEmpty }.joined(separator: ", "))
+        blocks.append(.section(tr("TUOTTEET")))
+        for m in r.materials where filled(m.productName) { blocks.append(.text([tr(m.category), tr(m.surface)].filter { filled($0) }.joined(separator: " ") + ": " + [m.manufacturer, m.productName, m.notes].filter { filled($0) }.joined(separator: " "), false)) }
+        field("Lattialämmitys", r.floorHeating); field("Kynnys / kaivo mm", r.thresholdOrDrainLiftMm); field("Kaadot", ([r.floorSlopes] + r.floorSlopeRatios).filter { filled($0) }.joined(separator: ", "))
         field("Seinä m²", r.wallAreaM2); field("Lattia m²", r.floorAreaM2)
         field("Seinän vaadittu menekki", r.wallRequiredWaterproofingConsumptionPerM2); field("Lattian vaadittu menekki", r.floorRequiredWaterproofingConsumptionPerM2)
         field("Seinän menekki l", r.wallWaterproofingConsumptionLitres); field("Lattian menekki l", r.floorWaterproofingConsumptionLitres)
         field("Seinän kuivakalvo mm", r.wallDryFilmThicknessMm); field("Lattian kuivakalvo mm", r.floorDryFilmThicknessMm)
         field("Seinän vähimmäispaksuus mm", r.wallRequiredMinimumThicknessMm); field("Lattian vähimmäispaksuus mm", r.floorRequiredMinimumThicknessMm)
-        for f in r.siteFieldValues { if !f.value.isEmpty { blocks.append(.text(f.label + ": " + f.value, false)) } }
-        blocks.append(.text(tr("TARKASTUS"), true))
+        for f in r.siteFieldValues { if filled(f.value) { blocks.append(.text(f.label + ": " + f.value, false)) } }
+        blocks.append(.section(tr("TARKASTUS")))
         field("Tulos", tr(r.inspectionResult)); field("Päivä", r.inspectionDate); field("Lisätiedot", r.additionalNotes)
         field("Tarkastaja", r.inspectorName); field("Sertifikaatti", r.inspectorCertificateNumber)
         field("Puhelin", r.inspectorPhone); field("Sähköposti", r.inspectorEmail)
@@ -42,13 +44,13 @@ enum ReportPDF {
     static func export(_ r: GeneralInspectionReport) throws -> URL {
         func tr(_ key: String) -> String { PDFTranslation.label(key, language: r.pdfLanguage.isEmpty ? (UserDefaults.standard.string(forKey: "defaultPDFLanguage") ?? "en") : r.pdfLanguage) }
         var blocks: [Block] = [.image(r.logoPath), .text(r.headerText, false), .text(tr("TARKASTUSPÖYTÄKIRJA"), true)]
-        func field(_ label: String, _ value: String) { if !value.isEmpty { blocks.append(.text(tr(label) + ": " + value, false)) } }
+        func field(_ label: String, _ value: String) { if filled(value) { blocks.append(.text(tr(label) + ": " + value, false)) } }
         field("Asiakas", r.customerName); field("Y-tunnus", r.customerBusinessId)
         field("Kohde", r.siteName); field("Osoite", r.siteAddress); field("Tilaaja", r.clientOrRepresentative)
         field("Tilaajan puhelin", r.clientPhone); field("Tilaajan sähköposti", r.clientEmail)
         field("Tarkastuksen tarkoitus", r.purposeAndScope); field("Yleiset havainnot", r.generalObservations)
-        for f in r.customFields where !f.value.isEmpty { blocks.append(.text(f.label + ": " + f.value, false)) }
-        blocks.append(.text(tr("TARKASTUSKOHTEET"), true))
+        for f in r.customFields where filled(f.value) { blocks.append(.text(f.label + ": " + f.value, false)) }
+        blocks.append(.section(tr("TARKASTUSKOHTEET")))
         for o in r.observations {
             blocks.append(.text(o.location, true))
             field("Kuvaus / tilanne", o.description); field("Toimenpiteet / lisätiedot", o.recommendedAction)
@@ -71,10 +73,24 @@ enum ReportPDF {
             let size = CGSize(width: img.size.width * scale, height: img.size.height * scale)
             img.draw(in: CGRect(x: rect.midX-size.width/2, y: rect.midY-size.height/2, width: size.width, height: size.height))
         }
+        var pendingSection: String?
+        var visible: [Block] = []
         for block in blocks {
+            if case let .section(title) = block { pendingSection = title; continue }
             switch block {
+            case let .text(value, _): guard filled(value) else { continue }
+            case let .photos(paths, _): guard !paths.isEmpty else { continue }
+            case let .image(path): guard filled(path), PhotoFiles.image(path) != nil else { continue }
+            case .section: continue
+            }
+            if let title = pendingSection { visible.append(.text(title, true)); pendingSection = nil }
+            visible.append(block)
+        }
+        for block in visible {
+            switch block {
+            case .section: continue
             case let .text(value, heading):
-                guard !value.isEmpty else { continue }
+                guard filled(value) else { continue }
                 let attrs: [NSAttributedString.Key: Any] = [.font: heading ? UIFont.boldSystemFont(ofSize: 15) : UIFont.systemFont(ofSize: 11)]
                 let storage = NSTextStorage(string: value, attributes: attrs)
                 let manager = NSLayoutManager()
