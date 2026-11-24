@@ -40,7 +40,13 @@ struct SettingsView: View {
                     Button("Poista allekirjoitus", role: .destructive) { settings.signatureImagePath = "" }
                 }
             }
-            NavigationLink("Google Drive") { DriveConnectionView() }
+            if account.user != nil {
+                NavigationLink("Google Drive") { DriveConnectionView() }
+            } else {
+                Button("Google Drive — sign in or register") {
+                    NotificationCenter.default.post(name: Notification.Name("RequestAccountLogin"), object: nil)
+                }
+            }
             NavigationLink("Asiakkaat ja kohteet") { CustomerDirectoryView() }
             Section("Private backup") {
                 Button("Create backup") {
@@ -56,7 +62,10 @@ struct SettingsView: View {
                 Toggle("Device authentication", isOn: $biometricLock)
             }
             Button("Tallenna") { if store.saveSettings(settings) { dismiss() } }
-            if account.configured {
+            if account.configured && account.user == nil {
+                Button("Sign in or register") { NotificationCenter.default.post(name: Notification.Name("RequestAccountLogin"), object: nil) }
+            }
+            if account.configured && account.user != nil {
                 Section("Account") {
                     Text(account.user?.email ?? "")
                     if account.user?.isEmailVerified == false {
