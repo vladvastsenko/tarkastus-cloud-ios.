@@ -41,6 +41,7 @@ final class AccountSession: ObservableObject {
 struct AccountGate<Content: View>: View {
     @StateObject private var session = AccountSession()
     @AppStorage("localArchiveOwnerUID") private var ownerUID = ""
+    @State private var guest = true
     @State private var email = ""
     @State private var password = ""
     @State private var visible = false
@@ -76,6 +77,8 @@ struct AccountGate<Content: View>: View {
                         if !notice.isEmpty { Text(notice) }
                     }.padding()
                 }
+            } else if guest && ownerUID.isEmpty {
+                content().environmentObject(session)
             } else {
                 Form {
                     if session.user != nil {
@@ -90,6 +93,7 @@ struct AccountGate<Content: View>: View {
                             else { SecureField("Password", text: $password) }
                             Button { visible.toggle() } label: { Image(systemName: visible ? "eye.slash" : "eye") }.buttonStyle(.borderless)
                         }
+                        if ownerUID.isEmpty { Button("Continue as guest") { guest = true } }
                         Button("Sign in") { run { try await session.signIn(email.trimmingCharacters(in: .whitespacesAndNewlines), password) } }
                         Button("Register") { run { try await session.register(email.trimmingCharacters(in: .whitespacesAndNewlines), password) } }
                         Button("Reset password") { run { try await session.reset(email.trimmingCharacters(in: .whitespacesAndNewlines)); notice = "Password reset email sent." } }
@@ -99,6 +103,7 @@ struct AccountGate<Content: View>: View {
                 }.disabled(busy)
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("RequestAccountLogin"))) { _ in guest = false }
     }
     private func run(_ action: @escaping @MainActor () async throws -> Void) {
         guard !busy else { return }
