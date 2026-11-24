@@ -4,6 +4,8 @@ import UIKit
 
 struct DriveConnectionView: View {
     @EnvironmentObject private var store: LocalReportStore
+    @AppStorage("boundCompanyFolder") private var boundCompany = ""
+    @AppStorage("boundGoogleIdentity") private var boundIdentity = ""
     @AppStorage("driveFolderID") private var folderID = ""
     @State private var email = ""
     @State private var folders: [DriveItem] = []
@@ -28,12 +30,24 @@ struct DriveConnectionView: View {
                 Button("Synchronize") { run { client in
                     guard let identity = GIDSignIn.sharedInstance.currentUser?.userID else { throw DriveError.invalidResponse }
                     let company = folderID.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard !company.isEmpty, company != "root" else { notice = "Select a dedicated company folder."; return }
+                    if !boundCompany.isEmpty || !boundIdentity.isEmpty {
+                        guard boundCompany == company, boundIdentity == identity else {
+                            notice = "This local archive is bound to another Google account or company folder. Synchronization blocked."
+                            return
+                        }
+                    } else {
+                        _ = try await client.children(of: company)
+                        boundCompany = company
+                        boundIdentity = identity
+                    }
                     let directory = try await DirectorySync.synchronize(store: store, client: client, company: company, account: identity)
                     let imported = try await ReportSync.importMissing(store: store, client: client, company: company)
                     let exported = try await ReportSync.exportMissing(store: store, client: client, company: company)
                     let pdf = try await PDFSync.sync(client: client, company: company, account: identity)
                     notice = [directory, imported, exported, pdf].joined(separator: "\n")
                 } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                if !boundCompany.isEmpty { Text("Local archive is linked to a company folder. Disconnecting does not remove this protection.").font(.caption) }
                 Text("Existing shared reports are not overwritten yet.").font(.caption)
                 Button("List root folders") { run { client in
                     folders = try await client.children(of: "root").filter { $0.mimeType == "application/vnd.google-apps.folder" }
