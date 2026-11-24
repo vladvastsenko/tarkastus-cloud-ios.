@@ -1,5 +1,6 @@
 import SwiftUI
 import PhotosUI
+import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @EnvironmentObject private var store: LocalReportStore
@@ -10,6 +11,9 @@ struct SettingsView: View {
     @State private var confirmDelete = false
     @State private var password = ""
     @State private var accountBusy = false
+    @State private var importingBackup = false
+    @State private var confirmRestore = false
+    @State private var pendingBackup: PrivateBackup?
     @State private var backupURL: URL?
     @State private var backupError = ""
     @State private var logo: PhotosPickerItem?
@@ -43,6 +47,7 @@ struct SettingsView: View {
                     do { backupURL = try PrivateBackup.create(store: store); backupError = "" }
                     catch { backupError = error.localizedDescription }
                 }
+                Button("Restore backup") { importingBackup = true }
                 if let backupURL { ShareLink(item: backupURL) { Text("Export backup") } }
                 Text("Contains personal settings and reports. Do not save in the shared company folder.").font(.caption)
                 if !backupError.isEmpty { Text(backupError) }
@@ -62,6 +67,23 @@ struct SettingsView: View {
                 }.disabled(accountBusy)
             }
         }
+        .fileImporter(isPresented: $importingBackup, allowedContentTypes: [.json]) { result in
+            do { pendingBackup = try PrivateBackup.read(result.get()); confirmRestore = true }
+            catch { backupError = error.localizedDescription }
+        }
+        .confirmationDialog("Replace local archive?", isPresented: $confirmRestore, titleVisibility: .visible) {
+            Button("Restore", role: .destructive) {
+                do {
+                    if let pendingBackup {
+                        backupURL = try pendingBackup.restore(store: store)
+                        settings = store.archive.settings
+                        backupError = ""
+                    }
+                } catch { backupError = error.localizedDescription }
+                pendingBackup = nil
+            }
+            Button("Cancel", role: .cancel) { pendingBackup = nil }
+        } message: { Text("A recovery copy of your current archive will be saved first.") }
         .navigationTitle("Asetukset")
         .alert("Permanently delete account?", isPresented: $confirmDelete) {
             SecureField("Password", text: $password)
