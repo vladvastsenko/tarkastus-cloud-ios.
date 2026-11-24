@@ -29,6 +29,7 @@ struct SettingsView: View {
                     Button("Poista allekirjoitus", role: .destructive) { settings.signatureImagePath = "" }
                 }
             }
+            NavigationLink("Asiakkaat ja kohteet") { CustomerDirectoryView() }
             Button("Tallenna") { if store.saveSettings(settings) { dismiss() } }
         }
         .navigationTitle("Asetukset")
