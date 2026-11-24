@@ -69,7 +69,7 @@ final class AccountSession: ObservableObject {
 struct AccountGate<Content: View>: View {
     @StateObject private var session = AccountSession()
     @AppStorage("localArchiveOwnerUID") private var ownerUID = ""
-    @State private var guest = true
+    @AppStorage("guestModeSelected") private var guest = false
     @State private var email = ""
     @State private var password = ""
     @State private var visible = false
@@ -107,6 +107,7 @@ struct AccountGate<Content: View>: View {
                 content().environmentObject(session)
             } else {
                 Form {
+                    LanguageSettingsPicker()
                     if session.user != nil {
                         Text("Verify your email address.")
                         Button("Check verification") { run { try await session.refresh() } }
