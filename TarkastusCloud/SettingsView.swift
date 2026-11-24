@@ -27,6 +27,8 @@ struct SettingsView: View {
                 Text("Protect access with Face ID or Touch ID.").font(.caption)
             }
             NavigationLink("General settings") { GeneralSettingsView(settings: store.archive.settings) }
+            NavigationLink("Backup and synchronization") {
+                Form {
             if account.user != nil {
                 NavigationLink("Google Drive") { DriveConnectionView() }
             } else {
@@ -43,6 +45,9 @@ struct SettingsView: View {
                 if let backupURL { ShareLink(item: backupURL) { Text("Export backup") } }
                 Text("Contains personal settings and reports. Do not save in the shared company folder.").font(.caption)
                 if !backupError.isEmpty { Text(backupError) }
+            }
+
+                }.navigationTitle("Backup and synchronization")
             }
             Button("Back") { dismiss() }
             if account.configured && account.user == nil {
