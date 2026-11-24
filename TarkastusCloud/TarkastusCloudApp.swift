@@ -12,6 +12,7 @@ struct TarkastusCloudApp: App {
                     NavigationLink("Valvontapöytäkirja") {
                         ReportDraftView(report: InspectionReport())
                     }
+                    NavigationLink("PDF") { PDFArchiveView() }
                     Section("Mallit") {
                         ForEach(store.archive.waterproofing.filter { !$0.templateName.isEmpty }, id: \.id) { template in
                             NavigationLink(template.templateName) {
