@@ -17,30 +17,16 @@ struct SettingsView: View {
     @State private var pendingBackup: PrivateBackup?
     @State private var backupURL: URL?
     @State private var backupError = ""
-    @State private var logo: PhotosPickerItem?
-    @State private var signature: PhotosPickerItem?
     var body: some View {
         Form {
-            Section("Yritys") {
-                PhotosPicker(selection: $logo, matching: .images) { Text("Valitse logo") }
-                if let image = PhotoFiles.image(settings.logoPath) {
-                    Image(uiImage: image).resizable().scaledToFit().frame(height: 80)
-                    Button("Poista logo", role: .destructive) { settings.logoPath = "" }
-                }
-                TextField("Ylätunniste", text: $settings.headerText, axis: .vertical)
-                TextField("Alatunniste", text: $settings.footerText, axis: .vertical)
+            Section("Language") {
+                LanguageSettingsPicker()
             }
-            Section("Tarkastaja") {
-                TextField("Nimi", text: $settings.inspectorName)
-                TextField("Sertifikaatti", text: $settings.inspectorCertificateNumber)
-                TextField("Puhelin", text: $settings.inspectorPhone)
-                TextField("Sähköposti", text: $settings.inspectorEmail)
-                PhotosPicker(selection: $signature, matching: .images) { Text("Valitse allekirjoitus") }
-                if let image = PhotoFiles.image(settings.signatureImagePath) {
-                    Image(uiImage: image).resizable().scaledToFit().frame(height: 80)
-                    Button("Poista allekirjoitus", role: .destructive) { settings.signatureImagePath = "" }
-                }
+            Section("Security") {
+                Toggle("Device authentication", isOn: $biometricLock)
+                Text("Protect access with Face ID or Touch ID.").font(.caption)
             }
+            NavigationLink("General settings") { GeneralSettingsView(settings: store.archive.settings) }
             if account.user != nil {
                 NavigationLink("Google Drive") { DriveConnectionView() }
             } else {
@@ -48,7 +34,6 @@ struct SettingsView: View {
                     NotificationCenter.default.post(name: Notification.Name("RequestAccountLogin"), object: nil)
                 }
             }
-            NavigationLink("Asiakkaat ja kohteet") { CustomerDirectoryView() }
             Section("Private backup") {
                 Button("Create backup") {
                     do { backupURL = try PrivateBackup.create(store: store); backupError = "" }
@@ -59,10 +44,7 @@ struct SettingsView: View {
                 Text("Contains personal settings and reports. Do not save in the shared company folder.").font(.caption)
                 if !backupError.isEmpty { Text(backupError) }
             }
-            Section("Security") {
-                Toggle("Device authentication", isOn: $biometricLock)
-            }
-            Button("Tallenna") { if store.saveSettings(settings) { dismiss() } }
+            Button("Back") { dismiss() }
             if account.configured && account.user == nil {
                 Button("Sign in or register") { NotificationCenter.default.post(name: Notification.Name("RequestAccountLogin"), object: nil) }
             }
@@ -109,7 +91,7 @@ struct SettingsView: View {
             }
             Button("Cancel", role: .cancel) { pendingBackup = nil }
         } message: { Text("A recovery copy of your current archive will be saved first.") }
-        .navigationTitle("Asetukset")
+        .navigationTitle("Settings and synchronization")
         .alert("Permanently delete account?", isPresented: $confirmDelete) {
             if account.user?.providerData.contains(where: { $0.providerID == "google.com" }) != true {
                 SecureField("Password", text: $password)
@@ -128,6 +110,42 @@ struct SettingsView: View {
         } message: {
             Text("This deletes your login account. Local reports and shared Drive files are not deleted by this action.")
         }
+    }
+}
+
+struct GeneralSettingsView: View {
+    @EnvironmentObject private var store: LocalReportStore
+    @Environment(\.dismiss) private var dismiss
+    @State var settings: AppSettings
+    @State private var logo: PhotosPickerItem?
+    @State private var signature: PhotosPickerItem?
+    var body: some View {
+        Form {
+            Section("Yritys") {
+                PhotosPicker(selection: $logo, matching: .images) { Text("Valitse logo") }
+                if let image = PhotoFiles.image(settings.logoPath) {
+                    Image(uiImage: image).resizable().scaledToFit().frame(height: 80)
+                    Button("Poista logo", role: .destructive) { settings.logoPath = "" }
+                }
+                TextField("Ylätunniste", text: $settings.headerText, axis: .vertical)
+                TextField("Alatunniste", text: $settings.footerText, axis: .vertical)
+            }
+            Section("Tarkastaja") {
+                TextField("Nimi", text: $settings.inspectorName)
+                TextField("Sertifikaatti", text: $settings.inspectorCertificateNumber)
+                TextField("Puhelin", text: $settings.inspectorPhone)
+                TextField("Sähköposti", text: $settings.inspectorEmail)
+                PhotosPicker(selection: $signature, matching: .images) { Text("Valitse allekirjoitus") }
+                if let image = PhotoFiles.image(settings.signatureImagePath) {
+                    Image(uiImage: image).resizable().scaledToFit().frame(height: 80)
+                    Button("Poista allekirjoitus", role: .destructive) { settings.signatureImagePath = "" }
+                }
+            }
+            NavigationLink("Asiakkaat ja kohteet") { CustomerDirectoryView() }
+
+            Button("Tallenna") { if store.saveSettings(settings) { dismiss() } }
+        }
+        .navigationTitle("General settings")
         .onChange(of: logo) { item in
             Task { @MainActor in
                 do { if let data = try await item?.loadTransferable(type: Data.self) { settings.logoPath = try PhotoFiles.save(data) } }
