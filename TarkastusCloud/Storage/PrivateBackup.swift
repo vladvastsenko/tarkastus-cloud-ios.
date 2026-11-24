@@ -5,6 +5,7 @@ struct PrivateBackup: Codable {
     let version: Int
     let archive: LocalArchive
     let images: [String: Data]
+    let pdfs: [String: Data]?
     @MainActor
     static func create(store: LocalReportStore) throws -> URL {
         var images: [String: Data] = [:]
@@ -16,7 +17,19 @@ struct PrivateBackup: Codable {
                 images[url.lastPathComponent] = try Data(contentsOf: url)
             }
         }
-        let backup = PrivateBackup(version: 1, archive: store.archive, images: images)
+        let root = try PDFArchive.directory()
+        var pdfs: [String: Data] = [:]
+        if let enumerator = fm.enumerator(at: root, includingPropertiesForKeys: [.isRegularFileKey, .isSymbolicLinkKey]) {
+            for case let url as URL in enumerator {
+                let info = try url.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey])
+                if info.isSymbolicLink == true { enumerator.skipDescendants(); continue }
+                guard info.isRegularFile == true, url.pathExtension.lowercased() == "pdf" else { continue }
+                let relative = String(url.path.dropFirst(root.path.count + 1))
+                guard validPDFPath(relative) else { throw CocoaError(.fileReadCorruptFile) }
+                pdfs[relative] = try Data(contentsOf: url)
+            }
+        }
+        let backup = PrivateBackup(version: 2, archive: store.archive, images: images, pdfs: pdfs)
         let directory = fm.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
         try fm.createDirectory(at: directory, withIntermediateDirectories: true)
         let url = directory.appendingPathComponent("Tarkastus-private-backup.json")
@@ -27,11 +40,18 @@ struct PrivateBackup: Codable {
         let access = url.startAccessingSecurityScopedResource()
         defer { if access { url.stopAccessingSecurityScopedResource() } }
         let backup = try JSONDecoder().decode(PrivateBackup.self, from: Data(contentsOf: url))
-        guard backup.version == 1 else { throw CocoaError(.fileReadCorruptFile) }
+        guard [1, 2].contains(backup.version) else { throw CocoaError(.fileReadCorruptFile) }
         for (name, data) in backup.images {
             guard !name.isEmpty, name == (name as NSString).lastPathComponent, name != ".", name != "..", !name.contains("\\"), UIImage(data: data) != nil else { throw CocoaError(.fileReadCorruptFile) }
         }
+        for (path, data) in backup.pdfs ?? [:] {
+            guard validPDFPath(path), data.starts(with: Data("%PDF-".utf8)) else { throw CocoaError(.fileReadCorruptFile) }
+        }
         return backup
+    }
+    private static func validPDFPath(_ path: String) -> Bool {
+        let parts = path.components(separatedBy: "/")
+        return !path.contains("\\") && parts.count <= 32 && parts.allSatisfy { !$0.isEmpty && $0 != "." && $0 != ".." } && (path as NSString).pathExtension.lowercased() == "pdf"
     }
     @MainActor
     func restore(store: LocalReportStore) throws -> URL {
@@ -52,6 +72,21 @@ struct PrivateBackup: Codable {
         for (name, data) in images {
             let target = PhotoFiles.directory.appendingPathComponent(name)
             if !fm.fileExists(atPath: target.path) {
+                try data.write(to: target, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+            }
+        }
+        let pdfRoot = try PDFArchive.directory()
+        for (path, data) in pdfs ?? [:] {
+            guard Self.validPDFPath(path) else { throw CocoaError(.fileReadCorruptFile) }
+            let target = pdfRoot.appendingPathComponent(path)
+            if fm.fileExists(atPath: target.path) {
+                guard try Data(contentsOf: target) == data else { throw CocoaError(.fileWriteFileExists) }
+            }
+        }
+        for (path, data) in pdfs ?? [:] {
+            let target = pdfRoot.appendingPathComponent(path)
+            if !fm.fileExists(atPath: target.path) {
+                try fm.createDirectory(at: target.deletingLastPathComponent(), withIntermediateDirectories: true)
                 try data.write(to: target, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
             }
         }
