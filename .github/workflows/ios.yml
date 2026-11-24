@@ -13,5 +13,18 @@ jobs:
       - name: Validate localization
         run: python3 scripts/check_localization.py
       - run: brew install xcodegen
-      - run: xcodegen generate
+      - name: Generate project with optional Firebase configuration
+        env:
+          FIREBASE_IOS_PLIST: ${{ secrets.FIREBASE_IOS_PLIST }}
+        run: |
+          if [ -n "$FIREBASE_IOS_PLIST" ]; then
+            umask 077
+            printf '%s' "$FIREBASE_IOS_PLIST" > "$RUNNER_TEMP/firebase-ios.plist"
+            python3 scripts/configure_ios.py "$RUNNER_TEMP/firebase-ios.plist"
+            rm "$RUNNER_TEMP/firebase-ios.plist"
+            xcodegen generate --spec project.local.yml
+          else
+            echo "Firebase configuration absent; building offline simulator variant."
+            xcodegen generate
+          fi
       - run: xcodebuild -project TarkastusCloud.xcodeproj -scheme TarkastusCloud -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build

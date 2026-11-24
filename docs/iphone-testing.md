@@ -13,3 +13,7 @@ Generate the Xcode project with xcodegen generate on a Mac. Open TarkastusCloud.
 ## Configure real cloud services
 
 Register the iOS app with bundle ID `fi.vladi.tarkastuscloud` in Firebase, enable email/password and Google sign-in, download the iOS GoogleService-Info.plist (not Android google-services.json), and run `python3 scripts/configure_ios.py /path/to/GoogleService-Info.plist`. Then run `xcodegen generate --spec project.local.yml`. Enable Drive API and configure OAuth consent/test users in the corresponding Google Cloud project. Configure signing in Xcode. Local configuration is ignored by Git.
+
+## GitHub Actions configuration
+
+In repository Settings → Secrets and variables → Actions, create repository secret `FIREBASE_IOS_PLIST` with the complete raw XML contents of the downloaded iOS plist. Do not use HTML-escaped XML or Markdown backslashes. The simulator workflow uses it when available; otherwise it builds the offline variant. The workflow does not upload the configured app or print the plist. A signed device build still requires Apple signing credentials.
