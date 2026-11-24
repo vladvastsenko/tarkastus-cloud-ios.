@@ -10,11 +10,23 @@ struct TarkastusCloudApp: App {
                     NavigationLink("Valvontapöytäkirja") {
                         ReportDraftView(report: InspectionReport())
                     }
+                    Section("Mallit") {
+                        ForEach(store.archive.waterproofing.filter { !$0.templateName.isEmpty }, id: \.id) { template in
+                            NavigationLink(template.templateName) {
+                                ReportDraftView(report: newDraft(template))
+                            }
+                        }
+                        ForEach(store.archive.general.filter { !$0.templateName.isEmpty }, id: \.id) { template in
+                            NavigationLink(template.templateName) {
+                                GeneralDraftView(report: newDraft(template))
+                            }
+                        }
+                    }
                     Section("Tallennetut") {
-                        ForEach(store.archive.waterproofing, id: \.id) { report in
+                        ForEach(store.archive.waterproofing.filter { $0.templateName.isEmpty }, id: \.id) { report in
                             NavigationLink(report.siteAddress.isEmpty ? report.createdAt : report.siteAddress) { ReportDraftView(report: report) }
                         }
-                        ForEach(store.archive.general, id: \.id) { report in
+                        ForEach(store.archive.general.filter { $0.templateName.isEmpty }, id: \.id) { report in
                             NavigationLink(report.siteAddress.isEmpty ? report.createdAt : report.siteAddress) { GeneralDraftView(report: report) }
                         }
                     }
@@ -36,6 +48,7 @@ struct TarkastusCloudApp: App {
 struct ReportDraftView: View {
     @EnvironmentObject private var store: LocalReportStore
     @State private var exported: URL?
+    @State private var templateName = ""
     @State var report: InspectionReport
     var body: some View {
         Form {
@@ -132,6 +145,18 @@ struct ReportDraftView: View {
         }
         .navigationTitle("Valvontapöytäkirja")
         .toolbar { Button("Tallenna") { applySettings(); _ = store.save(report) } }
+        .safeAreaInset(edge: .top) {
+            HStack {
+                TextField("Mallin nimi", text: $templateName)
+                Button("Tallenna malliksi") {
+                    applySettings()
+                    var template = report
+                    template.id = UUID().uuidString.lowercased()
+                    template.templateName = templateName.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if store.save(template) { templateName = "" }
+                }.disabled(templateName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }.padding().background(.regularMaterial)
+        }
         .safeAreaInset(edge: .bottom) {
             HStack {
                 Button("Luo PDF") {
@@ -163,6 +188,7 @@ struct ReportDraftView: View {
 struct GeneralDraftView: View {
     @EnvironmentObject private var store: LocalReportStore
     @State private var exported: URL?
+    @State private var templateName = ""
     @State var report: GeneralInspectionReport
     var body: some View {
         Form {
@@ -220,6 +246,18 @@ struct GeneralDraftView: View {
         }
         .navigationTitle("Tarkastuspöytäkirja")
         .toolbar { Button("Tallenna") { applySettings(); _ = store.save(report) } }
+        .safeAreaInset(edge: .top) {
+            HStack {
+                TextField("Mallin nimi", text: $templateName)
+                Button("Tallenna malliksi") {
+                    applySettings()
+                    var template = report
+                    template.id = UUID().uuidString.lowercased()
+                    template.templateName = templateName.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if store.save(template) { templateName = "" }
+                }.disabled(templateName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }.padding().background(.regularMaterial)
+        }
         .safeAreaInset(edge: .bottom) {
             HStack {
                 Button("Luo PDF") {
@@ -249,4 +287,31 @@ struct GeneralDraftView: View {
         report.signatureStrokes = settings.signatureStrokes
         report.settingsSnapshotCreated = true
     }
+}
+
+private func newDraft(_ template: InspectionReport) -> InspectionReport {
+    var report = template
+    report.id = UUID().uuidString.lowercased()
+    report.templateName = ""
+    report.createdAt = ReportDate.today
+    report.inspectionDate = ReportDate.today
+    report.photos = []
+    report.inspectionResult = ""
+    report.workStartDate = ""
+    report.workEndDate = ""
+    return report
+}
+private func newDraft(_ template: GeneralInspectionReport) -> GeneralInspectionReport {
+    var report = template
+    report.id = UUID().uuidString.lowercased()
+    report.templateName = ""
+    report.createdAt = ReportDate.today
+    report.inspectionDate = ReportDate.today
+    report.observations = report.observations.map { observation in
+        var copy = observation
+        copy.id = UUID().uuidString.lowercased()
+        copy.photos = []
+        return copy
+    }
+    return report
 }
