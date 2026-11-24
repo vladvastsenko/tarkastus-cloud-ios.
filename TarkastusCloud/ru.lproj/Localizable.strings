@@ -56,3 +56,19 @@
 "4. Enter the employee's email and select Editor." = "4. Введите электронную почту сотрудника и выберите роль «Редактор».";
 "5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud." = "5. Отправьте приглашение. Сотрудник принимает его и выбирает общую папку в Tarkastus Cloud.";
 "A recovery copy will be saved before replacing local report data." = "Перед заменой локальных данных отчётов будет сохранена копия для восстановления.";
+
+"Authentication failed. Check your credentials and try again." = "Ошибка авторизации. Проверьте данные и повторите попытку.";
+"Cloud operation failed. Check your connection and try again." = "Облачная операция не выполнена. Проверьте соединение и повторите попытку.";
+"Invalid Google Drive response." = "Некорректный ответ Google Drive.";
+"Google Drive request failed (HTTP %d)." = "Ошибка запроса Google Drive (HTTP %d).";
+"Duplicate file or folder name in Google Drive." = "Повторяющееся имя файла или папки в Google Drive.";
+"Invalid file name." = "Недопустимое имя файла.";
+"Choose a private folder owned only by you, outside the company folder." = "Выберите личную папку, принадлежащую только вам, вне папки компании.";
+"Google sign-in configuration is missing." = "Отсутствует конфигурация входа через Google.";
+"Google identity token is missing." = "Отсутствует токен идентификации Google.";
+"Sign in to your linked account first." = "Сначала войдите в привязанный аккаунт.";
+"Connect Google Drive first." = "Сначала подключите Google Drive.";
+"Google OAuth configuration is missing." = "Отсутствует конфигурация Google OAuth.";
+"Select a dedicated company folder." = "Выберите отдельную папку компании.";
+"This local archive is bound to another Google account or company folder. Synchronization blocked." = "Локальный архив привязан к другому аккаунту Google или папке компании. Синхронизация заблокирована.";
+"Password reset email sent." = "Письмо для сброса пароля отправлено.";

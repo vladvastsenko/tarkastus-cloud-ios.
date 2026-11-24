@@ -67,3 +67,18 @@ struct PDFLanguagePicker: View {
         }
     }
 }
+
+// Dynamic messages follow the app language rather than the device language.
+enum AppMessage {
+    static func text(_ key: String) -> String {
+        let language = UserDefaults.standard.string(forKey: "appLanguage") ?? "en"
+        let bundle = Bundle.main.path(forResource: language, ofType: "lproj").flatMap { Bundle(path: $0) } ?? .main
+        return bundle.localizedString(forKey: key, value: key, table: nil)
+    }
+    static func error(_ error: Error, fallback: String) -> String {
+        if let drive = error as? DriveError { return drive.errorDescription ?? text(fallback) }
+        let ns = error as NSError
+        if ns.domain == "AccountSession" || ns.domain == "PrivateBackup", let message = ns.userInfo[NSLocalizedDescriptionKey] as? String { return text(message) }
+        return text(fallback)
+    }
+}

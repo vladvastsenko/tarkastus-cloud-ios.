@@ -56,3 +56,19 @@
 "4. Enter the employee's email and select Editor." = "4. Sisestage töötaja e-posti aadress ja valige muutja roll.";
 "5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud." = "5. Saatke kutse. Töötaja võtab kutse vastu ja valib Tarkastus Cloudis ühiskausta.";
 "A recovery copy will be saved before replacing local report data." = "Enne kohalike aruandeandmete asendamist salvestatakse taastekoopia.";
+
+"Authentication failed. Check your credentials and try again." = "Autentimine ebaõnnestus. Kontrollige andmeid ja proovige uuesti.";
+"Cloud operation failed. Check your connection and try again." = "Pilvetoiming ebaõnnestus. Kontrollige ühendust ja proovige uuesti.";
+"Invalid Google Drive response." = "Vigane Google Drive'i vastus.";
+"Google Drive request failed (HTTP %d)." = "Google Drive'i päring ebaõnnestus (HTTP %d).";
+"Duplicate file or folder name in Google Drive." = "Google Drive'is on sama nimega failid või kaustad.";
+"Invalid file name." = "Vigane failinimi.";
+"Choose a private folder owned only by you, outside the company folder." = "Valige ainult teile kuuluv isiklik kaust väljaspool ettevõtte kausta.";
+"Google sign-in configuration is missing." = "Google'i sisselogimise seadistus puudub.";
+"Google identity token is missing." = "Google'i identiteeditõend puudub.";
+"Sign in to your linked account first." = "Logige esmalt seotud kontole sisse.";
+"Connect Google Drive first." = "Ühendage esmalt Google Drive.";
+"Google OAuth configuration is missing." = "Google OAuthi seadistus puudub.";
+"Select a dedicated company folder." = "Valige eraldi ettevõtte kaust.";
+"This local archive is bound to another Google account or company folder. Synchronization blocked." = "Kohalik arhiiv on seotud teise Google'i konto või ettevõtte kaustaga. Sünkroonimine on blokeeritud.";
+"Password reset email sent." = "Parooli lähtestamise kiri saadetud.";

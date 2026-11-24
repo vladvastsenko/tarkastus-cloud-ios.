@@ -56,3 +56,19 @@
 "4. Enter the employee's email and select Editor." = "4. Syötä työntekijän sähköpostiosoite ja valitse Muokkaaja.";
 "5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud." = "5. Lähetä kutsu. Työntekijä hyväksyy sen ja valitsee jaetun kansion Tarkastus Cloudissa.";
 "A recovery copy will be saved before replacing local report data." = "Palautuskopio tallennetaan ennen paikallisten raporttitietojen korvaamista.";
+
+"Authentication failed. Check your credentials and try again." = "Todennus epäonnistui. Tarkista tunnukset ja yritä uudelleen.";
+"Cloud operation failed. Check your connection and try again." = "Pilvitoiminto epäonnistui. Tarkista yhteys ja yritä uudelleen.";
+"Invalid Google Drive response." = "Virheellinen Google Driven vastaus.";
+"Google Drive request failed (HTTP %d)." = "Google Drive -pyyntö epäonnistui (HTTP %d).";
+"Duplicate file or folder name in Google Drive." = "Google Drivessa on samannimisiä tiedostoja tai kansioita.";
+"Invalid file name." = "Virheellinen tiedostonimi.";
+"Choose a private folder owned only by you, outside the company folder." = "Valitse vain omistamasi yksityinen kansio yrityskansion ulkopuolelta.";
+"Google sign-in configuration is missing." = "Google-kirjautumisen määritykset puuttuvat.";
+"Google identity token is missing." = "Google-tunnistetunnus puuttuu.";
+"Sign in to your linked account first." = "Kirjaudu ensin liitetylle tilille.";
+"Connect Google Drive first." = "Yhdistä ensin Google Drive.";
+"Google OAuth configuration is missing." = "Google OAuth -määritykset puuttuvat.";
+"Select a dedicated company folder." = "Valitse erillinen yrityskansio.";
+"This local archive is bound to another Google account or company folder. Synchronization blocked." = "Paikallinen arkisto on sidottu toiseen Google-tiliin tai yrityskansioon. Synkronointi estetty.";
+"Password reset email sent." = "Salasanan palautusviesti lähetetty.";

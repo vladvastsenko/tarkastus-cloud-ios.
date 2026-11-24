@@ -56,3 +56,19 @@
 "4. Enter the employee's email and select Editor." = "4. Ievadiet darbinieka e-pasta adresi un izvēlieties redaktora lomu.";
 "5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud." = "5. Nosūtiet uzaicinājumu. Darbinieks to pieņem un lietotnē Tarkastus Cloud izvēlas koplietoto mapi.";
 "A recovery copy will be saved before replacing local report data." = "Pirms lokālo pārskatu datu aizstāšanas tiks saglabāta atjaunošanas kopija.";
+
+"Authentication failed. Check your credentials and try again." = "Autentifikācija neizdevās. Pārbaudiet datus un mēģiniet vēlreiz.";
+"Cloud operation failed. Check your connection and try again." = "Mākoņa darbība neizdevās. Pārbaudiet savienojumu un mēģiniet vēlreiz.";
+"Invalid Google Drive response." = "Nederīga Google diska atbilde.";
+"Google Drive request failed (HTTP %d)." = "Google diska pieprasījums neizdevās (HTTP %d).";
+"Duplicate file or folder name in Google Drive." = "Google diskā ir vienādi failu vai mapju nosaukumi.";
+"Invalid file name." = "Nederīgs faila nosaukums.";
+"Choose a private folder owned only by you, outside the company folder." = "Izvēlieties tikai sev piederošu privātu mapi ārpus uzņēmuma mapes.";
+"Google sign-in configuration is missing." = "Trūkst Google pierakstīšanās konfigurācijas.";
+"Google identity token is missing." = "Trūkst Google identitātes marķiera.";
+"Sign in to your linked account first." = "Vispirms pierakstieties saistītajā kontā.";
+"Connect Google Drive first." = "Vispirms pievienojiet Google disku.";
+"Google OAuth configuration is missing." = "Trūkst Google OAuth konfigurācijas.";
+"Select a dedicated company folder." = "Izvēlieties atsevišķu uzņēmuma mapi.";
+"This local archive is bound to another Google account or company folder. Synchronization blocked." = "Lokālais arhīvs ir saistīts ar citu Google kontu vai uzņēmuma mapi. Sinhronizācija bloķēta.";
+"Password reset email sent." = "Paroles atiestatīšanas e-pasts nosūtīts.";

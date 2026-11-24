@@ -56,3 +56,19 @@
 "4. Enter the employee's email and select Editor." = "4. Įveskite darbuotojo el. pašto adresą ir pasirinkite redaktoriaus vaidmenį.";
 "5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud." = "5. Išsiųskite kvietimą. Darbuotojas jį priima ir programoje „Tarkastus Cloud“ pasirenka bendrinamą aplanką.";
 "A recovery copy will be saved before replacing local report data." = "Prieš pakeičiant vietinius ataskaitų duomenis bus išsaugota atkūrimo kopija.";
+
+"Authentication failed. Check your credentials and try again." = "Autentifikuoti nepavyko. Patikrinkite duomenis ir bandykite dar kartą.";
+"Cloud operation failed. Check your connection and try again." = "Debesijos operacija nepavyko. Patikrinkite ryšį ir bandykite dar kartą.";
+"Invalid Google Drive response." = "Netinkamas „Google“ disko atsakymas.";
+"Google Drive request failed (HTTP %d)." = "„Google“ disko užklausa nepavyko (HTTP %d).";
+"Duplicate file or folder name in Google Drive." = "„Google“ diske kartojasi failo arba aplanko pavadinimas.";
+"Invalid file name." = "Netinkamas failo pavadinimas.";
+"Choose a private folder owned only by you, outside the company folder." = "Pasirinkite tik jums priklausantį privatų aplanką už įmonės aplanko ribų.";
+"Google sign-in configuration is missing." = "Trūksta prisijungimo per „Google“ konfigūracijos.";
+"Google identity token is missing." = "Trūksta „Google“ tapatybės prieigos rakto.";
+"Sign in to your linked account first." = "Pirmiausia prisijunkite prie susietos paskyros.";
+"Connect Google Drive first." = "Pirmiausia prijunkite „Google“ diską.";
+"Google OAuth configuration is missing." = "Trūksta „Google OAuth“ konfigūracijos.";
+"Select a dedicated company folder." = "Pasirinkite atskirą įmonės aplanką.";
+"This local archive is bound to another Google account or company folder. Synchronization blocked." = "Vietinis archyvas susietas su kita „Google“ paskyra arba įmonės aplanku. Sinchronizavimas užblokuotas.";
+"Password reset email sent." = "Slaptažodžio atkūrimo laiškas išsiųstas.";

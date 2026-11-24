@@ -42,10 +42,10 @@ struct DriveConnectionView: View {
                 Button("Synchronize") { run { client in
                     guard let identity = GIDSignIn.sharedInstance.currentUser?.userID else { throw DriveError.invalidResponse }
                     let company = folderID.trimmingCharacters(in: .whitespacesAndNewlines)
-                    guard !company.isEmpty, company != "root" else { notice = "Select a dedicated company folder."; return }
+                    guard !company.isEmpty, company != "root" else { notice = AppMessage.text("Select a dedicated company folder."); return }
                     if !boundCompany.isEmpty || !boundIdentity.isEmpty {
                         guard boundCompany == company, boundIdentity == identity else {
-                            notice = "This local archive is bound to another Google account or company folder. Synchronization blocked."
+                            notice = AppMessage.text("This local archive is bound to another Google account or company folder. Synchronization blocked.")
                             return
                         }
                     } else {
@@ -143,10 +143,10 @@ struct DriveConnectionView: View {
         selectedBackup = ""
     }
     private func connect() {
-        guard let uid = account.user?.uid, uid == ownerUID else { notice = "Sign in to your linked account first."; return }
+        guard let uid = account.user?.uid, uid == ownerUID else { notice = AppMessage.text("Sign in to your linked account first."); return }
         guard let clientID = Bundle.main.object(forInfoDictionaryKey: "GIDClientID") as? String, !clientID.isEmpty,
               let controller = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).flatMap({ $0.windows }).first(where: { $0.isKeyWindow })?.rootViewController else {
-            notice = "Google OAuth configuration is missing."
+            notice = AppMessage.text("Google OAuth configuration is missing.")
             return
         }
         busy = true
@@ -157,7 +157,7 @@ struct DriveConnectionView: View {
                 let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: controller, hint: nil, additionalScopes: ["https://www.googleapis.com/auth/drive"])
                 email = result.user.profile?.email ?? ""
                 notice = "Google account connected."
-            } catch { notice = error.localizedDescription }
+            } catch { notice = AppMessage.error(error, fallback: "Cloud operation failed. Check your connection and try again.") }
         }
     }
     private func run(_ action: @escaping @MainActor (DriveClient) async throws -> Void) {
@@ -165,13 +165,13 @@ struct DriveConnectionView: View {
         Task { @MainActor in
             defer { busy = false }
             do {
-                guard let uid = account.user?.uid, uid == ownerUID else { notice = "Sign in to your linked account first."; return }
+                guard let uid = account.user?.uid, uid == ownerUID else { notice = AppMessage.text("Sign in to your linked account first."); return }
                 guard let user = GIDSignIn.sharedInstance.currentUser else {
-                    notice = "Connect Google Drive first."; return
+                    notice = AppMessage.text("Connect Google Drive first."); return
                 }
                 let refreshed = try await user.refreshTokensIfNeeded()
                 try await action(DriveClient(accessToken: refreshed.accessToken.tokenString))
-            } catch { notice = error.localizedDescription }
+            } catch { notice = AppMessage.error(error, fallback: "Cloud operation failed. Check your connection and try again.") }
         }
     }
 }

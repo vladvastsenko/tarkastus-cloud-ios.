@@ -128,7 +128,7 @@ struct AccountGate<Content: View>: View {
                             Text("Sign in with email").frame(maxWidth: .infinity).padding(.vertical, 8)
                         }.buttonStyle(.borderedProminent)
                         Button("No account? Register") { run { try await session.register(email.trimmingCharacters(in: .whitespacesAndNewlines), password) } }.frame(maxWidth: .infinity)
-                        Button("Forgot password?") { run { try await session.reset(email.trimmingCharacters(in: .whitespacesAndNewlines)); notice = "Password reset email sent." } }.frame(maxWidth: .infinity)
+                        Button("Forgot password?") { run { try await session.reset(email.trimmingCharacters(in: .whitespacesAndNewlines)); notice = AppMessage.text("Password reset email sent.") } }.frame(maxWidth: .infinity)
                         if busy { ProgressView() }
                         if !notice.isEmpty { Text(notice) }
                     }.padding(24)
@@ -147,7 +147,7 @@ struct AccountGate<Content: View>: View {
         Task { @MainActor in
             defer { busy = false }
             do { try await action() }
-            catch { notice = error.localizedDescription }
+            catch { notice = AppMessage.error(error, fallback: "Authentication failed. Check your credentials and try again.") }
         }
     }
 }

@@ -14,10 +14,10 @@ enum DriveError: LocalizedError {
     case invalidResponse, http(Int), ambiguousName, invalidName
     var errorDescription: String? {
         switch self {
-        case .invalidResponse: return "Invalid Google Drive response."
-        case .http(let code): return "Google Drive request failed (HTTP \(code))."
-        case .ambiguousName: return "Duplicate file or folder name in Google Drive."
-        case .invalidName: return "Invalid file name."
+        case .invalidResponse: return AppMessage.text("Invalid Google Drive response.")
+        case .http(let code): return String(format: AppMessage.text("Google Drive request failed (HTTP %d)."), code)
+        case .ambiguousName: return AppMessage.text("Duplicate file or folder name in Google Drive.")
+        case .invalidName: return AppMessage.text("Invalid file name.")
         }
     }
 }

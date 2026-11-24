@@ -56,3 +56,19 @@
 "4. Enter the employee's email and select Editor." = "4. Ange medarbetarens e-postadress och välj Redigerare.";
 "5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud." = "5. Skicka inbjudan. Medarbetaren accepterar den och väljer den delade mappen i Tarkastus Cloud.";
 "A recovery copy will be saved before replacing local report data." = "En återställningskopia sparas innan lokala rapportdata ersätts.";
+
+"Authentication failed. Check your credentials and try again." = "Autentiseringen misslyckades. Kontrollera uppgifterna och försök igen.";
+"Cloud operation failed. Check your connection and try again." = "Molnåtgärden misslyckades. Kontrollera anslutningen och försök igen.";
+"Invalid Google Drive response." = "Ogiltigt svar från Google Drive.";
+"Google Drive request failed (HTTP %d)." = "Google Drive-begäran misslyckades (HTTP %d).";
+"Duplicate file or folder name in Google Drive." = "Dubblett av fil- eller mappnamn i Google Drive.";
+"Invalid file name." = "Ogiltigt filnamn.";
+"Choose a private folder owned only by you, outside the company folder." = "Välj en privat mapp som bara du äger, utanför företagsmappen.";
+"Google sign-in configuration is missing." = "Konfiguration för Google-inloggning saknas.";
+"Google identity token is missing." = "Google-identitetstoken saknas.";
+"Sign in to your linked account first." = "Logga först in på ditt kopplade konto.";
+"Connect Google Drive first." = "Anslut Google Drive först.";
+"Google OAuth configuration is missing." = "Google OAuth-konfiguration saknas.";
+"Select a dedicated company folder." = "Välj en separat företagsmapp.";
+"This local archive is bound to another Google account or company folder. Synchronization blocked." = "Det lokala arkivet är kopplat till ett annat Google-konto eller en annan företagsmapp. Synkronisering blockerad.";
+"Password reset email sent." = "E-post för lösenordsåterställning skickad.";

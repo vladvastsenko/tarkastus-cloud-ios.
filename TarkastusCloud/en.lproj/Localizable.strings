@@ -56,3 +56,19 @@
 "4. Enter the employee's email and select Editor." = "4. Enter the employee's email and select Editor.";
 "5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud." = "5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud.";
 "A recovery copy will be saved before replacing local report data." = "A recovery copy will be saved before replacing local report data.";
+
+"Authentication failed. Check your credentials and try again." = "Authentication failed. Check your credentials and try again.";
+"Cloud operation failed. Check your connection and try again." = "Cloud operation failed. Check your connection and try again.";
+"Invalid Google Drive response." = "Invalid Google Drive response.";
+"Google Drive request failed (HTTP %d)." = "Google Drive request failed (HTTP %d).";
+"Duplicate file or folder name in Google Drive." = "Duplicate file or folder name in Google Drive.";
+"Invalid file name." = "Invalid file name.";
+"Choose a private folder owned only by you, outside the company folder." = "Choose a private folder owned only by you, outside the company folder.";
+"Google sign-in configuration is missing." = "Google sign-in configuration is missing.";
+"Google identity token is missing." = "Google identity token is missing.";
+"Sign in to your linked account first." = "Sign in to your linked account first.";
+"Connect Google Drive first." = "Connect Google Drive first.";
+"Google OAuth configuration is missing." = "Google OAuth configuration is missing.";
+"Select a dedicated company folder." = "Select a dedicated company folder.";
+"This local archive is bound to another Google account or company folder. Synchronization blocked." = "This local archive is bound to another Google account or company folder. Synchronization blocked.";
+"Password reset email sent." = "Password reset email sent.";
