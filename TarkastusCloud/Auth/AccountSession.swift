@@ -106,28 +106,32 @@ struct AccountGate<Content: View>: View {
             } else if guest {
                 content().environmentObject(session)
             } else {
-                Form {
-                    LanguageSettingsPicker()
-                    if session.user != nil {
-                        Text("Verify your email address.")
-                        Button("Check verification") { run { try await session.refresh() } }
-                        Button("Resend email") { run { try await session.resend(); notice = "Verification email sent." } }
-                        Button("Sign out") { run { try session.signOut() } }
-                    } else {
-                        TextField("Email", text: $email).keyboardType(.emailAddress).textInputAutocapitalization(.never).autocorrectionDisabled()
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 18) {
+                        Text("Tarkastus Cloud").font(.largeTitle)
+                        LanguageSettingsPicker()
+                        Button { guest = true; password = "" } label: {
+                            Text("Continue as guest").frame(maxWidth: .infinity).padding(.vertical, 8)
+                        }.buttonStyle(.bordered)
+                        Text("Create and save reports on this device. Sign in for cloud synchronization.").font(.subheadline)
+                        Button { run { try await session.signInWithGoogle() } } label: {
+                            Text("Sign in with Google").frame(maxWidth: .infinity).padding(.vertical, 8)
+                        }.buttonStyle(.borderedProminent)
+                        Text("Sign in or create an account").font(.title2)
+                        TextField("Email", text: $email).keyboardType(.emailAddress).textInputAutocapitalization(.never).autocorrectionDisabled().textFieldStyle(.roundedBorder)
                         HStack {
                             if visible { TextField("Password", text: $password).textInputAutocapitalization(.never) }
                             else { SecureField("Password", text: $password) }
-                            Button { visible.toggle() } label: { Image(systemName: visible ? "eye.slash" : "eye") }.buttonStyle(.borderless)
-                        }
-                        Button("Continue as guest") { guest = true; password = "" }
-                        Button("Sign in") { run { try await session.signIn(email.trimmingCharacters(in: .whitespacesAndNewlines), password) } }
-                        Button("Sign in with Google") { run { try await session.signInWithGoogle() } }
-                        Button("Register") { run { try await session.register(email.trimmingCharacters(in: .whitespacesAndNewlines), password) } }
-                        Button("Reset password") { run { try await session.reset(email.trimmingCharacters(in: .whitespacesAndNewlines)); notice = "Password reset email sent." } }
-                    }
-                    if busy { ProgressView() }
-                    if !notice.isEmpty { Text(notice) }
+                            Button { visible.toggle() } label: { Image(systemName: visible ? "eye.slash" : "eye") }
+                        }.textFieldStyle(.roundedBorder)
+                        Button { run { try await session.signIn(email.trimmingCharacters(in: .whitespacesAndNewlines), password) } } label: {
+                            Text("Sign in with email").frame(maxWidth: .infinity).padding(.vertical, 8)
+                        }.buttonStyle(.borderedProminent)
+                        Button("No account? Register") { run { try await session.register(email.trimmingCharacters(in: .whitespacesAndNewlines), password) } }.frame(maxWidth: .infinity)
+                        Button("Forgot password?") { run { try await session.reset(email.trimmingCharacters(in: .whitespacesAndNewlines)); notice = "Password reset email sent." } }.frame(maxWidth: .infinity)
+                        if busy { ProgressView() }
+                        if !notice.isEmpty { Text(notice) }
+                    }.padding(24)
                 }.disabled(busy)
             }
         }
