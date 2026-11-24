@@ -9,10 +9,21 @@ struct TarkastusCloudApp: App {
             AccountGate {
             BiometricGate {
             NavigationStack {
-                List {
-                    NavigationLink("Valvontapöytäkirja") {
-                        ReportDraftView(report: InspectionReport())
-                    }
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        Text("Choose the type of report to create.").font(.title3)
+                        NavigationLink { ReportDraftView(report: InspectionReport()) } label: {
+                            Text("Valvontapöytäkirja").frame(maxWidth: .infinity).padding(.vertical, 10)
+                        }.buttonStyle(.borderedProminent)
+                        NavigationLink { GeneralDraftView(report: GeneralInspectionReport()) } label: {
+                            Text("Tarkastuspöytäkirja").frame(maxWidth: .infinity).padding(.vertical, 10)
+                        }.buttonStyle(.borderedProminent)
+                    }.padding(24).padding(.top, 32)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        NavigationLink {
+                            List {
                     NavigationLink("PDF") { PDFArchiveView() }
                     Section("Mallit") {
                         ForEach(store.archive.waterproofing.filter { !$0.templateName.isEmpty }, id: \.id) { template in
@@ -34,11 +45,13 @@ struct TarkastusCloudApp: App {
                             NavigationLink(report.siteAddress.isEmpty ? report.createdAt : report.siteAddress) { GeneralDraftView(report: report) }
                         }
                     }
-                    NavigationLink("Tarkastuspöytäkirja") {
-                        GeneralDraftView(report: GeneralInspectionReport())
+
+                            }.navigationTitle("Archive")
+                        } label: { Image(systemName: "folder") }
                     }
                 }
-                .navigationTitle("Tarkastus Cloud")
+                .navigationTitle("Tarkastus")
+                .tint(Color(red: 0.384, green: 0.294, blue: 0.620))
                 .toolbar { NavigationLink(destination: SettingsView(settings: store.archive.settings)) { Image(systemName: "gearshape") } }
                 .environmentObject(store)
                 .alert("Error", isPresented: Binding(get: { store.errorMessage != nil }, set: { if !$0 { store.errorMessage = nil } })) {
