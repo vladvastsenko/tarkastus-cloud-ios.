@@ -91,6 +91,7 @@ struct ReportPhoto: Codable, Equatable {
 }
 
 struct AppSettings: Codable, Equatable {
+    var inspectorProfiles: [InspectorProfile]? = nil
     var logoPath: String = ""
     var headerText: String = ""
     var footerText: String = ""
