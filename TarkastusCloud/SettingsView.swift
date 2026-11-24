@@ -22,6 +22,7 @@ struct SettingsView: View {
         Form {
             Section("Language") {
                 LanguageSettingsPicker()
+                PDFLanguagePicker()
             }
             Section("Security") {
                 Toggle("Device authentication", isOn: $biometricLock)
