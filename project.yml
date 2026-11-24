@@ -11,6 +11,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: fi.vladi.tarkastuscloud
         GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_NSCameraUsageDescription: Take inspection photos for reports.
         INFOPLIST_KEY_CFBundleDisplayName: Tarkastus Cloud
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         TARGETED_DEVICE_FAMILY: "1,2"
