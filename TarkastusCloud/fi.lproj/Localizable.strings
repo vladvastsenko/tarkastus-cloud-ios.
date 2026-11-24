@@ -47,3 +47,12 @@
 "How to share a folder" = "Kansion jakaminen";
 "Open Google Drive" = "Avaa Google Drive";
 "Do not share the private backup folder." = "Älä jaa henkilökohtaista varmuuskopiokansiota.";
+
+"Create and save reports on this device. Sign in for cloud synchronization." = "Luo ja tallenna raportteja tällä laitteella. Kirjaudu sisään pilvisynkronointia varten.";
+"Choose your own private folder. Never share it with colleagues." = "Valitse oma henkilökohtainen kansio. Älä jaa sitä työtovereille.";
+"1. Open Google Drive using the shared folder owner's account." = "1. Avaa Google Drive jaetun kansion omistajan tilillä.";
+"2. Find the shared Tarkastus Cloud folder." = "2. Etsi jaettu Tarkastus Cloud -kansio.";
+"3. Tap the three dots and choose Share or Manage access." = "3. Napauta kolmea pistettä ja valitse Jaa tai Hallinnoi käyttöoikeuksia.";
+"4. Enter the employee's email and select Editor." = "4. Syötä työntekijän sähköpostiosoite ja valitse Muokkaaja.";
+"5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud." = "5. Lähetä kutsu. Työntekijä hyväksyy sen ja valitsee jaetun kansion Tarkastus Cloudissa.";
+"A recovery copy will be saved before replacing local report data." = "Palautuskopio tallennetaan ennen paikallisten raporttitietojen korvaamista.";
