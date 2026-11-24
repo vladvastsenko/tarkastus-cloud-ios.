@@ -25,19 +25,16 @@ struct DriveConnectionView: View {
                     _ = try await client.children(of: folderID.trimmingCharacters(in: .whitespacesAndNewlines))
                     notice = "Folder is readable."
                 } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                Button("Synchronize PDFs") { run { client in
-                    notice = try await PDFSync.sync(client: client, company: folderID.trimmingCharacters(in: .whitespacesAndNewlines), account: GIDSignIn.sharedInstance.currentUser?.userID ?? email)
-                } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                Button("Synchronize customers and sites") { run { client in
+                Button("Synchronize") { run { client in
                     guard let identity = GIDSignIn.sharedInstance.currentUser?.userID else { throw DriveError.invalidResponse }
-                    notice = try await DirectorySync.synchronize(store: store, client: client, company: folderID.trimmingCharacters(in: .whitespacesAndNewlines), account: identity)
+                    let company = folderID.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let directory = try await DirectorySync.synchronize(store: store, client: client, company: company, account: identity)
+                    let imported = try await ReportSync.importMissing(store: store, client: client, company: company)
+                    let exported = try await ReportSync.exportMissing(store: store, client: client, company: company)
+                    let pdf = try await PDFSync.sync(client: client, company: company, account: identity)
+                    notice = [directory, imported, exported, pdf].joined(separator: "\n")
                 } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                Button("Export new reports") { run { client in
-                    notice = try await ReportSync.exportMissing(store: store, client: client, company: folderID.trimmingCharacters(in: .whitespacesAndNewlines))
-                } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                Button("Import missing reports") { run { client in
-                    notice = try await ReportSync.importMissing(store: store, client: client, company: folderID.trimmingCharacters(in: .whitespacesAndNewlines))
-                } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                Text("Existing shared reports are not overwritten yet.").font(.caption)
                 Button("List root folders") { run { client in
                     folders = try await client.children(of: "root").filter { $0.mimeType == "application/vnd.google-apps.folder" }
                 } }
