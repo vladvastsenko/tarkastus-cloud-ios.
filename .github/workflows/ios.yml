@@ -27,4 +27,21 @@ jobs:
             echo "Firebase configuration absent; building offline simulator variant."
             xcodegen generate
           fi
-      - run: xcodebuild -project TarkastusCloud.xcodeproj -scheme TarkastusCloud -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+      - run: xcodebuild -project TarkastusCloud.xcodeproj -scheme TarkastusCloud -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO -derivedDataPath build build
+      - name: Verify bundled Firebase configuration
+        env:
+          FIREBASE_IOS_PLIST: ${{ secrets.FIREBASE_IOS_PLIST }}
+        run: |
+          python3 - <<'PY'
+          import os, pathlib, plistlib
+          app = pathlib.Path("build/Build/Products/Debug-iphonesimulator/TarkastusCloud.app")
+          assert app.is_dir(), "App bundle missing"
+          if os.environ.get("FIREBASE_IOS_PLIST"):
+              config = plistlib.loads((app / "GoogleService-Info.plist").read_bytes())
+              info = plistlib.loads((app / "Info.plist").read_bytes())
+              assert config["BUNDLE_ID"] == info["CFBundleIdentifier"]
+              assert config["REVERSED_CLIENT_ID"] in [s for t in info.get("CFBundleURLTypes", []) for s in t.get("CFBundleURLSchemes", [])]
+              print("Firebase configuration and OAuth callback verified in app bundle")
+          else:
+              print("Offline build: Firebase secret absent")
+          PY
