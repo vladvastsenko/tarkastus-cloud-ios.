@@ -74,6 +74,10 @@ struct ReportDraftView: View {
     @State var report: InspectionReport
     var body: some View {
         Form {
+            Picker("PDF language", selection: $report.pdfLanguage) {
+                Text("Default").tag("")
+                ForEach(AppLanguage.allCases) { item in Text(item.name).tag(item.rawValue) }
+            }
             Section("Asiakas ja kohde") {
                 Picker("Asiakas", selection: $report.customerId) {
                     Text("—").tag("")
@@ -233,6 +237,7 @@ struct ReportDraftView: View {
         report.waterproofingSpecSource = Array(Set([wall?.source, floor?.source].compactMap { $0 })).sorted().joined(separator: "\n")
     }
     private func applySettings() {
+        if report.pdfLanguage.isEmpty { report.pdfLanguage = UserDefaults.standard.string(forKey: "defaultPDFLanguage") ?? "en" }
         guard !report.settingsSnapshotCreated else { return }
         let settings = store.archive.settings
         report.logoPath = settings.logoPath
@@ -255,6 +260,10 @@ struct GeneralDraftView: View {
     @State var report: GeneralInspectionReport
     var body: some View {
         Form {
+            Picker("PDF language", selection: $report.pdfLanguage) {
+                Text("Default").tag("")
+                ForEach(AppLanguage.allCases) { item in Text(item.name).tag(item.rawValue) }
+            }
             Section("Asiakas ja kohde") {
                 Picker("Asiakas", selection: $report.customerId) {
                     Text("—").tag("")
@@ -337,6 +346,7 @@ struct GeneralDraftView: View {
         }
     }
     private func applySettings() {
+        if report.pdfLanguage.isEmpty { report.pdfLanguage = UserDefaults.standard.string(forKey: "defaultPDFLanguage") ?? "en" }
         guard !report.settingsSnapshotCreated else { return }
         let settings = store.archive.settings
         report.logoPath = settings.logoPath
