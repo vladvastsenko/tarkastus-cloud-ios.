@@ -57,6 +57,28 @@ struct DriveClient {
         } while token != nil
         return items
     }
+    private struct FolderPrivacy: Decodable {
+        let mimeType: String
+        let ownedByMe: Bool?
+        let shared: Bool?
+        let parents: [String]?
+        let trashed: Bool?
+    }
+    func validatePrivateFolder(_ id: String, excluding company: String) async throws {
+        guard !id.isEmpty, id != "root", id != company else { throw DriveError.invalidName }
+        var pending = [id]
+        var visited = Set<String>()
+        while let next = pending.popLast() {
+            guard visited.insert(next).inserted else { continue }
+            guard visited.count <= 64, next != company else { throw DriveError.invalidName }
+            let data = try await request(base + "/files/" + next, query: [.init(name: "fields", value: "mimeType,ownedByMe,shared,parents,trashed"), .init(name: "supportsAllDrives", value: "true")])
+            let item = try JSONDecoder().decode(FolderPrivacy.self, from: data)
+            guard item.mimeType == "application/vnd.google-apps.folder", item.ownedByMe == true, item.shared == false, item.trashed != true else {
+                throw NSError(domain: "PrivateBackup", code: 1, userInfo: [NSLocalizedDescriptionKey: "Choose a private folder owned only by you, outside the company folder."])
+            }
+            pending.append(contentsOf: item.parents ?? [])
+        }
+    }
     func download(id: String) async throws -> Data {
         try await request(base + "/files/" + id, query: [.init(name: "alt", value: "media"), .init(name: "supportsAllDrives", value: "true")])
     }
