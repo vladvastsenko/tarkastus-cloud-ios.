@@ -40,6 +40,7 @@ final class AccountSession: ObservableObject {
 
 struct AccountGate<Content: View>: View {
     @StateObject private var session = AccountSession()
+    @AppStorage("localArchiveOwnerUID") private var ownerUID = ""
     @State private var email = ""
     @State private var password = ""
     @State private var visible = false
@@ -56,8 +57,25 @@ struct AccountGate<Content: View>: View {
                     content().environmentObject(session)
                     #endif
                 }
-            } else if session.user?.isEmailVerified == true {
-                content().environmentObject(session)
+            } else if let user = session.user, user.isEmailVerified {
+                if ownerUID == user.uid {
+                    content().environmentObject(session)
+                } else if ownerUID.isEmpty {
+                    VStack(spacing: 16) {
+                        Text("Link this device to your account")
+                        Text(user.email ?? "")
+                        Text("Local reports will only be accessible to this account.").font(.caption)
+                        Button("Confirm") { ownerUID = user.uid }
+                        Button("Sign out") { run { try session.signOut() } }
+                    }.padding()
+                } else {
+                    VStack(spacing: 16) {
+                        Text("This device is linked to another account.")
+                        Text("Sign in with the original account to access local reports.").font(.caption)
+                        Button("Sign out") { run { try session.signOut() } }
+                        if !notice.isEmpty { Text(notice) }
+                    }.padding()
+                }
             } else {
                 Form {
                     if session.user != nil {
