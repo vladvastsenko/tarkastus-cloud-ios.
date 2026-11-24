@@ -53,7 +53,7 @@ struct AccountGate<Content: View>: View {
                     Text("Tarkastus Cloud").font(.title)
                     Text("Firebase configuration is missing.")
                     #if DEBUG
-                    content()
+                    content().environmentObject(session)
                     #endif
                 }
             } else if session.user?.isEmailVerified == true {
