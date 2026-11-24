@@ -217,7 +217,7 @@ struct ReportDraftView: View {
                     applySettings()
                     guard store.save(report) else { return }
                     do { exported = try ReportPDF.export(report) }
-                    catch { store.errorMessage = error.localizedDescription }
+                    catch { store.errorMessage = AppMessage.error(error, fallback: "Local file operation failed.") }
                 }
                 if let exported { ShareLink(item: exported) { Label("Jaa PDF", systemImage: "square.and.arrow.up") } }
             }.padding().frame(maxWidth: .infinity).background(.regularMaterial)
@@ -336,7 +336,7 @@ struct GeneralDraftView: View {
                     applySettings()
                     guard store.save(report) else { return }
                     do { exported = try ReportPDF.export(report) }
-                    catch { store.errorMessage = error.localizedDescription }
+                    catch { store.errorMessage = AppMessage.error(error, fallback: "Local file operation failed.") }
                 }
                 if let exported { ShareLink(item: exported) { Label("Jaa PDF", systemImage: "square.and.arrow.up") } }
             }.padding().frame(maxWidth: .infinity).background(.regularMaterial)
