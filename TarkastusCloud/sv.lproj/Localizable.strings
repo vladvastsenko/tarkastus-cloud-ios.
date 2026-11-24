@@ -228,3 +228,13 @@
 "Jaa PDF" = "Dela PDF";
 "Kirjaus" = "Notering";
 "Tila / sijainti" = "Rum / plats";
+
+"Ota kuva" = "Ta foto";
+"Valitse kuva" = "Välj foto";
+"Remove photo" = "Ta bort foto";
+"Could not load or save photo." = "Det gick inte att läsa in eller spara fotot.";
+"Draw your signature with your finger." = "Rita din underskrift med fingret.";
+"Clear signature" = "Rensa underskrift";
+"Save signature" = "Spara underskrift";
+"Signature" = "Underskrift";
+"Could not save signature." = "Det gick inte att spara underskriften.";

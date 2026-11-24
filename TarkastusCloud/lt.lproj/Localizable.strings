@@ -228,3 +228,13 @@
 "Jaa PDF" = "Bendrinti PDF";
 "Kirjaus" = "Įrašas";
 "Tila / sijainti" = "Patalpa / vieta";
+
+"Ota kuva" = "Fotografuoti";
+"Valitse kuva" = "Pasirinkti nuotrauką";
+"Remove photo" = "Pašalinti nuotrauką";
+"Could not load or save photo." = "Nepavyko įkelti arba išsaugoti nuotraukos.";
+"Draw your signature with your finger." = "Nupieškite parašą pirštu.";
+"Clear signature" = "Išvalyti parašą";
+"Save signature" = "Išsaugoti parašą";
+"Signature" = "Parašas";
+"Could not save signature." = "Nepavyko išsaugoti parašo.";

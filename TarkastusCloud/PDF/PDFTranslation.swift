@@ -61,6 +61,6 @@ enum PDFTranslation {
         "Lattia": ["Lattia", "Floor", "Golv", "Gulv", "Gulv", "Põrand", "Grīda", "Grindys", "Пол"],
         "Hyväksytty": ["Hyväksytty", "Approved", "Godkänd", "Godkjent", "Godkendt", "Heaks kiidetud", "Apstiprināts", "Patvirtinta", "Принято"],
         "Hylätty": ["Hylätty", "Rejected", "Underkänd", "Ikke godkjent", "Ikke godkendt", "Tagasi lükatud", "Noraidīts", "Atmesta", "Не принято"],
-        "Missing photo": ["Missing photo", "Missing photo", "Foto saknas", "Bilde mangler", "Foto mangler", "Foto puudub", "Trūkst fotoattēla", "Trūksta nuotraukos", "Фотография отсутствует"]
+        "Missing photo": ["Kuva puuttuu", "Missing photo", "Foto saknas", "Bilde mangler", "Foto mangler", "Foto puudub", "Trūkst fotoattēla", "Trūksta nuotraukos", "Фотография отсутствует"]
     ]
 }

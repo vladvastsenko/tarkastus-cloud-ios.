@@ -228,3 +228,13 @@
 "Jaa PDF" = "Kopīgot PDF";
 "Kirjaus" = "Ieraksts";
 "Tila / sijainti" = "Telpa / atrašanās vieta";
+
+"Ota kuva" = "Fotografēt";
+"Valitse kuva" = "Izvēlēties foto";
+"Remove photo" = "Noņemt foto";
+"Could not load or save photo." = "Neizdevās ielādēt vai saglabāt foto.";
+"Draw your signature with your finger." = "Uzzīmējiet parakstu ar pirkstu.";
+"Clear signature" = "Notīrīt parakstu";
+"Save signature" = "Saglabāt parakstu";
+"Signature" = "Paraksts";
+"Could not save signature." = "Neizdevās saglabāt parakstu.";

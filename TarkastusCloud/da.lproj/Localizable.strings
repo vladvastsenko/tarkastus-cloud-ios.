@@ -228,3 +228,13 @@
 "Jaa PDF" = "Del PDF";
 "Kirjaus" = "Registrering";
 "Tila / sijainti" = "Rum / placering";
+
+"Ota kuva" = "Tag billede";
+"Valitse kuva" = "Vælg billede";
+"Remove photo" = "Fjern billede";
+"Could not load or save photo." = "Kunne ikke indlæse eller gemme billedet.";
+"Draw your signature with your finger." = "Tegn din underskrift med fingeren.";
+"Clear signature" = "Ryd underskrift";
+"Save signature" = "Gem underskrift";
+"Signature" = "Underskrift";
+"Could not save signature." = "Kunne ikke gemme underskriften.";

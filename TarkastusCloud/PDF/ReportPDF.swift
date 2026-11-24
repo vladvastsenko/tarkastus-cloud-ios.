@@ -29,7 +29,7 @@ enum ReportPDF {
         field("Tarkastaja", r.inspectorName); field("Sertifikaatti", r.inspectorCertificateNumber)
         blocks.append(.image(r.signatureImagePath))
         blocks.append(.photos(r.photos.map(\.filePath), 9))
-        return try render(blocks, footer: r.footerText, name: "valvontapoytakirja_" + (r.siteAddress.isEmpty ? r.siteName : r.siteAddress))
+        return try render(blocks, footer: r.footerText, missingPhoto: tr("Missing photo"), name: "valvontapoytakirja_" + (r.siteAddress.isEmpty ? r.siteName : r.siteAddress))
     }
     static func export(_ r: GeneralInspectionReport) throws -> URL {
         func tr(_ key: String) -> String { PDFTranslation.label(key, language: r.pdfLanguage.isEmpty ? (UserDefaults.standard.string(forKey: "defaultPDFLanguage") ?? "en") : r.pdfLanguage) }
@@ -46,9 +46,9 @@ enum ReportPDF {
         }
         field("Yhteenveto", r.summary); field("Tarkastuspäivä", r.inspectionDate); field("Tarkastaja", r.inspectorName)
         blocks.append(.image(r.signatureImagePath))
-        return try render(blocks, footer: r.footerText, name: "tarkastuspöytäkirja_" + (r.siteAddress.isEmpty ? r.siteName : r.siteAddress))
+        return try render(blocks, footer: r.footerText, missingPhoto: tr("Missing photo"), name: "tarkastuspöytäkirja_" + (r.siteAddress.isEmpty ? r.siteName : r.siteAddress))
     }
-    private static func render(_ blocks: [Block], footer: String, name: String) throws -> URL {
+    private static func render(_ blocks: [Block], footer: String, missingPhoto: String, name: String) throws -> URL {
         typealias Draw = () -> Void
         var pages: [[Draw]] = [[]]
         var y: CGFloat = 36
@@ -94,7 +94,7 @@ enum ReportPDF {
                         let rect = CGRect(x: 36+CGFloat(i)*(w+8), y: top, width: w, height: h)
                         pages[pages.count-1].append {
                             if let img = PhotoFiles.image(path) { image(img, rect) }
-                            else { ("Missing photo" as NSString).draw(at: rect.origin, withAttributes: [.font: UIFont.systemFont(ofSize: 10)]) }
+                            else { (missingPhoto as NSString).draw(at: rect.origin, withAttributes: [.font: UIFont.systemFont(ofSize: 10)]) }
                         }
                     }
                 }

@@ -228,3 +228,13 @@
 "Jaa PDF" = "Share PDF";
 "Kirjaus" = "Entry";
 "Tila / sijainti" = "Room / location";
+
+"Ota kuva" = "Take photo";
+"Valitse kuva" = "Choose photo";
+"Remove photo" = "Remove photo";
+"Could not load or save photo." = "Could not load or save photo.";
+"Draw your signature with your finger." = "Draw your signature with your finger.";
+"Clear signature" = "Clear signature";
+"Save signature" = "Save signature";
+"Signature" = "Signature";
+"Could not save signature." = "Could not save signature.";

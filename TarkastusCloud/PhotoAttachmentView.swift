@@ -37,9 +37,10 @@ struct PhotoAttachmentView: View {
         .sheet(isPresented: $camera) {
             CameraCapture { image in
                 camera = false
-                guard let image, let data = image.jpegData(compressionQuality: 0.95) else { return }
+                guard let image else { return }
+                guard let data = image.jpegData(compressionQuality: 0.95) else { self.error = AppMessage.text("Could not load or save photo."); return }
                 do { paths.append(try PhotoFiles.save(data)) }
-                catch { self.error = error.localizedDescription }
+                catch { self.error = AppMessage.text("Could not load or save photo.") }
             }.ignoresSafeArea()
         }
         ForEach(paths, id: \.self) { path in
@@ -48,7 +49,7 @@ struct PhotoAttachmentView: View {
                     Image(uiImage: image).resizable().scaledToFit().frame(height: 90)
                 }
                 Spacer()
-                Button(role: .destructive) { paths.removeAll { $0 == path } } label: { Image(systemName: "trash") }.buttonStyle(.borderless)
+                Button(role: .destructive) { paths.removeAll { $0 == path } } label: { Image(systemName: "trash") }.buttonStyle(.borderless).accessibilityLabel(Text("Remove photo"))
             }
         }
         .onChange(of: selection) { items in
@@ -57,7 +58,8 @@ struct PhotoAttachmentView: View {
                 for item in items {
                     do {
                         if let data = try await item.loadTransferable(type: Data.self) { paths.append(try PhotoFiles.save(data)) }
-                    } catch { self.error = error.localizedDescription }
+                        else { self.error = AppMessage.text("Could not load or save photo.") }
+                    } catch { self.error = AppMessage.text("Could not load or save photo.") }
                 }
                 selection = []
             }

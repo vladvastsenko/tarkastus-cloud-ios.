@@ -5,6 +5,7 @@ struct SignatureDrawingView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var strokes: [[CGPoint]] = []
     @State private var current: [CGPoint] = []
+    @State private var saveError = false
     var onSave: (Data) -> Void
     var body: some View {
         NavigationStack {
@@ -35,6 +36,7 @@ struct SignatureDrawingView: View {
                 }.frame(height: 200)
                 Button("Clear signature") { strokes = []; current = [] }
                 Button("Save signature") { save() }.buttonStyle(.borderedProminent).disabled(strokes.isEmpty)
+                if saveError { Text("Could not save signature.").foregroundColor(.red) }
                 Spacer()
             }.padding().navigationTitle("Signature")
                 .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
@@ -62,5 +64,6 @@ struct SignatureDrawingView: View {
             }
         }
         if let data = image.pngData() { onSave(data); dismiss() }
+        else { saveError = true }
     }
 }

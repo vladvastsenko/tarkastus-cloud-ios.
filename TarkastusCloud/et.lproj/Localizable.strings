@@ -228,3 +228,13 @@
 "Jaa PDF" = "Jaga PDF-i";
 "Kirjaus" = "Kirje";
 "Tila / sijainti" = "Ruum / asukoht";
+
+"Ota kuva" = "Pildista";
+"Valitse kuva" = "Vali foto";
+"Remove photo" = "Eemalda foto";
+"Could not load or save photo." = "Foto laadimine või salvestamine ebaõnnestus.";
+"Draw your signature with your finger." = "Joonista allkiri sõrmega.";
+"Clear signature" = "Kustuta allkiri";
+"Save signature" = "Salvesta allkiri";
+"Signature" = "Allkiri";
+"Could not save signature." = "Allkirja salvestamine ebaõnnestus.";

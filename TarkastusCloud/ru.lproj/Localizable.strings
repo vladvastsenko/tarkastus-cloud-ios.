@@ -228,3 +228,13 @@
 "Jaa PDF" = "Поделиться PDF";
 "Kirjaus" = "Запись";
 "Tila / sijainti" = "Помещение / расположение";
+
+"Ota kuva" = "Сделать фото";
+"Valitse kuva" = "Выбрать фото";
+"Remove photo" = "Удалить фото";
+"Could not load or save photo." = "Не удалось загрузить или сохранить фотографию.";
+"Draw your signature with your finger." = "Нарисуйте подпись пальцем.";
+"Clear signature" = "Очистить подпись";
+"Save signature" = "Сохранить подпись";
+"Signature" = "Подпись";
+"Could not save signature." = "Не удалось сохранить подпись.";

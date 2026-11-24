@@ -228,3 +228,13 @@
 "Jaa PDF" = "Jaa PDF";
 "Kirjaus" = "Kirjaus";
 "Tila / sijainti" = "Tila / sijainti";
+
+"Ota kuva" = "Ota kuva";
+"Valitse kuva" = "Valitse kuva";
+"Remove photo" = "Poista kuva";
+"Could not load or save photo." = "Kuvan lataaminen tai tallentaminen epäonnistui.";
+"Draw your signature with your finger." = "Piirrä allekirjoituksesi sormella.";
+"Clear signature" = "Tyhjennä allekirjoitus";
+"Save signature" = "Tallenna allekirjoitus";
+"Signature" = "Allekirjoitus";
+"Could not save signature." = "Allekirjoituksen tallentaminen epäonnistui.";

@@ -228,3 +228,13 @@
 "Jaa PDF" = "Del PDF";
 "Kirjaus" = "Registrering";
 "Tila / sijainti" = "Rom / plassering";
+
+"Ota kuva" = "Ta bilde";
+"Valitse kuva" = "Velg bilde";
+"Remove photo" = "Fjern bilde";
+"Could not load or save photo." = "Kunne ikke laste inn eller lagre bildet.";
+"Draw your signature with your finger." = "Tegn signaturen med fingeren.";
+"Clear signature" = "Fjern signatur";
+"Save signature" = "Lagre signatur";
+"Signature" = "Signatur";
+"Could not save signature." = "Kunne ikke lagre signaturen.";
