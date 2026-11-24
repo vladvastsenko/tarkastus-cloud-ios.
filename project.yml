@@ -6,6 +6,9 @@ packages:
   Firebase:
     url: https://github.com/firebase/firebase-ios-sdk
     from: 11.0.0
+  GoogleSignIn:
+    url: https://github.com/google/GoogleSignIn-iOS
+    from: 8.0.0
 targets:
   TarkastusCloud:
     type: application
@@ -14,6 +17,8 @@ targets:
     dependencies:
       - package: Firebase
         product: FirebaseAuth
+      - package: GoogleSignIn
+        product: GoogleSignIn
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: fi.vladi.tarkastuscloud
