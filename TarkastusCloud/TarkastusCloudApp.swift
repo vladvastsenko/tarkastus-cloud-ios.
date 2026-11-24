@@ -107,14 +107,42 @@ struct ReportDraftView: View {
                 Toggle("Työohjeet annettu ja luettu", isOn: $report.workInstructionsProvidedAndRead)
             }
             Section("Tuotteet") {
+                Picker("Tuoteperhe", selection: Binding(get: {
+                    report.materials.first(where: { $0.category == "Vedeneriste" })?.manufacturer ?? ""
+                }, set: { manufacturer in
+                    for i in report.materials.indices where MaterialCatalog.familyCategories.contains(report.materials[i].category) {
+                        if report.materials[i].manufacturer != manufacturer {
+                            report.materials[i].manufacturer = manufacturer
+                            report.materials[i].productName = ""
+                        }
+                    }
+                    refreshWaterproofingSpecs()
+                })) {
+                    ForEach(MaterialCatalog.manufacturers, id: \.self) { Text($0).tag($0) }
+                }
                 ForEach($report.materials, id: \.id) { $material in
                     DisclosureGroup(material.category + " " + material.surface) {
-                        TextField("Valmistaja", text: $material.manufacturer)
-                        TextField("Tuote", text: $material.productName)
+                        if !MaterialCatalog.familyCategories.contains(material.category) {
+                            TextField("Valmistaja", text: $material.manufacturer)
+                        } else {
+                            Text(material.manufacturer)
+                        }
+                        let products = MaterialCatalog.productsFor(material.category, manufacturer: material.manufacturer)
+                        if !products.isEmpty {
+                            Picker("Tuote", selection: $material.productName) {
+                                Text("—").tag("")
+                                if !material.productName.isEmpty && !products.contains(where: { $0.name == material.productName }) {
+                                    Text(material.productName).tag(material.productName)
+                                }
+                                ForEach(products.map(\.name), id: \.self) { Text($0).tag($0) }
+                            }
+                        }
+                        TextField("Tuote / muu", text: $material.productName)
                         TextField("Lisätiedot", text: $material.notes)
                     }
                 }
             }
+            .onChange(of: report.materials) { _ in refreshWaterproofingSpecs() }
             Section("Rakenteet ja mitat") {
             TextField("Lattialämmitys", text: $report.floorHeating)
             TextField("Kynnys / kaivo mm", text: $report.thresholdOrDrainLiftMm)
@@ -168,6 +196,19 @@ struct ReportDraftView: View {
                 if let exported { ShareLink(item: exported) { Label("Jaa PDF", systemImage: "square.and.arrow.up") } }
             }.padding().frame(maxWidth: .infinity).background(.regularMaterial)
         }
+    }
+    private func refreshWaterproofingSpecs() {
+        let entries = report.materials.filter { $0.category == "Vedeneriste" }
+        let key = entries.map { $0.surface + ":" + $0.manufacturer + ":" + $0.productName }.joined(separator: "|")
+        guard key != report.waterproofingSpecProductKey else { return }
+        report.waterproofingSpecProductKey = key
+        let wall = entries.first { $0.surface == "Seinä" }.flatMap { MaterialCatalog.spec($0.manufacturer, $0.productName) }
+        let floor = entries.first { $0.surface == "Lattia" }.flatMap { MaterialCatalog.spec($0.manufacturer, $0.productName) }
+        report.wallRequiredWaterproofingConsumptionPerM2 = wall?.wallConsumption ?? ""
+        report.floorRequiredWaterproofingConsumptionPerM2 = floor?.floorConsumption ?? ""
+        report.wallRequiredMinimumThicknessMm = wall?.wallThickness ?? ""
+        report.floorRequiredMinimumThicknessMm = floor?.floorThickness ?? ""
+        report.waterproofingSpecSource = Array(Set([wall?.source, floor?.source].compactMap { $0 })).sorted().joined(separator: "\n")
     }
     private func applySettings() {
         guard !report.settingsSnapshotCreated else { return }
