@@ -72,3 +72,20 @@
 "Select a dedicated company folder." = "Pasirinkite atskirą įmonės aplanką.";
 "This local archive is bound to another Google account or company folder. Synchronization blocked." = "Vietinis archyvas susietas su kita „Google“ paskyra arba įmonės aplanku. Sinchronizavimas užblokuotas.";
 "Password reset email sent." = "Slaptažodžio atkūrimo laiškas išsiųstas.";
+
+"Invalid email address." = "Netinkamas el. pašto adresas.";
+"Incorrect email or password." = "Neteisingas el. pašto adresas arba slaptažodis.";
+"Choose a stronger password." = "Pasirinkite stipresnį slaptažodį.";
+"Network error. Check your internet connection." = "Tinklo klaida. Patikrinkite interneto ryšį.";
+"Too many attempts. Try again later." = "Per daug bandymų. Bandykite vėliau.";
+"Sign in again to continue." = "Norėdami tęsti, prisijunkite iš naujo.";
+"Account is disabled." = "Paskyra išjungta.";
+"Email address is already in use." = "El. pašto adresas jau naudojamas.";
+"Customers: %d, sites: %d" = "Klientai: %d, objektai: %d";
+"Exported reports: %d" = "Eksportuotos ataskaitos: %d";
+"Imported reports: %d" = "Importuotos ataskaitos: %d";
+"Uploaded: %d, downloaded: %d, conflicts preserved: %d" = "Įkelta: %d, atsisiųsta: %d, išsaugoti konfliktai: %d";
+"Folder is readable." = "Aplanką galima skaityti.";
+"Private backup saved." = "Privati atsarginė kopija išsaugota.";
+"Backup restored." = "Atsarginė kopija atkurta.";
+"Google account connected." = "„Google“ paskyra prijungta.";

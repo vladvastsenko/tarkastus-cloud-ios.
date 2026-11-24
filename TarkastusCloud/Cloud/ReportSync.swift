@@ -28,7 +28,7 @@ enum ReportSync {
         for report in archive.general where report.templateName.isEmpty {
             try await publish(report.id, category: "tarkastus_reports") { try await ReportBundle.prepare(report, client: client, shared: shared) }
         }
-        return "Exported reports: \(count)"
+        return String(format: AppMessage.text("Exported reports: %d"), count)
     }
     // Existing reports are not overwritten until cross-platform round trips are verified.
     @MainActor
@@ -70,6 +70,6 @@ enum ReportSync {
         next.waterproofing.append(contentsOf: waterproofing)
         next.general.append(contentsOf: general)
         guard store.commit(next) else { throw DriveError.invalidResponse }
-        return "Imported reports: \(waterproofing.count + general.count)"
+        return String(format: AppMessage.text("Imported reports: %d"), waterproofing.count + general.count)
     }
 }

@@ -72,3 +72,20 @@
 "Select a dedicated company folder." = "Выберите отдельную папку компании.";
 "This local archive is bound to another Google account or company folder. Synchronization blocked." = "Локальный архив привязан к другому аккаунту Google или папке компании. Синхронизация заблокирована.";
 "Password reset email sent." = "Письмо для сброса пароля отправлено.";
+
+"Invalid email address." = "Некорректный адрес электронной почты.";
+"Incorrect email or password." = "Неверная электронная почта или пароль.";
+"Choose a stronger password." = "Выберите более надёжный пароль.";
+"Network error. Check your internet connection." = "Ошибка сети. Проверьте подключение к интернету.";
+"Too many attempts. Try again later." = "Слишком много попыток. Повторите позже.";
+"Sign in again to continue." = "Войдите снова, чтобы продолжить.";
+"Account is disabled." = "Аккаунт отключён.";
+"Email address is already in use." = "Адрес электронной почты уже используется.";
+"Customers: %d, sites: %d" = "Клиенты: %d, объекты: %d";
+"Exported reports: %d" = "Экспортировано отчётов: %d";
+"Imported reports: %d" = "Импортировано отчётов: %d";
+"Uploaded: %d, downloaded: %d, conflicts preserved: %d" = "Отправлено: %d, скачано: %d, сохранено конфликтов: %d";
+"Folder is readable." = "Папка доступна для чтения.";
+"Private backup saved." = "Личная резервная копия сохранена.";
+"Backup restored." = "Резервная копия восстановлена.";
+"Google account connected." = "Аккаунт Google подключён.";

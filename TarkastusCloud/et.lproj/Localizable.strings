@@ -72,3 +72,20 @@
 "Select a dedicated company folder." = "Valige eraldi ettevõtte kaust.";
 "This local archive is bound to another Google account or company folder. Synchronization blocked." = "Kohalik arhiiv on seotud teise Google'i konto või ettevõtte kaustaga. Sünkroonimine on blokeeritud.";
 "Password reset email sent." = "Parooli lähtestamise kiri saadetud.";
+
+"Invalid email address." = "Vigane e-posti aadress.";
+"Incorrect email or password." = "Vale e-posti aadress või parool.";
+"Choose a stronger password." = "Valige tugevam parool.";
+"Network error. Check your internet connection." = "Võrguviga. Kontrollige internetiühendust.";
+"Too many attempts. Try again later." = "Liiga palju katseid. Proovige hiljem uuesti.";
+"Sign in again to continue." = "Jätkamiseks logige uuesti sisse.";
+"Account is disabled." = "Konto on keelatud.";
+"Email address is already in use." = "E-posti aadress on juba kasutusel.";
+"Customers: %d, sites: %d" = "Kliendid: %d, objektid: %d";
+"Exported reports: %d" = "Eksporditud aruanded: %d";
+"Imported reports: %d" = "Imporditud aruanded: %d";
+"Uploaded: %d, downloaded: %d, conflicts preserved: %d" = "Üles laaditud: %d, alla laaditud: %d, konfliktid säilitatud: %d";
+"Folder is readable." = "Kaust on loetav.";
+"Private backup saved." = "Isiklik varukoopia salvestatud.";
+"Backup restored." = "Varukoopia taastatud.";
+"Google account connected." = "Google'i konto ühendatud.";

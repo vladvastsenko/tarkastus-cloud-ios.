@@ -37,7 +37,7 @@ struct DriveConnectionView: View {
                 TextField("Folder ID", text: $folderID).textInputAutocapitalization(.never).autocorrectionDisabled()
                 Button("Check folder") { run { client in
                     _ = try await client.children(of: folderID.trimmingCharacters(in: .whitespacesAndNewlines))
-                    notice = "Folder is readable."
+                    notice = AppMessage.text("Folder is readable.")
                 } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 Button("Synchronize") { run { client in
                     guard let identity = GIDSignIn.sharedInstance.currentUser?.userID else { throw DriveError.invalidResponse }
@@ -83,7 +83,7 @@ struct DriveConnectionView: View {
                     let name = "Tarkastus-private-" + UUID().uuidString + ".json"
                     _ = try await client.upload(name: name, parent: privateFolder, data: Data(contentsOf: url), mimeType: "application/json")
                     try await loadBackups(client)
-                    notice = "Private backup saved."
+                    notice = AppMessage.text("Private backup saved.")
                 } }.disabled(privateFolder.isEmpty)
                 Button("Load saved backups") { run { client in try await loadBackups(client) } }.disabled(privateFolder.isEmpty)
                 Picker("Saved backups", selection: $selectedBackup) {
@@ -125,7 +125,7 @@ struct DriveConnectionView: View {
                 defer { try? FileManager.default.removeItem(at: url) }
                 try data.write(to: url, options: [.atomic, .completeFileProtection])
                 _ = try PrivateBackup.read(url).restore(store: store)
-                notice = "Backup restored."
+                notice = AppMessage.text("Backup restored.")
             } }
             Button("Cancel", role: .cancel) {}
         } message: { Text("A recovery copy will be saved before replacing local report data.") }
@@ -156,7 +156,7 @@ struct DriveConnectionView: View {
                 GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientID)
                 let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: controller, hint: nil, additionalScopes: ["https://www.googleapis.com/auth/drive"])
                 email = result.user.profile?.email ?? ""
-                notice = "Google account connected."
+                notice = AppMessage.text("Google account connected.")
             } catch { notice = AppMessage.error(error, fallback: "Cloud operation failed. Check your connection and try again.") }
         }
     }

@@ -72,6 +72,6 @@ enum PDFSync {
         }
         }
         try await walk(root, remote, "", 0)
-        return "Uploaded: \(uploaded), downloaded: \(downloaded), conflicts preserved: \(preserved)"
+        return String(format: AppMessage.text("Uploaded: %d, downloaded: %d, conflicts preserved: %d"), uploaded, downloaded, preserved)
     }
 }

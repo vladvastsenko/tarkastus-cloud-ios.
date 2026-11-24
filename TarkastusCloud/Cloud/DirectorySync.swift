@@ -20,7 +20,7 @@ enum DirectorySync {
         guard store.commit(next) else { throw DriveError.invalidResponse }
         UserDefaults.standard.set(customers.baseline, forKey: customers.key)
         UserDefaults.standard.set(sites.baseline, forKey: sites.key)
-        return "Customers: \(next.customers.count), sites: \(next.sites.count)"
+        return String(format: AppMessage.text("Customers: %d, sites: %d"), next.customers.count, next.sites.count)
     }
 
     static func exchange<T: Codable>(_ values: [T], id: (T) -> String, client: DriveClient, parent: String, account: String, company: String, category: String, conflicts: String) async throws -> (values: [T], key: String, baseline: [String: String]) {

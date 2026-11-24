@@ -72,3 +72,20 @@
 "Select a dedicated company folder." = "Valitse erillinen yrityskansio.";
 "This local archive is bound to another Google account or company folder. Synchronization blocked." = "Paikallinen arkisto on sidottu toiseen Google-tiliin tai yrityskansioon. Synkronointi estetty.";
 "Password reset email sent." = "Salasanan palautusviesti lähetetty.";
+
+"Invalid email address." = "Virheellinen sähköpostiosoite.";
+"Incorrect email or password." = "Virheellinen sähköpostiosoite tai salasana.";
+"Choose a stronger password." = "Valitse vahvempi salasana.";
+"Network error. Check your internet connection." = "Verkkovirhe. Tarkista internetyhteys.";
+"Too many attempts. Try again later." = "Liian monta yritystä. Yritä myöhemmin uudelleen.";
+"Sign in again to continue." = "Kirjaudu uudelleen jatkaaksesi.";
+"Account is disabled." = "Tili on poistettu käytöstä.";
+"Email address is already in use." = "Sähköpostiosoite on jo käytössä.";
+"Customers: %d, sites: %d" = "Asiakkaat: %d, kohteet: %d";
+"Exported reports: %d" = "Viedyt raportit: %d";
+"Imported reports: %d" = "Tuodut raportit: %d";
+"Uploaded: %d, downloaded: %d, conflicts preserved: %d" = "Lähetetty: %d, ladattu: %d, ristiriidat säilytetty: %d";
+"Folder is readable." = "Kansio on luettavissa.";
+"Private backup saved." = "Yksityinen varmuuskopio tallennettu.";
+"Backup restored." = "Varmuuskopio palautettu.";
+"Google account connected." = "Google-tili yhdistetty.";

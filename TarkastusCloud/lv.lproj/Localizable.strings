@@ -72,3 +72,20 @@
 "Select a dedicated company folder." = "Izvēlieties atsevišķu uzņēmuma mapi.";
 "This local archive is bound to another Google account or company folder. Synchronization blocked." = "Lokālais arhīvs ir saistīts ar citu Google kontu vai uzņēmuma mapi. Sinhronizācija bloķēta.";
 "Password reset email sent." = "Paroles atiestatīšanas e-pasts nosūtīts.";
+
+"Invalid email address." = "Nederīga e-pasta adrese.";
+"Incorrect email or password." = "Nepareiza e-pasta adrese vai parole.";
+"Choose a stronger password." = "Izvēlieties drošāku paroli.";
+"Network error. Check your internet connection." = "Tīkla kļūda. Pārbaudiet interneta savienojumu.";
+"Too many attempts. Try again later." = "Pārāk daudz mēģinājumu. Mēģiniet vēlāk.";
+"Sign in again to continue." = "Lai turpinātu, pierakstieties vēlreiz.";
+"Account is disabled." = "Konts ir atspējots.";
+"Email address is already in use." = "E-pasta adrese jau tiek izmantota.";
+"Customers: %d, sites: %d" = "Klienti: %d, objekti: %d";
+"Exported reports: %d" = "Eksportētie pārskati: %d";
+"Imported reports: %d" = "Importētie pārskati: %d";
+"Uploaded: %d, downloaded: %d, conflicts preserved: %d" = "Augšupielādēts: %d, lejupielādēts: %d, saglabātie konflikti: %d";
+"Folder is readable." = "Mape ir lasāma.";
+"Private backup saved." = "Privātā dublējumkopija saglabāta.";
+"Backup restored." = "Dublējumkopija atjaunota.";
+"Google account connected." = "Google konts pievienots.";

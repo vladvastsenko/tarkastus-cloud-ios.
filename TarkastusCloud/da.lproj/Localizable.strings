@@ -72,3 +72,20 @@
 "Select a dedicated company folder." = "Vælg en særskilt virksomhedsmappe.";
 "This local archive is bound to another Google account or company folder. Synchronization blocked." = "Det lokale arkiv er knyttet til en anden Google-konto eller virksomhedsmappe. Synkronisering blokeret.";
 "Password reset email sent." = "E-mail til nulstilling af adgangskode sendt.";
+
+"Invalid email address." = "Ugyldig e-mailadresse.";
+"Incorrect email or password." = "Forkert e-mailadresse eller adgangskode.";
+"Choose a stronger password." = "Vælg en stærkere adgangskode.";
+"Network error. Check your internet connection." = "Netværksfejl. Kontrollér internetforbindelsen.";
+"Too many attempts. Try again later." = "For mange forsøg. Prøv igen senere.";
+"Sign in again to continue." = "Log ind igen for at fortsætte.";
+"Account is disabled." = "Kontoen er deaktiveret.";
+"Email address is already in use." = "E-mailadressen er allerede i brug.";
+"Customers: %d, sites: %d" = "Kunder: %d, objekter: %d";
+"Exported reports: %d" = "Eksporterede rapporter: %d";
+"Imported reports: %d" = "Importerede rapporter: %d";
+"Uploaded: %d, downloaded: %d, conflicts preserved: %d" = "Uploadet: %d, downloadet: %d, bevarede konflikter: %d";
+"Folder is readable." = "Mappen kan læses.";
+"Private backup saved." = "Privat sikkerhedskopi gemt.";
+"Backup restored." = "Sikkerhedskopi gendannet.";
+"Google account connected." = "Google-konto tilsluttet.";

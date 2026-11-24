@@ -72,3 +72,20 @@
 "Select a dedicated company folder." = "Select a dedicated company folder.";
 "This local archive is bound to another Google account or company folder. Synchronization blocked." = "This local archive is bound to another Google account or company folder. Synchronization blocked.";
 "Password reset email sent." = "Password reset email sent.";
+
+"Invalid email address." = "Invalid email address.";
+"Incorrect email or password." = "Incorrect email or password.";
+"Choose a stronger password." = "Choose a stronger password.";
+"Network error. Check your internet connection." = "Network error. Check your internet connection.";
+"Too many attempts. Try again later." = "Too many attempts. Try again later.";
+"Sign in again to continue." = "Sign in again to continue.";
+"Account is disabled." = "Account is disabled.";
+"Email address is already in use." = "Email address is already in use.";
+"Customers: %d, sites: %d" = "Customers: %d, sites: %d";
+"Exported reports: %d" = "Exported reports: %d";
+"Imported reports: %d" = "Imported reports: %d";
+"Uploaded: %d, downloaded: %d, conflicts preserved: %d" = "Uploaded: %d, downloaded: %d, conflicts preserved: %d";
+"Folder is readable." = "Folder is readable.";
+"Private backup saved." = "Private backup saved.";
+"Backup restored." = "Backup restored.";
+"Google account connected." = "Google account connected.";

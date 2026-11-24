@@ -1,4 +1,5 @@
 import SwiftUI
+import FirebaseAuth
 
 enum AppLanguage: String, CaseIterable, Identifiable {
     case en, fi, sv, nb, da, et, lv, lt, ru
@@ -78,6 +79,20 @@ enum AppMessage {
     static func error(_ error: Error, fallback: String) -> String {
         if let drive = error as? DriveError { return drive.errorDescription ?? text(fallback) }
         let ns = error as NSError
+        if ns.domain == NSURLErrorDomain { return text("Network error. Check your internet connection.") }
+        if ns.domain == AuthErrorDomain {
+            switch AuthErrorCode(rawValue: ns.code) {
+            case .invalidEmail: return text("Invalid email address.")
+            case .wrongPassword, .userNotFound, .invalidCredential: return text("Incorrect email or password.")
+            case .weakPassword: return text("Choose a stronger password.")
+            case .networkError: return text("Network error. Check your internet connection.")
+            case .tooManyRequests: return text("Too many attempts. Try again later.")
+            case .requiresRecentLogin, .userTokenExpired, .invalidUserToken: return text("Sign in again to continue.")
+            case .userDisabled: return text("Account is disabled.")
+            case .emailAlreadyInUse: return text("Email address is already in use.")
+            default: break
+            }
+        }
         if ns.domain == "AccountSession" || ns.domain == "PrivateBackup", let message = ns.userInfo[NSLocalizedDescriptionKey] as? String { return text(message) }
         return text(fallback)
     }
