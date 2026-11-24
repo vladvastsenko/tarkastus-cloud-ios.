@@ -25,7 +25,7 @@ struct DriveConnectionView: View {
                     notice = "Folder is readable."
                 } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 Button("Synchronize PDFs") { run { client in
-                    notice = try await PDFSync.sync(client: client, company: folderID.trimmingCharacters(in: .whitespacesAndNewlines))
+                    notice = try await PDFSync.sync(client: client, company: folderID.trimmingCharacters(in: .whitespacesAndNewlines), account: GIDSignIn.sharedInstance.currentUser?.userID ?? email)
                 } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 Button("List root folders") { run { client in
                     folders = try await client.children(of: "root").filter { $0.mimeType == "application/vnd.google-apps.folder" }
