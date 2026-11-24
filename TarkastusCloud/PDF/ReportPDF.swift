@@ -19,13 +19,13 @@ enum ReportPDF {
         field("Seinäalusta", r.wallSubstrate); field("Lattia-alusta", r.floorSubstrate)
         field("Lämpötila °C", r.roomTemperatureC); field("Ilman kosteus %", r.relativeHumidityPercent); field("Alustan kosteus %", r.substrateMoisturePercent)
         blocks.append(.text(tr("TUOTTEET"), true))
-        for m in r.materials where !m.productName.isEmpty { field(m.category + " " + m.surface, [m.manufacturer, m.productName, m.notes].filter { !$0.isEmpty }.joined(separator: " ")) }
+        for m in r.materials where !m.productName.isEmpty { field([tr(m.category), tr(m.surface)].filter { !$0.isEmpty }.joined(separator: " "), [m.manufacturer, m.productName, m.notes].filter { !$0.isEmpty }.joined(separator: " ")) }
         field("Lattialämmitys", r.floorHeating); field("Kynnys / kaivo mm", r.thresholdOrDrainLiftMm); field("Kaadot", r.floorSlopes)
         field("Seinä m²", r.wallAreaM2); field("Lattia m²", r.floorAreaM2)
         field("Seinän menekki l", r.wallWaterproofingConsumptionLitres); field("Lattian menekki l", r.floorWaterproofingConsumptionLitres)
         field("Seinän kuivakalvo mm", r.wallDryFilmThicknessMm); field("Lattian kuivakalvo mm", r.floorDryFilmThicknessMm)
         blocks.append(.text(tr("TARKASTUS"), true))
-        field("Tulos", r.inspectionResult); field("Päivä", r.inspectionDate); field("Lisätiedot", r.additionalNotes)
+        field("Tulos", tr(r.inspectionResult)); field("Päivä", r.inspectionDate); field("Lisätiedot", r.additionalNotes)
         field("Tarkastaja", r.inspectorName); field("Sertifikaatti", r.inspectorCertificateNumber)
         blocks.append(.image(r.signatureImagePath))
         blocks.append(.photos(r.photos.map(\.filePath), 9))
