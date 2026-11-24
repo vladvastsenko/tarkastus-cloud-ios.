@@ -58,3 +58,12 @@ struct LanguageSettingsPicker: View {
         }
     }
 }
+
+struct PDFLanguagePicker: View {
+    @AppStorage("defaultPDFLanguage") private var language = "en"
+    var body: some View {
+        Picker("Default PDF language", selection: $language) {
+            ForEach(AppLanguage.allCases) { item in Text(item.name).tag(item.rawValue) }
+        }
+    }
+}
