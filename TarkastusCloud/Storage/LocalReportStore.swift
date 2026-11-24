@@ -24,19 +24,19 @@ final class LocalReportStore: ObservableObject {
                 archive = try JSONDecoder().decode(LocalArchive.self, from: Data(contentsOf: file))
             }
             loaded = true
-        } catch { errorMessage = error.localizedDescription }
+        } catch { errorMessage = AppMessage.error(error, fallback: "Local file operation failed.") }
     }
 
     @discardableResult
     func commit(_ next: LocalArchive) -> Bool {
-        guard loaded else { errorMessage = "Archive unavailable. Existing data will not be overwritten."; return false }
+        guard loaded else { errorMessage = AppMessage.text("Archive unavailable. Existing data will not be overwritten."); return false }
         do {
             let encoder = JSONEncoder()
             encoder.outputFormatting = [.sortedKeys]
             try encoder.encode(next).write(to: file, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
             archive = next
             return true
-        } catch { errorMessage = error.localizedDescription; return false }
+        } catch { errorMessage = AppMessage.error(error, fallback: "Local file operation failed."); return false }
     }
 
     func save(_ report: InspectionReport) -> Bool {

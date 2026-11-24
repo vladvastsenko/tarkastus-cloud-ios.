@@ -238,3 +238,20 @@
 "Save signature" = "Сохранить подпись";
 "Signature" = "Подпись";
 "Could not save signature." = "Не удалось сохранить подпись.";
+
+"English is selected by default. You can change the language later in Settings." = "По умолчанию выбран английский. Язык можно изменить в настройках.";
+"Firebase configuration is missing." = "Отсутствует конфигурация Firebase.";
+"Link this device to your account" = "Привязать устройство к аккаунту";
+"Local reports remain available offline. Cloud access is linked to this account." = "Локальные отчёты доступны без интернета. Доступ к облаку привязан к этому аккаунту.";
+"This device is linked to another account." = "Устройство привязано к другому аккаунту.";
+"Sign in with the original account for cloud access, or sign out to work offline." = "Войдите в исходный аккаунт для доступа к облаку или выйдите для работы без интернета.";
+"The folder owner invites colleagues through Google Drive. Each employee selects the shared folder in Tarkastus Cloud." = "Владелец папки приглашает коллег через Google Drive. Каждый сотрудник выбирает общую папку в Tarkastus Cloud.";
+"Local archive is linked to a company folder. Disconnecting does not remove this protection." = "Локальный архив связан с папкой компании. Отключение не снимает эту защиту.";
+"Existing shared reports are not overwritten yet." = "Существующие общие отчёты пока не перезаписываются.";
+"Restore selected backup?" = "Восстановить выбранную резервную копию?";
+"Archive unavailable. Existing data will not be overwritten." = "Архив недоступен. Существующие данные не будут перезаписаны.";
+"PDF" = "PDF";
+"OK" = "OK";
+"—" = "—";
+"Tarkastus Cloud" = "Tarkastus Cloud";
+"Google Drive" = "Google Drive";

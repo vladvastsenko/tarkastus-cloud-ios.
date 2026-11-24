@@ -238,3 +238,20 @@
 "Save signature" = "Lagre signatur";
 "Signature" = "Signatur";
 "Could not save signature." = "Kunne ikke lagre signaturen.";
+
+"English is selected by default. You can change the language later in Settings." = "Engelsk er standard. Du kan endre språk senere i innstillingene.";
+"Firebase configuration is missing." = "Firebase-konfigurasjon mangler.";
+"Link this device to your account" = "Knytt enheten til kontoen din";
+"Local reports remain available offline. Cloud access is linked to this account." = "Lokale rapporter er tilgjengelige offline. Skytilgang knyttes til kontoen.";
+"This device is linked to another account." = "Enheten er knyttet til en annen konto.";
+"Sign in with the original account for cloud access, or sign out to work offline." = "Logg inn med opprinnelig konto for skytilgang, eller logg ut for å jobbe offline.";
+"The folder owner invites colleagues through Google Drive. Each employee selects the shared folder in Tarkastus Cloud." = "Mappeeieren inviterer kolleger via Google Drive. Hver ansatt velger delt mappe i Tarkastus Cloud.";
+"Local archive is linked to a company folder. Disconnecting does not remove this protection." = "Lokalt arkiv er knyttet til en firmamappe. Frakobling fjerner ikke beskyttelsen.";
+"Existing shared reports are not overwritten yet." = "Eksisterende delte rapporter overskrives ikke ennå.";
+"Restore selected backup?" = "Gjenopprette valgt sikkerhetskopi?";
+"Archive unavailable. Existing data will not be overwritten." = "Arkivet er utilgjengelig. Eksisterende data overskrives ikke.";
+"PDF" = "PDF";
+"OK" = "OK";
+"—" = "—";
+"Tarkastus Cloud" = "Tarkastus Cloud";
+"Google Drive" = "Google Drive";

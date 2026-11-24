@@ -238,3 +238,20 @@
 "Save signature" = "Salvesta allkiri";
 "Signature" = "Allkiri";
 "Could not save signature." = "Allkirja salvestamine ebaõnnestus.";
+
+"English is selected by default. You can change the language later in Settings." = "Vaikimisi on inglise keel. Keelt saab hiljem seadetes muuta.";
+"Firebase configuration is missing." = "Firebase'i seadistus puudub.";
+"Link this device to your account" = "Seo seade kontoga";
+"Local reports remain available offline. Cloud access is linked to this account." = "Kohalikud aruanded jäävad võrguühenduseta kättesaadavaks. Pilvejuurdepääs seotakse kontoga.";
+"This device is linked to another account." = "Seade on seotud teise kontoga.";
+"Sign in with the original account for cloud access, or sign out to work offline." = "Pilve kasutamiseks logi algsele kontole või logi välja võrguühenduseta tööks.";
+"The folder owner invites colleagues through Google Drive. Each employee selects the shared folder in Tarkastus Cloud." = "Kausta omanik kutsub kolleegid Google Drive'is. Iga töötaja valib jagatud kausta Tarkastus Cloudis.";
+"Local archive is linked to a company folder. Disconnecting does not remove this protection." = "Kohalik arhiiv on seotud ettevõtte kaustaga. Ühenduse katkestamine ei eemalda kaitset.";
+"Existing shared reports are not overwritten yet." = "Jagatud aruandeid ei kirjutata veel üle.";
+"Restore selected backup?" = "Taastada valitud varukoopia?";
+"Archive unavailable. Existing data will not be overwritten." = "Arhiiv pole saadaval. Olemasolevaid andmeid ei kirjutata üle.";
+"PDF" = "PDF";
+"OK" = "OK";
+"—" = "—";
+"Tarkastus Cloud" = "Tarkastus Cloud";
+"Google Drive" = "Google Drive";

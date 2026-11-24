@@ -238,3 +238,20 @@
 "Save signature" = "Saglabāt parakstu";
 "Signature" = "Paraksts";
 "Could not save signature." = "Neizdevās saglabāt parakstu.";
+
+"English is selected by default. You can change the language later in Settings." = "Pēc noklusējuma izvēlēta angļu valoda. To var mainīt iestatījumos.";
+"Firebase configuration is missing." = "Trūkst Firebase konfigurācijas.";
+"Link this device to your account" = "Saistīt ierīci ar kontu";
+"Local reports remain available offline. Cloud access is linked to this account." = "Lokālie pārskati pieejami bezsaistē. Mākoņa piekļuve saistīta ar kontu.";
+"This device is linked to another account." = "Ierīce saistīta ar citu kontu.";
+"Sign in with the original account for cloud access, or sign out to work offline." = "Mākoņa piekļuvei pierakstieties sākotnējā kontā vai izrakstieties darbam bezsaistē.";
+"The folder owner invites colleagues through Google Drive. Each employee selects the shared folder in Tarkastus Cloud." = "Mapes īpašnieks uzaicina kolēģus Google Drive. Katrs izvēlas koplietoto mapi Tarkastus Cloud.";
+"Local archive is linked to a company folder. Disconnecting does not remove this protection." = "Lokālais arhīvs saistīts ar uzņēmuma mapi. Atvienošana neatceļ aizsardzību.";
+"Existing shared reports are not overwritten yet." = "Esošie koplietotie pārskati vēl netiek pārrakstīti.";
+"Restore selected backup?" = "Atjaunot izvēlēto dublējumu?";
+"Archive unavailable. Existing data will not be overwritten." = "Arhīvs nav pieejams. Esošie dati netiks pārrakstīti.";
+"PDF" = "PDF";
+"OK" = "OK";
+"—" = "—";
+"Tarkastus Cloud" = "Tarkastus Cloud";
+"Google Drive" = "Google Drive";

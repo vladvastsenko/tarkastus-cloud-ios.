@@ -238,3 +238,20 @@
 "Save signature" = "Išsaugoti parašą";
 "Signature" = "Parašas";
 "Could not save signature." = "Nepavyko išsaugoti parašo.";
+
+"English is selected by default. You can change the language later in Settings." = "Numatytoji kalba yra anglų. Ją galima pakeisti nustatymuose.";
+"Firebase configuration is missing." = "Trūksta Firebase konfigūracijos.";
+"Link this device to your account" = "Susieti įrenginį su paskyra";
+"Local reports remain available offline. Cloud access is linked to this account." = "Vietinės ataskaitos pasiekiamos neprisijungus. Debesijos prieiga susieta su paskyra.";
+"This device is linked to another account." = "Įrenginys susietas su kita paskyra.";
+"Sign in with the original account for cloud access, or sign out to work offline." = "Debesijai naudokite pradinę paskyrą arba atsijunkite darbui neprisijungus.";
+"The folder owner invites colleagues through Google Drive. Each employee selects the shared folder in Tarkastus Cloud." = "Aplanko savininkas kviečia kolegas per Google Drive. Kiekvienas pasirenka bendrinamą aplanką Tarkastus Cloud.";
+"Local archive is linked to a company folder. Disconnecting does not remove this protection." = "Vietinis archyvas susietas su įmonės aplanku. Atjungimas apsaugos nepašalina.";
+"Existing shared reports are not overwritten yet." = "Esamos bendrinamos ataskaitos dar neperrašomos.";
+"Restore selected backup?" = "Atkurti pasirinktą atsarginę kopiją?";
+"Archive unavailable. Existing data will not be overwritten." = "Archyvas nepasiekiamas. Esami duomenys nebus perrašyti.";
+"PDF" = "PDF";
+"OK" = "OK";
+"—" = "—";
+"Tarkastus Cloud" = "Tarkastus Cloud";
+"Google Drive" = "Google Drive";

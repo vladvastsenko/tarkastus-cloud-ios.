@@ -10,6 +10,8 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
+      - name: Validate localization
+        run: python3 scripts/check_localization.py
       - run: brew install xcodegen
       - run: xcodegen generate
       - run: xcodebuild -project TarkastusCloud.xcodeproj -scheme TarkastusCloud -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build

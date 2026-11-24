@@ -238,3 +238,20 @@
 "Save signature" = "Save signature";
 "Signature" = "Signature";
 "Could not save signature." = "Could not save signature.";
+
+"English is selected by default. You can change the language later in Settings." = "English is selected by default. You can change the language later in Settings.";
+"Firebase configuration is missing." = "Firebase configuration is missing.";
+"Link this device to your account" = "Link this device to your account";
+"Local reports remain available offline. Cloud access is linked to this account." = "Local reports remain available offline. Cloud access is linked to this account.";
+"This device is linked to another account." = "This device is linked to another account.";
+"Sign in with the original account for cloud access, or sign out to work offline." = "Sign in with the original account for cloud access, or sign out to work offline.";
+"The folder owner invites colleagues through Google Drive. Each employee selects the shared folder in Tarkastus Cloud." = "The folder owner invites colleagues through Google Drive. Each employee selects the shared folder in Tarkastus Cloud.";
+"Local archive is linked to a company folder. Disconnecting does not remove this protection." = "Local archive is linked to a company folder. Disconnecting does not remove this protection.";
+"Existing shared reports are not overwritten yet." = "Existing shared reports are not overwritten yet.";
+"Restore selected backup?" = "Restore selected backup?";
+"Archive unavailable. Existing data will not be overwritten." = "Archive unavailable. Existing data will not be overwritten.";
+"PDF" = "PDF";
+"OK" = "OK";
+"—" = "—";
+"Tarkastus Cloud" = "Tarkastus Cloud";
+"Google Drive" = "Google Drive";
