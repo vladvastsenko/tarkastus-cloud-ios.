@@ -32,6 +32,9 @@ struct DriveConnectionView: View {
                     guard let identity = GIDSignIn.sharedInstance.currentUser?.userID else { throw DriveError.invalidResponse }
                     notice = try await DirectorySync.synchronize(store: store, client: client, company: folderID.trimmingCharacters(in: .whitespacesAndNewlines), account: identity)
                 } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                Button("Export new reports") { run { client in
+                    notice = try await ReportSync.exportMissing(store: store, client: client, company: folderID.trimmingCharacters(in: .whitespacesAndNewlines))
+                } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 Button("Import missing reports") { run { client in
                     notice = try await ReportSync.importMissing(store: store, client: client, company: folderID.trimmingCharacters(in: .whitespacesAndNewlines))
                 } }.disabled(folderID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
