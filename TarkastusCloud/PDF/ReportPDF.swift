@@ -28,7 +28,7 @@ enum ReportPDF {
         field("Tarkastaja", r.inspectorName); field("Sertifikaatti", r.inspectorCertificateNumber)
         blocks.append(.image(r.signatureImagePath))
         blocks.append(.photos(r.photos.map(\.filePath), 9))
-        return try render(blocks, footer: r.footerText, name: "valvontapoytakirja_" + (r.siteName.isEmpty ? r.siteAddress : r.siteName))
+        return try render(blocks, footer: r.footerText, name: "valvontapoytakirja_" + (r.siteAddress.isEmpty ? r.siteName : r.siteAddress))
     }
     static func export(_ r: GeneralInspectionReport) throws -> URL {
         var blocks: [Block] = [.image(r.logoPath), .text(r.headerText, false), .text("TARKASTUSPÖYTÄKIRJA", true)]
@@ -44,7 +44,7 @@ enum ReportPDF {
         }
         field("Yhteenveto", r.summary); field("Tarkastuspäivä", r.inspectionDate); field("Tarkastaja", r.inspectorName)
         blocks.append(.image(r.signatureImagePath))
-        return try render(blocks, footer: r.footerText, name: "tarkastuspöytäkirja_" + (r.siteName.isEmpty ? r.siteAddress : r.siteName))
+        return try render(blocks, footer: r.footerText, name: "tarkastuspöytäkirja_" + (r.siteAddress.isEmpty ? r.siteName : r.siteAddress))
     }
     private static func render(_ blocks: [Block], footer: String, name: String) throws -> URL {
         typealias Draw = () -> Void
@@ -109,7 +109,7 @@ enum ReportPDF {
             }
         }
         let safe = name.components(separatedBy: CharacterSet(charactersIn: "/\\:*?\"<>|").union(.controlCharacters)).joined(separator: "_")
-        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        let directory = try PDFArchive.directory()
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let url = directory.appendingPathComponent(safe + ".pdf")
         try data.write(to: url, options: .atomic)
