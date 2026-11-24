@@ -2,6 +2,7 @@ import SwiftUI
 import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
+import UIKit
 
 @MainActor
 final class AccountSession: ObservableObject {
@@ -19,6 +20,21 @@ final class AccountSession: ObservableObject {
     }
     func signIn(_ email: String, _ password: String) async throws {
         _ = try await Auth.auth().signIn(withEmail: email, password: password)
+    }
+    func signInWithGoogle() async throws {
+        guard let clientID = FirebaseApp.app()?.options.clientID,
+              let root = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).flatMap({ $0.windows }).first(where: { $0.isKeyWindow })?.rootViewController else {
+            throw NSError(domain: "AccountSession", code: 1, userInfo: [NSLocalizedDescriptionKey: "Google sign-in configuration is missing."])
+        }
+        var presenter = root
+        while let presented = presenter.presentedViewController { presenter = presented }
+        GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientID)
+        let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: presenter)
+        guard let token = result.user.idToken?.tokenString else {
+            throw NSError(domain: "AccountSession", code: 2, userInfo: [NSLocalizedDescriptionKey: "Google identity token is missing."])
+        }
+        let credential = GoogleAuthProvider.credential(withIDToken: token, accessToken: result.user.accessToken.tokenString)
+        _ = try await Auth.auth().signIn(with: credential)
     }
     func register(_ email: String, _ password: String) async throws {
         let result = try await Auth.auth().createUser(withEmail: email, password: password)
@@ -95,6 +111,7 @@ struct AccountGate<Content: View>: View {
                         }
                         Button("Continue as guest") { guest = true; password = "" }
                         Button("Sign in") { run { try await session.signIn(email.trimmingCharacters(in: .whitespacesAndNewlines), password) } }
+                        Button("Sign in with Google") { run { try await session.signInWithGoogle() } }
                         Button("Register") { run { try await session.register(email.trimmingCharacters(in: .whitespacesAndNewlines), password) } }
                         Button("Reset password") { run { try await session.reset(email.trimmingCharacters(in: .whitespacesAndNewlines)); notice = "Password reset email sent." } }
                     }
