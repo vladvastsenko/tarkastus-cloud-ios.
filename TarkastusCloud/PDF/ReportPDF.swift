@@ -13,7 +13,9 @@ enum ReportPDF {
         var blocks: [Block] = [.image(r.logoPath), .text(r.headerText, false), .text(tr("VALVONTAPÖYTÄKIRJA"), true)]
         func field(_ label: String, _ value: String) { if !value.isEmpty { blocks.append(.text(tr(label) + ": " + value, false)) } }
         field("Kohde", r.siteName); field("Osoite", r.siteAddress); field("Tilaaja", r.clientOrRepresentative)
+        field("Tilaajan puhelin", r.clientPhone); field("Tilaajan sähköposti", r.clientEmail)
         field("Asentaja", r.installerName); field("Sertifikaatti", r.installerCertificateNumber)
+        field("Asentajan puhelin", r.installerPhone); field("Asentajan sähköposti", r.installerEmail)
         field("Työn aloitus", r.workStartDate); field("Työn päättyminen", r.workEndDate)
         blocks.append(.text(tr("ALUSTAT JA TYÖOLOSUHTEET"), true))
         field("Seinäalusta", r.wallSubstrate); field("Lattia-alusta", r.floorSubstrate)
@@ -22,11 +24,15 @@ enum ReportPDF {
         for m in r.materials where !m.productName.isEmpty { field([tr(m.category), tr(m.surface)].filter { !$0.isEmpty }.joined(separator: " "), [m.manufacturer, m.productName, m.notes].filter { !$0.isEmpty }.joined(separator: " ")) }
         field("Lattialämmitys", r.floorHeating); field("Kynnys / kaivo mm", r.thresholdOrDrainLiftMm); field("Kaadot", r.floorSlopes)
         field("Seinä m²", r.wallAreaM2); field("Lattia m²", r.floorAreaM2)
+        field("Seinän vaadittu menekki", r.wallRequiredWaterproofingConsumptionPerM2); field("Lattian vaadittu menekki", r.floorRequiredWaterproofingConsumptionPerM2)
         field("Seinän menekki l", r.wallWaterproofingConsumptionLitres); field("Lattian menekki l", r.floorWaterproofingConsumptionLitres)
         field("Seinän kuivakalvo mm", r.wallDryFilmThicknessMm); field("Lattian kuivakalvo mm", r.floorDryFilmThicknessMm)
+        field("Seinän vähimmäispaksuus mm", r.wallRequiredMinimumThicknessMm); field("Lattian vähimmäispaksuus mm", r.floorRequiredMinimumThicknessMm)
+        for f in r.siteFieldValues { if !f.value.isEmpty { blocks.append(.text(f.label + ": " + f.value, false)) } }
         blocks.append(.text(tr("TARKASTUS"), true))
         field("Tulos", tr(r.inspectionResult)); field("Päivä", r.inspectionDate); field("Lisätiedot", r.additionalNotes)
         field("Tarkastaja", r.inspectorName); field("Sertifikaatti", r.inspectorCertificateNumber)
+        field("Puhelin", r.inspectorPhone); field("Sähköposti", r.inspectorEmail)
         blocks.append(.image(r.signatureImagePath))
         blocks.append(.photos(r.photos.map(\.filePath), 9))
         return try render(blocks, footer: r.footerText, missingPhoto: tr("Missing photo"), name: "valvontapoytakirja_" + (r.siteAddress.isEmpty ? r.siteName : r.siteAddress))
@@ -36,6 +42,7 @@ enum ReportPDF {
         var blocks: [Block] = [.image(r.logoPath), .text(r.headerText, false), .text(tr("TARKASTUSPÖYTÄKIRJA"), true)]
         func field(_ label: String, _ value: String) { if !value.isEmpty { blocks.append(.text(tr(label) + ": " + value, false)) } }
         field("Kohde", r.siteName); field("Osoite", r.siteAddress); field("Tilaaja", r.clientOrRepresentative)
+        field("Tilaajan puhelin", r.clientPhone); field("Tilaajan sähköposti", r.clientEmail)
         field("Tarkastuksen tarkoitus", r.purposeAndScope); field("Yleiset havainnot", r.generalObservations)
         for f in r.customFields { field(f.label, f.value) }
         blocks.append(.text(tr("TARKASTUSKOHTEET"), true))
@@ -45,6 +52,7 @@ enum ReportPDF {
             blocks.append(.photos(o.photos.map { $0.annotatedPath.isEmpty ? $0.filePath : $0.annotatedPath }, 4))
         }
         field("Yhteenveto", r.summary); field("Tarkastuspäivä", r.inspectionDate); field("Tarkastaja", r.inspectorName)
+        field("Sertifikaatti", r.inspectorCertificateNumber); field("Puhelin", r.inspectorPhone); field("Sähköposti", r.inspectorEmail)
         blocks.append(.image(r.signatureImagePath))
         return try render(blocks, footer: r.footerText, missingPhoto: tr("Missing photo"), name: "tarkastuspöytäkirja_" + (r.siteAddress.isEmpty ? r.siteName : r.siteAddress))
     }

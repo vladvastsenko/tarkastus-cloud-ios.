@@ -61,6 +61,16 @@ enum PDFTranslation {
         "Lattia": ["Lattia", "Floor", "Golv", "Gulv", "Gulv", "Põrand", "Grīda", "Grindys", "Пол"],
         "Hyväksytty": ["Hyväksytty", "Approved", "Godkänd", "Godkjent", "Godkendt", "Heaks kiidetud", "Apstiprināts", "Patvirtinta", "Принято"],
         "Hylätty": ["Hylätty", "Rejected", "Underkänd", "Ikke godkjent", "Ikke godkendt", "Tagasi lükatud", "Noraidīts", "Atmesta", "Не принято"],
-        "Missing photo": ["Kuva puuttuu", "Missing photo", "Foto saknas", "Bilde mangler", "Foto mangler", "Foto puudub", "Trūkst fotoattēla", "Trūksta nuotraukos", "Фотография отсутствует"]
+        "Missing photo": ["Kuva puuttuu", "Missing photo", "Foto saknas", "Bilde mangler", "Foto mangler", "Foto puudub", "Trūkst fotoattēla", "Trūksta nuotraukos", "Фотография отсутствует"],
+        "Tilaajan puhelin": ["Tilaajan puhelin","Client phone","Beställarens telefon","Oppdragsgivers telefon","Bygherrens telefon","Tellija telefon","Pasūtītāja tālrunis","Užsakovo telefonas","Телефон заказчика"],
+        "Tilaajan sähköposti": ["Tilaajan sähköposti","Client email","Beställarens e-post","Oppdragsgivers e-post","Bygherrens e-mail","Tellija e-post","Pasūtītāja e-pasts","Užsakovo el. paštas","Почта заказчика"],
+        "Asentajan puhelin": ["Asentajan puhelin","Installer phone","Montörens telefon","Montørens telefon","Montørens telefon","Paigaldaja telefon","Montētāja tālrunis","Montuotojo telefonas","Телефон исполнителя"],
+        "Asentajan sähköposti": ["Asentajan sähköposti","Installer email","Montörens e-post","Montørens e-post","Montørens e-mail","Paigaldaja e-post","Montētāja e-pasts","Montuotojo el. paštas","Почта исполнителя"],
+        "Seinän vaadittu menekki": ["Seinän vaadittu menekki","Required wall consumption","Krav på åtgång vägg","Påkrevd forbruk vegg","Påkrævet forbrug væg","Seina nõutav materjalikulu","Nepieciešamais patēriņš sienām","Reikiamos sienų sąnaudos","Требуемый расход на стены"],
+        "Lattian vaadittu menekki": ["Lattian vaadittu menekki","Required floor consumption","Krav på åtgång golv","Påkrevd forbruk gulv","Påkrævet forbrug gulv","Põranda nõutav materjalikulu","Nepieciešamais patēriņš grīdai","Reikiamos grindų sąnaudos","Требуемый расход на пол"],
+        "Seinän vähimmäispaksuus mm": ["Seinän vähimmäispaksuus mm","Minimum wall thickness mm","Minsta väggtjocklek mm","Minste veggtykkelse mm","Mindste vægtykkelse mm","Seina minimaalne paksus mm","Minimālais sienas slāņa biezums mm","Mažiausias sienos sluoksnio storis mm","Минимальная толщина слоя стен мм"],
+        "Lattian vähimmäispaksuus mm": ["Lattian vähimmäispaksuus mm","Minimum floor thickness mm","Minsta golvtjocklek mm","Minste gulvtykkelse mm","Mindste gulvtykkelse mm","Põranda minimaalne paksus mm","Minimālais grīdas slāņa biezums mm","Mažiausias grindų sluoksnio storis mm","Минимальная толщина слоя пола мм"],
+        "Puhelin": ["Puhelin","Phone","Telefon","Telefon","Telefon","Telefon","Tālrunis","Telefonas","Телефон"],
+        "Sähköposti": ["Sähköposti","Email","E-post","E-post","E-mail","E-post","E-pasts","El. paštas","Электронная почта"]
     ]
 }
