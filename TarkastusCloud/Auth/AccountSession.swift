@@ -21,7 +21,7 @@ final class AccountSession: ObservableObject {
     }
     func register(_ email: String, _ password: String) async throws {
         let result = try await Auth.auth().createUser(withEmail: email, password: password)
-        try await result.user.sendEmailVerification()
+        try? await result.user.sendEmailVerification()
     }
     func reset(_ email: String) async throws { try await Auth.auth().sendPasswordReset(withEmail: email) }
     func refresh() async throws {
@@ -57,7 +57,7 @@ struct AccountGate<Content: View>: View {
                     content().environmentObject(session)
                     #endif
                 }
-            } else if let user = session.user, user.isEmailVerified {
+            } else if let user = session.user {
                 if ownerUID == user.uid {
                     content().environmentObject(session)
                 } else if ownerUID.isEmpty {
