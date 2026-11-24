@@ -1,0 +1,48 @@
+import Foundation
+
+enum PDFTranslation {
+    static func label(_ key: String, language: String) -> String {
+        let languages = ["fi", "en", "sv", "nb", "da", "et", "lv", "lt", "ru"]
+        guard let index = languages.firstIndex(of: language), let values = labels[key] else { return key }
+        return values[index]
+    }
+    private static let labels: [String: [String]] = [
+        "VALVONTAPÖYTÄKIRJA": ["VALVONTAPÖYTÄKIRJA", "WATERPROOFING INSPECTION REPORT", "KONTROLLPROTOKOLL FÖR TÄTSKIKT", "KONTROLLRAPPORT FOR VÅTROM", "KONTROLRAPPORT FOR VÅDRUM", "HÜDROISOLATSIOONI KONTROLLAKT", "HIDROIZOLĀCIJAS PĀRBAUDES AKTS", "HIDROIZOLIACIJOS PATIKROS AKTAS", "ПРОТОКОЛ КОНТРОЛЯ ГИДРОИЗОЛЯЦИИ"],
+        "TARKASTUSPÖYTÄKIRJA": ["TARKASTUSPÖYTÄKIRJA", "INSPECTION REPORT", "BESIKTNINGSPROTOKOLL", "INSPEKSJONSRAPPORT", "INSPEKTIONSRAPPORT", "KONTROLLAKT", "PĀRBAUDES AKTS", "PATIKROS AKTAS", "ПРОТОКОЛ ОСМОТРА"],
+        "Kohde": ["Kohde", "Site", "Objekt", "Objekt", "Objekt", "Objekt", "Objekts", "Objektas", "Объект"],
+        "Osoite": ["Osoite", "Address", "Adress", "Adresse", "Adresse", "Aadress", "Adrese", "Adresas", "Адрес"],
+        "Tilaaja": ["Tilaaja", "Client", "Beställare", "Oppdragsgiver", "Bygherre", "Tellija", "Pasūtītājs", "Užsakovas", "Заказчик"],
+        "Asentaja": ["Asentaja", "Installer", "Montör", "Montør", "Montør", "Paigaldaja", "Montētājs", "Montuotojas", "Исполнитель"],
+        "Sertifikaatti": ["Sertifikaatti", "Certificate", "Certifikat", "Sertifikat", "Certifikat", "Sertifikaat", "Sertifikāts", "Sertifikatas", "Сертификат"],
+        "Työn aloitus": ["Työn aloitus", "Work started", "Arbetsstart", "Arbeidsstart", "Arbejdsstart", "Töö algus", "Darbu sākums", "Darbų pradžia", "Начало работ"],
+        "Työn päättyminen": ["Työn päättyminen", "Work completed", "Arbetsslut", "Arbeidsslutt", "Arbejdsafslutning", "Töö lõpp", "Darbu beigas", "Darbų pabaiga", "Окончание работ"],
+        "ALUSTAT JA TYÖOLOSUHTEET": ["ALUSTAT JA TYÖOLOSUHTEET", "SUBSTRATES AND WORK CONDITIONS", "UNDERLAG OCH ARBETSFÖRHÅLLANDEN", "UNDERLAG OG ARBEIDSFORHOLD", "UNDERLAG OG ARBEJDSFORHOLD", "ALUSPINNAD JA TÖÖTINGIMUSED", "PAMATNES UN DARBA APSTĀKĻI", "PAGRINDAI IR DARBO SĄLYGOS", "ОСНОВАНИЯ И УСЛОВИЯ РАБОТ"],
+        "Seinäalusta": ["Seinäalusta", "Wall substrate", "Väggunderlag", "Veggunderlag", "Vægunderlag", "Seina aluspind", "Sienas pamatne", "Sienos pagrindas", "Основание стен"],
+        "Lattia-alusta": ["Lattia-alusta", "Floor substrate", "Golvunderlag", "Gulvunderlag", "Gulvunderlag", "Põranda aluspind", "Grīdas pamatne", "Grindų pagrindas", "Основание пола"],
+        "Lämpötila °C": ["Lämpötila °C", "Temperature °C", "Temperatur °C", "Temperatur °C", "Temperatur °C", "Temperatuur °C", "Temperatūra °C", "Temperatūra °C", "Температура °C"],
+        "Ilman kosteus %": ["Ilman kosteus %", "Air humidity %", "Luftfuktighet %", "Luftfuktighet %", "Luftfugtighed %", "Õhuniiskus %", "Gaisa mitrums %", "Oro drėgnis %", "Влажность воздуха %"],
+        "Alustan kosteus %": ["Alustan kosteus %", "Substrate moisture %", "Underlagets fukt %", "Fukt i underlag %", "Underlagets fugt %", "Aluspinna niiskus %", "Pamatnes mitrums %", "Pagrindo drėgnis %", "Влажность основания %"],
+        "TUOTTEET": ["TUOTTEET", "PRODUCTS", "PRODUKTER", "PRODUKTER", "PRODUKTER", "TOOTED", "PRODUKTI", "GAMINIAI", "МАТЕРИАЛЫ"],
+        "Lattialämmitys": ["Lattialämmitys", "Underfloor heating", "Golvvärme", "Gulvvarme", "Gulvvarme", "Põrandaküte", "Grīdas apsilde", "Grindinis šildymas", "Подогрев пола"],
+        "Kynnys / kaivo mm": ["Kynnys / kaivo mm", "Threshold / drain mm", "Tröskel / brunn mm", "Terskel / sluk mm", "Tærskel / afløb mm", "Lävi / trapp mm", "Slieksnis / traps mm", "Slenkstis / trapas mm", "Порог / трап мм"],
+        "Kaadot": ["Kaadot", "Floor slopes", "Golvfall", "Gulvfall", "Gulvfald", "Põrandakalded", "Grīdas slīpumi", "Grindų nuolydžiai", "Уклоны"],
+        "Seinä m²": ["Seinä m²", "Wall m²", "Vägg m²", "Vegg m²", "Væg m²", "Sein m²", "Siena m²", "Siena m²", "Стены м²"],
+        "Lattia m²": ["Lattia m²", "Floor m²", "Golv m²", "Gulv m²", "Gulv m²", "Põrand m²", "Grīda m²", "Grindys m²", "Пол м²"],
+        "Seinän menekki l": ["Seinän menekki l", "Wall consumption l", "Åtgång vägg l", "Forbruk vegg l", "Forbrug væg l", "Seina materjalikulu l", "Patēriņš sienām l", "Sienų sąnaudos l", "Расход на стены л"],
+        "Lattian menekki l": ["Lattian menekki l", "Floor consumption l", "Åtgång golv l", "Forbruk gulv l", "Forbrug gulv l", "Põranda materjalikulu l", "Patēriņš grīdai l", "Grindų sąnaudos l", "Расход на пол л"],
+        "Seinän kuivakalvo mm": ["Seinän kuivakalvo mm", "Wall dry film mm", "Torrfilm vägg mm", "Tørrfilm vegg mm", "Tørfilm væg mm", "Seina kuivkihi paksus mm", "Sienas sausā slāņa biezums mm", "Sienos sausos plėvelės storis mm", "Сухой слой стен мм"],
+        "Lattian kuivakalvo mm": ["Lattian kuivakalvo mm", "Floor dry film mm", "Torrfilm golv mm", "Tørrfilm gulv mm", "Tørfilm gulv mm", "Põranda kuivkihi paksus mm", "Grīdas sausā slāņa biezums mm", "Grindų sausos plėvelės storis mm", "Сухой слой пола мм"],
+        "TARKASTUS": ["TARKASTUS", "INSPECTION", "KONTROLL", "KONTROLL", "KONTROL", "KONTROLL", "PĀRBAUDE", "PATIKRA", "ПРОВЕРКА"],
+        "Tulos": ["Tulos", "Result", "Resultat", "Resultat", "Resultat", "Tulemus", "Rezultāts", "Rezultatas", "Результат"],
+        "Päivä": ["Päivä", "Date", "Datum", "Dato", "Dato", "Kuupäev", "Datums", "Data", "Дата"],
+        "Lisätiedot": ["Lisätiedot", "Additional information", "Övriga uppgifter", "Tilleggsopplysninger", "Yderligere oplysninger", "Lisainfo", "Papildu informācija", "Papildoma informacija", "Дополнительные сведения"],
+        "Tarkastaja": ["Tarkastaja", "Inspector", "Kontrollant", "Kontrollør", "Kontrollør", "Kontrollija", "Pārbaudītājs", "Tikrintojas", "Инспектор"],
+        "Tarkastuksen tarkoitus": ["Tarkastuksen tarkoitus", "Purpose of inspection", "Syfte med besiktningen", "Formål med inspeksjonen", "Formål med inspektionen", "Kontrolli eesmärk", "Pārbaudes mērķis", "Patikros tikslas", "Цель осмотра"],
+        "Yleiset havainnot": ["Yleiset havainnot", "General observations", "Allmänna observationer", "Generelle observasjoner", "Generelle observationer", "Üldised tähelepanekud", "Vispārīgi novērojumi", "Bendros pastabos", "Общие замечания"],
+        "TARKASTUSKOHTEET": ["TARKASTUSKOHTEET", "INSPECTION ITEMS", "KONTROLLPUNKTER", "KONTROLLPUNKTER", "KONTROLPUNKTER", "KONTROLLPUNKTID", "PĀRBAUDES PUNKTI", "PATIKROS PUNKTAI", "ПУНКТЫ ОСМОТРА"],
+        "Kuvaus / tilanne": ["Kuvaus / tilanne", "Description / situation", "Beskrivning / situation", "Beskrivelse / situasjon", "Beskrivelse / situation", "Kirjeldus / olukord", "Apraksts / situācija", "Aprašymas / situacija", "Описание / состояние"],
+        "Toimenpiteet / lisätiedot": ["Toimenpiteet / lisätiedot", "Actions / additional information", "Åtgärder / övriga uppgifter", "Tiltak / tilleggsopplysninger", "Tiltag / yderligere oplysninger", "Meetmed / lisainfo", "Pasākumi / papildu informācija", "Veiksmai / papildoma informacija", "Меры / дополнительные сведения"],
+        "Yhteenveto": ["Yhteenveto", "Summary", "Sammanfattning", "Sammendrag", "Sammenfatning", "Kokkuvõte", "Kopsavilkums", "Santrauka", "Заключение"],
+        "Tarkastuspäivä": ["Tarkastuspäivä", "Inspection date", "Besiktningsdatum", "Inspeksjonsdato", "Inspektionsdato", "Kontrolli kuupäev", "Pārbaudes datums", "Patikros data", "Дата осмотра"]
+    ]
+}
