@@ -41,7 +41,7 @@ struct SettingsView: View {
             Section("Private backup") {
                 Button("Create backup") {
                     do { backupURL = try PrivateBackup.create(store: store); backupError = "" }
-                    catch { backupError = error.localizedDescription }
+                    catch { backupError = AppMessage.error(error, fallback: "Local file operation failed.") }
                 }
                 Button("Restore backup") { importingBackup = true }
                 if let backupURL { ShareLink(item: backupURL) { Text("Export backup") } }
@@ -63,19 +63,19 @@ struct SettingsView: View {
                         Button("Resend verification email") {
                             Task { @MainActor in
                                 do { try await account.resend() }
-                                catch { store.errorMessage = error.localizedDescription }
+                                catch { store.errorMessage = AppMessage.error(error, fallback: "Authentication failed. Check your credentials and try again.") }
                             }
                         }
                         Button("Check verification") {
                             Task { @MainActor in
                                 do { try await account.refresh() }
-                                catch { store.errorMessage = error.localizedDescription }
+                                catch { store.errorMessage = AppMessage.error(error, fallback: "Authentication failed. Check your credentials and try again.") }
                             }
                         }
                     }
                     Button("Sign out") {
                         do { try account.signOut() }
-                        catch { store.errorMessage = error.localizedDescription }
+                        catch { store.errorMessage = AppMessage.error(error, fallback: "Authentication failed. Check your credentials and try again.") }
                     }
                     Button("Delete account", role: .destructive) { confirmDelete = true }
                 }.disabled(accountBusy)
@@ -83,7 +83,7 @@ struct SettingsView: View {
         }
         .fileImporter(isPresented: $importingBackup, allowedContentTypes: [.json]) { result in
             do { pendingBackup = try PrivateBackup.read(result.get()); confirmRestore = true }
-            catch { backupError = error.localizedDescription }
+            catch { backupError = AppMessage.error(error, fallback: "Local file operation failed.") }
         }
         .confirmationDialog("Replace local archive?", isPresented: $confirmRestore, titleVisibility: .visible) {
             Button("Restore", role: .destructive) {
@@ -93,7 +93,7 @@ struct SettingsView: View {
                         settings = store.archive.settings
                         backupError = ""
                     }
-                } catch { backupError = error.localizedDescription }
+                } catch { backupError = AppMessage.error(error, fallback: "Local file operation failed.") }
                 pendingBackup = nil
             }
             Button("Cancel", role: .cancel) { pendingBackup = nil }
@@ -111,7 +111,7 @@ struct SettingsView: View {
                 Task { @MainActor in
                     defer { accountBusy = false }
                     do { try await account.deleteAccount(password: credential) }
-                    catch { store.errorMessage = error.localizedDescription }
+                    catch { store.errorMessage = AppMessage.error(error, fallback: "Authentication failed. Check your credentials and try again.") }
                 }
             }
         } message: {
@@ -180,19 +180,19 @@ struct GeneralSettingsView: View {
         .sheet(isPresented: $drawingSignature) {
             SignatureDrawingView { data in
                 do { settings.signatureImagePath = try PhotoFiles.save(data) }
-                catch { store.errorMessage = error.localizedDescription }
+                catch { store.errorMessage = AppMessage.error(error, fallback: "Local file operation failed.") }
             }
         }
         .onChange(of: logo) { item in
             Task { @MainActor in
                 do { if let data = try await item?.loadTransferable(type: Data.self) { settings.logoPath = try PhotoFiles.save(data) } }
-                catch { store.errorMessage = error.localizedDescription }
+                catch { store.errorMessage = AppMessage.error(error, fallback: "Local file operation failed.") }
             }
         }
         .onChange(of: signature) { item in
             Task { @MainActor in
                 do { if let data = try await item?.loadTransferable(type: Data.self) { settings.signatureImagePath = try PhotoFiles.save(data) } }
-                catch { store.errorMessage = error.localizedDescription }
+                catch { store.errorMessage = AppMessage.error(error, fallback: "Local file operation failed.") }
             }
         }
     }

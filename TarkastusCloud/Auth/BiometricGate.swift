@@ -48,15 +48,15 @@ struct BiometricGate<Content: View>: View {
         let context = LAContext()
         var error: NSError?
         guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else {
-            message = error?.localizedDescription ?? "Device authentication unavailable."
+            message = AppMessage.text("Device authentication unavailable.")
             return
         }
         authenticating = true
-        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Unlock inspection reports") { success, error in
+        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: AppMessage.text("Unlock inspection reports")) { success, error in
             DispatchQueue.main.async {
                 authenticating = false
                 unlocked = success
-                message = success ? "" : (error?.localizedDescription ?? "Authentication failed.")
+                message = success ? "" : AppMessage.text("Authentication failed.")
             }
         }
     }
