@@ -9,6 +9,8 @@ struct DriveConnectionView: View {
     @AppStorage("boundCompanyFolder") private var boundCompany = ""
     @AppStorage("boundGoogleIdentity") private var boundIdentity = ""
     @AppStorage("driveFolderID") private var folderID = ""
+    @Environment(\.openURL) private var openURL
+    @State private var showInvitationHelp = false
     @State private var email = ""
     @State private var folders: [DriveItem] = []
     @State private var busy = false
@@ -22,6 +24,10 @@ struct DriveConnectionView: View {
                     GIDSignIn.sharedInstance.signOut()
                     email = ""; folderID = ""; folders = []
                 }
+            }
+            Section("Shared folder access") {
+                Text("The folder owner invites colleagues through Google Drive. Each employee selects the shared folder in Tarkastus Cloud.")
+                Button("Invite through Google Drive") { showInvitationHelp = true }
             }
             Section("Company folder") {
                 TextField("Folder ID", text: $folderID).textInputAutocapitalization(.never).autocorrectionDisabled()
@@ -62,6 +68,24 @@ struct DriveConnectionView: View {
             }
             if busy { ProgressView() }
             if !notice.isEmpty { Text(notice) }
+        }
+        .sheet(isPresented: $showInvitationHelp) {
+            NavigationStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("1. Open Google Drive using the shared folder owner's account.")
+                        Text("2. Find the shared Tarkastus Cloud folder.")
+                        Text("3. Tap the three dots and choose Share or Manage access.")
+                        Text("4. Enter the employee's email and select Editor.")
+                        Text("5. Send the invitation. The employee accepts it and selects the shared folder in Tarkastus Cloud.")
+                        Text("Do not share the private backup folder.").fontWeight(.semibold)
+                        Button("Open Google Drive") {
+                            if let url = URL(string: "https://drive.google.com/drive/my-drive") { openURL(url) }
+                        }.buttonStyle(.borderedProminent)
+                        Button("Cancel") { showInvitationHelp = false }
+                    }.padding(24)
+                }.navigationTitle("How to share a folder").navigationBarTitleDisplayMode(.inline)
+            }
         }
         .disabled(busy)
         .navigationTitle("Google Drive")
