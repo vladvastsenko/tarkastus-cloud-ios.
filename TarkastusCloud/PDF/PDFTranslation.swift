@@ -43,6 +43,24 @@ enum PDFTranslation {
         "Kuvaus / tilanne": ["Kuvaus / tilanne", "Description / situation", "Beskrivning / situation", "Beskrivelse / situasjon", "Beskrivelse / situation", "Kirjeldus / olukord", "Apraksts / situācija", "Aprašymas / situacija", "Описание / состояние"],
         "Toimenpiteet / lisätiedot": ["Toimenpiteet / lisätiedot", "Actions / additional information", "Åtgärder / övriga uppgifter", "Tiltak / tilleggsopplysninger", "Tiltag / yderligere oplysninger", "Meetmed / lisainfo", "Pasākumi / papildu informācija", "Veiksmai / papildoma informacija", "Меры / дополнительные сведения"],
         "Yhteenveto": ["Yhteenveto", "Summary", "Sammanfattning", "Sammendrag", "Sammenfatning", "Kokkuvõte", "Kopsavilkums", "Santrauka", "Заключение"],
-        "Tarkastuspäivä": ["Tarkastuspäivä", "Inspection date", "Besiktningsdatum", "Inspeksjonsdato", "Inspektionsdato", "Kontrolli kuupäev", "Pārbaudes datums", "Patikros data", "Дата осмотра"]
+        "Tarkastuspäivä": ["Tarkastuspäivä", "Inspection date", "Besiktningsdatum", "Inspeksjonsdato", "Inspektionsdato", "Kontrolli kuupäev", "Pārbaudes datums", "Patikros data", "Дата осмотра"],
+        "Tasoite": ["Tasoite", "Levelling compound", "Spackel", "Avrettingsmasse", "Spartelmasse", "Tasandussegu", "Izlīdzinošā masa", "Išlyginamasis mišinys", "Выравнивающая смесь"],
+        "Pohjuste (primer)": ["Pohjuste (primer)", "Primer", "Primer", "Primer", "Primer", "Krunt", "Grunts", "Gruntas", "Грунтовка"],
+        "Vedeneriste": ["Vedeneriste", "Waterproofing membrane", "Tätskikt", "Membran", "Vådrumsmembran", "Hüdroisolatsioon", "Hidroizolācija", "Hidroizoliacija", "Гидроизоляция"],
+        "Kaivotyyppi": ["Kaivotyyppi", "Drain type", "Brunnstyp", "Sluktype", "Afløbstype", "Trapi tüüp", "Trapa veids", "Trapo tipas", "Тип трапа"],
+        "Kaivolaippa / lattiakaivovahvike": ["Kaivolaippa / lattiakaivovahvike", "Drain flange / reinforcement", "Brunnsmanschett", "Slukmansjett", "Afløbsmanchet", "Trapimansett", "Trapa manšete", "Trapo manžetė", "Манжета трапа"],
+        "Nurkkavahvike / vahvikenauha": ["Nurkkavahvike / vahvikenauha", "Corner reinforcement / tape", "Hörnförstärkning / remsa", "Hjørneforsterkning / bånd", "Hjørneforstærkning / bånd", "Nurgatugevdus / lint", "Stūru pastiprinājums / lente", "Kampų sutvirtinimas / juosta", "Угловое армирование / лента"],
+        "Läpivientivahvike": ["Läpivientivahvike", "Pipe penetration reinforcement", "Rörmanschett", "Rørmansjett", "Rørmanchet", "Torumansett", "Cauruļu manšete", "Vamzdžių manžetė", "Манжета проходки"],
+        "Läpivientien tiivistysmassa": ["Läpivientien tiivistysmassa", "Penetration sealant", "Tätningsmassa för genomföringar", "Tetningsmasse for gjennomføringer", "Tætningsmasse til gennemføringer", "Läbiviikude tihendusmass", "Caurvadu hermētiķis", "Įvadų sandariklis", "Герметик проходок"],
+        "Kiinnityslaasti": ["Kiinnityslaasti", "Tile adhesive", "Fästmassa", "Flislim", "Fliseklæb", "Plaadiliim", "Flīžu līme", "Plytelių klijai", "Плиточный клей"],
+        "Laatat": ["Laatat", "Tiles", "Plattor", "Fliser", "Fliser", "Plaadid", "Flīzes", "Plytelės", "Плитка"],
+        "Seinäsaumaus": ["Seinäsaumaus", "Wall grout", "Väggfog", "Veggflisfug", "Vægfuge", "Seinavuugisegu", "Sienas šuvju java", "Sienų siūlių glaistas", "Затирка стен"],
+        "Lattiasaumaus": ["Lattiasaumaus", "Floor grout", "Golvfog", "Gulvflisfug", "Gulvfuge", "Põrandavuugisegu", "Grīdas šuvju java", "Grindų siūlių glaistas", "Затирка пола"],
+        "Elastinen saumausmassa": ["Elastinen saumausmassa", "Elastic sealant", "Elastisk fogmassa", "Elastisk fugemasse", "Elastisk fugemasse", "Elastne vuugimass", "Elastīgs hermētiķis", "Elastingas sandariklis", "Эластичный герметик"],
+        "Seinä": ["Seinä", "Wall", "Vägg", "Vegg", "Væg", "Sein", "Siena", "Siena", "Стена"],
+        "Lattia": ["Lattia", "Floor", "Golv", "Gulv", "Gulv", "Põrand", "Grīda", "Grindys", "Пол"],
+        "Hyväksytty": ["Hyväksytty", "Approved", "Godkänd", "Godkjent", "Godkendt", "Heaks kiidetud", "Apstiprināts", "Patvirtinta", "Принято"],
+        "Hylätty": ["Hylätty", "Rejected", "Underkänd", "Ikke godkjent", "Ikke godkendt", "Tagasi lükatud", "Noraidīts", "Atmesta", "Не принято"],
+        "Missing photo": ["Missing photo", "Missing photo", "Foto saknas", "Bilde mangler", "Foto mangler", "Foto puudub", "Trūkst fotoattēla", "Trūksta nuotraukos", "Фотография отсутствует"]
     ]
 }
