@@ -10,6 +10,8 @@ struct SettingsView: View {
     @State private var confirmDelete = false
     @State private var password = ""
     @State private var accountBusy = false
+    @State private var backupURL: URL?
+    @State private var backupError = ""
     @State private var logo: PhotosPickerItem?
     @State private var signature: PhotosPickerItem?
     var body: some View {
@@ -36,6 +38,15 @@ struct SettingsView: View {
             }
             NavigationLink("Google Drive") { DriveConnectionView() }
             NavigationLink("Asiakkaat ja kohteet") { CustomerDirectoryView() }
+            Section("Private backup") {
+                Button("Create backup") {
+                    do { backupURL = try PrivateBackup.create(store: store); backupError = "" }
+                    catch { backupError = error.localizedDescription }
+                }
+                if let backupURL { ShareLink(item: backupURL) { Text("Export backup") } }
+                Text("Contains personal settings and reports. Do not save in the shared company folder.").font(.caption)
+                if !backupError.isEmpty { Text(backupError) }
+            }
             Section("Security") {
                 Toggle("Device authentication", isOn: $biometricLock)
             }
