@@ -147,7 +147,7 @@ struct ReportDraftView: View {
                     ForEach(MaterialCatalog.manufacturers, id: \.self) { Text($0).tag($0) }
                 }
                 ForEach($report.materials, id: \.id) { $material in
-                    DisclosureGroup(material.category + " " + material.surface) {
+                    DisclosureGroup(AppMessage.text(material.category) + (material.surface.isEmpty ? "" : " " + AppMessage.text(material.surface))) {
                         if !MaterialCatalog.familyCategories.contains(material.category) {
                             TextField("Valmistaja", text: $material.manufacturer)
                         } else {
