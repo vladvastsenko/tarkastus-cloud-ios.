@@ -8,9 +8,22 @@ enum PDFSync {
         let sync = try await client.ensureFolder(name: "Tarkastus_Sync", parent: company)
         let conflicts = try await client.ensureFolder(name: "Conflicts", parent: sync)
         let root = try PDFArchive.directory()
-        let items = try await client.children(of: remote)
-        let local = try PDFArchive.files()
         var uploaded = 0, downloaded = 0, preserved = 0
+        func walk(_ root: URL, _ remote: String, _ prefix: String, _ depth: Int) async throws {
+        guard depth <= 32 else { throw DriveError.invalidResponse }
+        let items = try await client.children(of: remote)
+        let entries = try FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: [.isDirectoryKey, .isRegularFileKey, .isSymbolicLinkKey], options: [.skipsHiddenFiles])
+        let local = entries.filter { (try? $0.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey])).map { $0.isRegularFile == true && $0.isSymbolicLink != true } == true && $0.pathExtension.lowercased() == "pdf" }
+        let localFolders = entries.filter { (try? $0.resourceValues(forKeys: [.isDirectoryKey, .isSymbolicLinkKey])).map { $0.isDirectory == true && $0.isSymbolicLink != true } == true }
+        let folderNames = Set(localFolders.map(\.lastPathComponent)).union(items.filter { $0.mimeType == "application/vnd.google-apps.folder" }.map(\.name))
+        for name in folderNames.sorted() {
+            guard !name.isEmpty, !name.contains("/"), !name.contains("\\"), name != ".", name != "..", !name.hasPrefix(".") else { continue }
+            let child = root.appendingPathComponent(name, isDirectory: true)
+            if FileManager.default.fileExists(atPath: child.path) && !localFolders.contains(child) { throw DriveError.ambiguousName }
+            let id = try await client.ensureFolder(name: name, parent: remote)
+            try FileManager.default.createDirectory(at: child, withIntermediateDirectories: true)
+            try await walk(child, id, prefix + name + "/", depth + 1)
+        }
         let names = Set(local.map(\.lastPathComponent)).union(items.filter { $0.mimeType == "application/pdf" }.map(\.name))
         for name in names.sorted() {
             guard !name.contains("/"), !name.contains("\\"), name != ".", name != "..", name.lowercased().hasSuffix(".pdf") else { continue }
@@ -24,16 +37,16 @@ enum PDFSync {
                 guard remoteData.starts(with: Data("%PDF-".utf8)) else { throw DriveError.invalidResponse }
                 if let localData {
                     let lh = SyncPolicy.hash(localData), rh = SyncPolicy.hash(remoteData)
-                    switch SyncPolicy.decide(local: lh, remote: rh, baseline: baseline[name]) {
+                    switch SyncPolicy.decide(local: lh, remote: rh, baseline: baseline[prefix + name]) {
                     case .unchanged:
-                        baseline[name] = lh
+                        baseline[prefix + name] = lh
                         UserDefaults.standard.set(baseline, forKey: key)
                         continue
                     case .upload:
                         let latest = try await client.download(id: item.id)
                         guard SyncPolicy.hash(latest) == rh else { throw DriveError.invalidResponse }
                         _ = try await client.upload(name: name, parent: remote, data: localData, mimeType: "application/pdf", existingID: item.id)
-                        baseline[name] = lh
+                        baseline[prefix + name] = lh
                         UserDefaults.standard.set(baseline, forKey: key)
                         uploaded += 1
                         continue
@@ -45,18 +58,20 @@ enum PDFSync {
                     }
                 }
                 try remoteData.write(to: url, options: .atomic)
-                baseline[name] = SyncPolicy.hash(remoteData)
+                baseline[prefix + name] = SyncPolicy.hash(remoteData)
                 UserDefaults.standard.set(baseline, forKey: key)
                 downloaded += 1
             } else if let localData {
                 let current = try await client.children(of: remote)
                 guard !current.contains(where: { $0.name == name }) else { throw DriveError.ambiguousName }
                 _ = try await client.upload(name: name, parent: remote, data: localData, mimeType: "application/pdf")
-                baseline[name] = SyncPolicy.hash(localData)
+                baseline[prefix + name] = SyncPolicy.hash(localData)
                 UserDefaults.standard.set(baseline, forKey: key)
                 uploaded += 1
             }
         }
+        }
+        try await walk(root, remote, "", 0)
         return "Uploaded: \(uploaded), downloaded: \(downloaded), conflicts preserved: \(preserved)"
     }
 }
