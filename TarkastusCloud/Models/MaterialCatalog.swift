@@ -13,6 +13,9 @@ struct WaterproofingSpec {
     let source: String
 }
 enum MaterialCatalog {
+    static let manufacturers = ["Kiilto", "weber", "SCHÖNOX", "ARDEX", "Mapei"]
+    static let familyCategories: Set<String> = ["Pohjuste (primer)", "Vedeneriste", "Kaivolaippa / lattiakaivovahvike", "Nurkkavahvike / vahvikenauha", "Läpivientivahvike", "Läpivientien tiivistysmassa", "Kiinnityslaasti"]
+
     static let products: [CatalogProduct] = [
         CatalogProduct(category: "tasoite", manufacturer: "Kiilto", name: "SR DF Pikamärkätilatasoite"),
         CatalogProduct(category: "tasoite", manufacturer: "Kiilto", name: "SK Märkätilatasoite"),
